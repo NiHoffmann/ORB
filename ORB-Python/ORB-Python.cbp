@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="ORB-Python" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Build">
+				<Option output="bin/Release/ORB-Python" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="Rebuild">
+				<Option output="bin/Release/ORB-Python" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<ExtraCommands>
+					<Add before=".\rebuild_mp_embed.bat" />
+				</ExtraCommands>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Og" />
+			<Add option="-g" />
+			<Add option="-fexceptions" />
+			<Add directory="libs/mp_embed" />
+			<Add directory="libs/mp_embed/micropython_embed" />
+			<Add directory="libs/mp_embed/micropython_embed/port" />
+			<Add directory="src" />
+			<Add directory="src/modules" />
+			<Add directory="src/mockups" />
+			<Add directory="src/python-vm" />
+		</Compiler>
+		<ExtraCommands>
+			<Add before=".\compile_program.bat" />
+		</ExtraCommands>
+		<Unit filename="libs/mp_embed/build-embed/genhdr/module/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__modbuiltins.c.module" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/module/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__modgc.c.module" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/module/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__runtime.c.module" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/module/C@____Users____nils9____Desktop____Bachelorarbeit____ORB____ORB-Python__src__modules__Devices__DevicesModule.c.module" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/module/C@____Users____nils9____Desktop____Bachelorarbeit____ORB____ORB-Python__src__modules__Memory__MemoryModule.c.module" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/module/C@____Users____nils9____Desktop____Bachelorarbeit____ORB____ORB-Python__src__modules__Monitor__MonitorModule.c.module" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/module/C@____Users____nils9____Desktop____Bachelorarbeit____ORB____ORB-Python__src__modules__Time__TimeModule.c.module" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/moduledefs.collected" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/moduledefs.collected.hash" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/moduledefs.h" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/moduledefs.split" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/mpversion.h" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr.i.last" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr.split" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__builtinevex.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__compile.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__emitbc.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__modbuiltins.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__modgc.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objbool.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objboundmeth.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objclosure.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objcomplex.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objdict.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objexcept.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objfloat.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objfun.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objgenerator.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objgetitemiter.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objint.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objlist.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objmap.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objmodule.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objnone.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objobject.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objpolyiter.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objrange.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objsingleton.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objstr.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objtuple.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objtype.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__objzip.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__runtime.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__scope.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@__Users__nils9__Desktop__Bachelorarbeit__ORB__micropython__py__vm.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@____Users____nils9____Desktop____Bachelorarbeit____ORB____ORB-Python__src__modules__Devices__Button__ButtonType.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@____Users____nils9____Desktop____Bachelorarbeit____ORB____ORB-Python__src__modules__Devices__DevicesModule.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@____Users____nils9____Desktop____Bachelorarbeit____ORB____ORB-Python__src__modules__Devices__Motor__MotorModule.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@____Users____nils9____Desktop____Bachelorarbeit____ORB____ORB-Python__src__modules__Devices__Sensor__SensorModule.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@____Users____nils9____Desktop____Bachelorarbeit____ORB____ORB-Python__src__modules__Devices__Servo__ServoModule.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@____Users____nils9____Desktop____Bachelorarbeit____ORB____ORB-Python__src__modules__Memory__MemoryModule.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@____Users____nils9____Desktop____Bachelorarbeit____ORB____ORB-Python__src__modules__Monitor__KeyConstants.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@____Users____nils9____Desktop____Bachelorarbeit____ORB____ORB-Python__src__modules__Monitor__MonitorModule.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstr/C@____Users____nils9____Desktop____Bachelorarbeit____ORB____ORB-Python__src__modules__Time__TimeModule.c.qstr" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstrdefs.collected.h" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstrdefs.collected.h.hash" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstrdefs.generated.h" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/qstrdefs.preprocessed.h" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/root_pointer/C@____Users____nils9____Desktop____Bachelorarbeit____ORB____ORB-Python__src__modules__Devices__DevicesModule.c.root_pointer" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/root_pointer/C@____Users____nils9____Desktop____Bachelorarbeit____ORB____ORB-Python__src__modules__Memory__MemoryModule.c.root_pointer" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/root_pointer/C@____Users____nils9____Desktop____Bachelorarbeit____ORB____ORB-Python__src__modules__Time__TimeModule.c.root_pointer" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/root_pointers.collected" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/root_pointers.collected.hash" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/root_pointers.h" />
+		<Unit filename="libs/mp_embed/build-embed/genhdr/root_pointers.split" />
+		<Unit filename="libs/mp_embed/micropython_embed.mk" />
+		<Unit filename="libs/mp_embed/micropython_embed/extmod/modplatform.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/genhdr/moduledefs.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/genhdr/mpversion.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/genhdr/qstrdefs.generated.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/genhdr/root_pointers.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/port/embed_util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/port/micropython_embed.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/port/mpconfigport_common.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/port/mphalport.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/port/mphalport.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/argcheck.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/asmarm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/asmarm.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/asmbase.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/asmbase.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/asmrv32.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/asmrv32.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/asmthumb.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/asmthumb.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/asmx64.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/asmx64.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/asmx86.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/asmx86.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/asmxtensa.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/asmxtensa.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/bc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/bc.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/bc0.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/binary.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/binary.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/builtin.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/builtinevex.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/builtinhelp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/builtinimport.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/compile.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/compile.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/cstack.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/cstack.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/dynruntime.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/emit.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/emitbc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/emitcommon.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/emitglue.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/emitglue.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/emitinlinethumb.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/emitinlinextensa.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/emitnarm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/emitnative.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/emitndebug.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/emitnrv32.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/emitnthumb.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/emitnx64.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/emitnx86.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/emitnxtensa.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/emitnxtensawin.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/formatfloat.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/formatfloat.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/frozenmod.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/frozenmod.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/gc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/gc.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/grammar.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/lexer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/lexer.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/malloc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/map.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/misc.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/modarray.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/modbuiltins.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/modcmath.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/modcollections.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/moderrno.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/modgc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/modio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/modmath.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/modmicropython.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/modstruct.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/modsys.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/modthread.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/mpconfig.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/mperrno.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/mphal.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/mpprint.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/mpprint.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/mpstate.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/mpstate.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/mpthread.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/mpz.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/mpz.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/nativeglue.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/nativeglue.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/nlr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/nlr.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/nlraarch64.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/nlrmips.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/nlrpowerpc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/nlrrv32.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/nlrsetjmp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/nlrthumb.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/nlrx64.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/nlrx86.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/nlrxtensa.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/obj.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/obj.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/objarray.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objarray.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/objattrtuple.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objbool.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objboundmeth.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objcell.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objclosure.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objcomplex.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objdeque.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objdict.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objenumerate.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objexcept.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objexcept.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/objfilter.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objfloat.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objfun.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objfun.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/objgenerator.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objgenerator.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/objgetitemiter.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objint.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objint.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/objint_longlong.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objint_mpz.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objlist.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objlist.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/objmap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objmodule.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objmodule.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/objnamedtuple.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objnamedtuple.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/objnone.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objobject.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objpolyiter.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objproperty.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objrange.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objreversed.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objset.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objsingleton.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objslice.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objstr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objstr.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/objstringio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objstringio.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/objstrunicode.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objtuple.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objtuple.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/objtype.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/objtype.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/objzip.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/opmethods.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/pairheap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/pairheap.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/parse.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/parse.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/parsenum.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/parsenum.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/parsenumbase.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/parsenumbase.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/persistentcode.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/persistentcode.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/profile.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/profile.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/pystack.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/pystack.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/qstr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/qstr.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/qstrdefs.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/reader.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/reader.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/repl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/repl.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/ringbuf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/ringbuf.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/runtime.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/runtime.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/runtime0.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/runtime_utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/scheduler.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/scope.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/scope.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/sequence.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/showbc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/smallint.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/smallint.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/stackctrl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/stackctrl.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/stream.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/stream.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/unicode.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/unicode.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/vm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/vmentrytable.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/py/vstr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/py/warning.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/micropython_embed/shared/runtime/gchelper.h" />
+		<Unit filename="libs/mp_embed/micropython_embed/shared/runtime/gchelper_generic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs/mp_embed/mpconfigport.h" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/mockups/Memory.h" />
+		<Unit filename="src/mockups/Monitor.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/mockups/Monitor.h" />
+		<Unit filename="src/mockups/Motor.h" />
+		<Unit filename="src/mockups/Sensor.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/mockups/Sensor.h" />
+		<Unit filename="src/mockups/Servo.h" />
+		<Unit filename="src/mockups/Time.h" />
+		<Unit filename="src/mockups/_Time.h" />
+		<Unit filename="src/modules/Devices/Button/ButtonType.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/modules/Devices/Button/ButtonType.h" />
+		<Unit filename="src/modules/Devices/DevicesModule.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/modules/Devices/EV3Touch/EV3TouchType.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/modules/Devices/EV3Touch/EV3TouchType.h" />
+		<Unit filename="src/modules/Devices/EV3Ultrasonic/EV3UltrasonicType.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/modules/Devices/EV3Ultrasonic/EV3UltrasonicType.h" />
+		<Unit filename="src/modules/Devices/Motor/MotorModule.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/modules/Devices/Motor/MotorModule.h" />
+		<Unit filename="src/modules/Devices/Sensor/SensorModule.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/modules/Devices/Sensor/SensorModule.h" />
+		<Unit filename="src/modules/Devices/Servo/ServoModule.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/modules/Devices/Servo/ServoModule.h" />
+		<Unit filename="src/modules/Memory/MemoryModule.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/modules/Monitor/KeyConstants.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/modules/Monitor/KeyConstants.h" />
+		<Unit filename="src/modules/Monitor/MonitorModule.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/modules/Time/TimeModule.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/modules/qstr.h" />
+		<Unit filename="src/python-vm/helper.h" />
+		<Unit filename="src/python-vm/python-vm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/python-vm/python-vm.h" />
+		<Extensions>
+			<debugger>
+				<search_path add="bin\Release" />
+			</debugger>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

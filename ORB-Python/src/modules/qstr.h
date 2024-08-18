@@ -1,0 +1,1 @@
+Q(simple_sensor)

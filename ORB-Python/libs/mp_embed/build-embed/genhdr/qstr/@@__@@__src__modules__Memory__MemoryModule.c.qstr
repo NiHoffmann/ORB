@@ -1,0 +1,7 @@
+Q(__name__)
+Q(memory)
+Q(__init__)
+Q(clearMemory)
+Q(setMemory)
+Q(getMemory)
+Q(memory)

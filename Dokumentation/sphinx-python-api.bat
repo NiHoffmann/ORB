@@ -1,0 +1,1 @@
+start .\sphinx-docs\build\html\index.html
