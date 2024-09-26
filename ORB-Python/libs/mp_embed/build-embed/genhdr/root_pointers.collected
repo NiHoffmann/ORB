@@ -1,5 +1,0 @@
-MP_REGISTER_ROOT_POINTER(int devices_initialised);
-
-MP_REGISTER_ROOT_POINTER(int memory_initialised);
-
-MP_REGISTER_ROOT_POINTER(int time_initialised);

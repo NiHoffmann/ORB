@@ -1,18 +1,20 @@
 #include "py/runtime.h"
 #include "KeyConstants.h"
+#include "Monitor_C_Interface.h"
 
 static mp_obj_t mp_get_key() {
     return mp_obj_new_int(getMonitorKey());
 }
 static MP_DEFINE_CONST_FUN_OBJ_0(mp_get_key_obj, mp_get_key);
 
-static mp_obj_t mp_set_text(mp_obj_t arg) {
+static mp_obj_t mp_set_text(mp_obj_t line_obj, mp_obj_t text_obj) {
     size_t len;
-    const char *str = mp_obj_str_get_data(arg, &len);
-    setMonitorText(str, len);
+    const int line = mp_obj_int_get_checked(line_obj);
+    const char *str = mp_obj_str_get_data(text_obj, &len);
+    setMonitorText(line, str, len);
     return mp_const_none;
 }
-static MP_DEFINE_CONST_FUN_OBJ_1(mp_set_text_obj, mp_set_text);
+static MP_DEFINE_CONST_FUN_OBJ_2(mp_set_text_obj, mp_set_text);
 
 static const mp_rom_map_elem_t monitor_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_monitor) },

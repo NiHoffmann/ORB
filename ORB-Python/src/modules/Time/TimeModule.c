@@ -1,6 +1,6 @@
 // Include MicroPython API.
 #include "py/runtime.h"
-#include "_Time.h"
+#include "Time_C_Interface.h"
 
 static mp_obj_t time___init__(void) {
     if (!MP_STATE_VM(time_initialised)) {

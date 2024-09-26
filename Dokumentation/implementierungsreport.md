@@ -1,197 +1,144 @@
 # Inhaltsverzeichnis
+- [0. Zuordung zu Arbeits-Packeten](#0-zuordung-zu-arbeits-packeten)
+- [1. Aufsetzen des GitHub-Projekts](#1-aufsetzen-des-github-projekts)
+- [2. Micropython Modul Registrierung](#2-micropython-modul-registrierung)
+    - [2.1. Registrieren eines Test-Moduls](#21-registrieren-eines-test-moduls)
+    - [2.2. Compilieren und Ausführen einer MPY-Binär-Datei](#22-compilieren-und-ausführen-einer-mpy-binär-datei)
+    - [2.3. ORB-Python-Module hinzufügen](#23-orb-python-module-hinzufügen)
+    - [2.3.1. Klassen, Objekt und Funktionen ermitteln](#231-klassen-objekt-und-funktionen-ermitteln)
+    - [2.3.2. Aufbauen der Module](#232-aufbauen-der-module)
+    - [2.3.3. Code::Blocks und Mockups](#233-codeblocks-und-mockups)
+- [3. Erstellen der Sphinx-Dokumentation](#3-erstellen-der-sphinx-dokumentation)
+    - [3.1. Aufsetzen der Sphinx-Dokumentation](#31-aufsetzen-der-sphinx-dokumentation)
+    - [3.2. Umfang der Dokumentation](#32-umfang-der-dokumentation)
+- [4. Erster Entwurf der Micropython VM-Schnittstelle](#4-erster-entwurf-der-micropython-vm-schnittstelle)
+    - [4.1. Ausführung der VM in einem Thread](#41-ausführung-der-vm-in-einem-thread)
+    - [4.2. Micropython-Ausführung unterbrechen](#42-micropython-ausführung-unterbrechen)
+- [5. User Program Compile-Script](#5-user-program-compile-script) //TODO test, integration orb
+- [x. Firmware-Architektur](#firmware-architektur)
 
-1. [Warum den MicroPython Embed Port verwenden?](#warum-den-micropython-embed-port-verwenden)
-2. [Aufsetzen des GitHub-Projekts](#aufsetzen-des-github-projekts)
-3. [ORB-Modul hinzufügen](#orb-modul-hinzufügen)
-   - [Anpassungen an micropython_embed.mk](#anpassungen-an-micropython_embedmk)
-   - [Micropython-Types](#micropython-types)
-     - [Module-Type](#module-type)
-     - [Class-Type](#class-type)
-4. [System Boundaries]
-5. [Design Flow]
-6. [Argument Parsing]
-7. [Problematik mit Namespaces](#problematik-mit-namespaces) 
-   -  [Super- & Submodule](#super-&-submodule)
-   -   [Dictionaries und QStrings](#dictionaries-und-qstrings)
-   -   [Limitierungen des MicroPython-Interpreters](#limitierungen-des-micropython-interpreters)
-   - [Submodule als QString Alias](#submodule-als-qstring-alias)
-   - [Kombination von Submodulen, QString und Supermodulen](#kombination-von-submodulen-qstring-und-supermodulen)
-   - [Schlussfolgerung zu diesen Problemen](#schlussfolgerung-zu-diesen-problemen)
-8. [Micropython Flags](#micropython-flags)
-9. [Code::Blocks und Mockup](#codeblocks-und-mockup)
-10. [Das Problem des Micropython Heaps](#das-problem-des-micropython-heaps)
-11. [Wie man eine Micropython-Ausführung stoppt](#Wie-man-eine-Micropython-Ausführung-stoppt)
-12. [Micropython und Defines](#Micropython-und-Defines)
+## 0. Zuordung zu Arbeits-Packeten
+Zu beginn jeden Abschnittes meines Implementierungs Reports, führe ich eine Tabelle dieser Form ein. So soll ersichtlich werden wo welche Arbeitspackete umgesetzt wurden.
+|Packet|Abschnitt|
+|------|---------|
+| x.x  |  titel  |
 
+>eine andere idee wäre es das der Arbeitsplan so eine Tabelle bekommt ich ich da eine Zuordnung mache, mit Links auf die Titel
 
+## 1. Aufsetzen des GitHub-Projekts
+|Packet|Abschnitt|
+|------|---------|
+| 1.1. |  1.-14. | 
+| 1.6. |  14.    |
 
-### Warum den MicroPython Embed Port verwenden?
+1. **Repository erstellen**:  
+Zunächst habe ich ein neues Repository auf GitHub angelegt. Das ich direkt mit einer `README.md`-Datei versehen habe.
 
-Im Rahmen meiner Bachelorarbeit wurden zwei mögliche Ansätze zur Integration des MicroPython-Interpreters in die ORB-Firmware identifiziert. Der erste Ansatz basiert auf der Verwendung des MicroPython STM-Port. Dieser Ansatz würde die MicroPython-Umgebung als Grundlage nutzen, in die die ORB-Firmware integriert werden müsste. Allerdings erachtete ich diesen Weg als eher unpraktisch, da er Komplikationen im Build-Prozess mit sich bringen könnte. Möglicherweise wären umfangreiche Anpassungen oder sogar das Umschreiben von MicroPython in C++ erforderlich. 
+2. **Fork des MicroPython-Projekts erstellen**:  
+ Ich habe ich einen Fork des MicroPython-Projekts erstellt, um Anpassungen vornehmen und Updates an diesem durchführen zu können.
+ Durch diesen Schritt ist einfach nachvollziehbar an welchen stellen ich änderungen im Micropython-Projekt vorgenommen habe.
+> [!NOTE]  
+> Der Embed-Port meines Projektes wird gegen den Embed-Port im Micropython-Projekt gebaut. D.h. änderungen an dem Code von Micropython wie z.b. änderungen an der `VM.c` (wie z.B. [Micropython-Ausführung unterbrechen](#micropython-ausführung-unterbrechen)) werden in diesem Fork gemacht.
 
-Da die ORB-Firmware idealerweise nur an den notwendigsten Stellen angepasst werden sollte und ein kompletter Umbau vermieden werden soll, ist dieser Ansatz nicht optimal. Wie im Exposé beschrieben, ist mein Ziel, den MicroPython-Interpreter als eigenständige Komponente einzubinden, anstatt die ORB-Firmware in das MicroPython-Projekt zu integrieren.
-
-Der zweite Ansatz, für den ich mich entschieden habe, ist die Verwendung des MicroPython Embed Ports. Dieser Ansatz bietet den klaren Vorteil, dass der MicroPython-Interpreter als eigenständige Komponente in die ORB-Firmware eingebunden werden kann, ohne dass die Firmware selbst stark verändert werden muss. So muss ich lediglich sinnvolle Schnittstellen definieren. Der MicroPython Embed Port bleibt in C implementiert, was bedeutet, dass keine Änderungen am Interpreter-Code erforderlich sind. Die Schnittstellen zur ORB-Firmware ermöglichen dann später die Abbildung von C++- auf C-Funktionen.
-
-### Aufsetzen des GitHub-Projekts
-
-1. **Repository erstellen**: Erstellen Sie ein neues Repository auf GitHub. Zunächst sollte es sich um ein leeres Git-Projekt mit einer `README.md`-Datei handeln.
-
-2. **Fork des MicroPython-Projekts erstellen**: Erstellen Sie einen Fork des MicroPython-Projekts, um Anpassungen vorzunehmen und zukünftige Updates durchzuführen, ohne den ursprünglichen Quellcode zu beeinflussen.
-
-3. **MicroPython als Submodul hinzufügen**: Fügen Sie das geforkte MicroPython-Projekt als Submodul zum GitHub-Projekt hinzu, indem Sie folgenden Befehl ausführen:
+4. **MicroPython als Submodul hinzufügen**:
+   Danach habe ich das geforkte MicroPython-Projekt als Submodul in mein GitHub-Projekt integriert. Dazu habe ich folgenden Befehl ausgeführt:
     ```bash
     git submodule add https://github.com/NiHoffmann/micropython micropython
     ```
 
-4. **MicroPython-Projekt einrichten**:
-    - Bauen Sie den `mpy-cross`-Compiler mit dem Befehl `make`.
-    - Beachten Sie, dass der Embed-Port keine externen Abhängigkeiten hat, daher ist es nicht erforderlich, `make submodules` auszuführen, wie in der MicroPython-Dokumentation beschrieben ([Link](https://github.com/NiHoffmann/micropython/readme.md)).
+5. **MicroPython-Projekt einrichten**:  
+    - Anschließend habe ich den `mpy-cross`-Compiler gebaut, indem ich den Befehl `make` verwendet habe.
+    - Da der Embed-Port keine externen Abhängigkeiten benötigt, war es nicht notwendig, den Befehl `make submodules` auszuführen, wie in der MicroPython-Dokumentation angegeben ([Link](https://github.com/NiHoffmann/micropython/readme.md)).
 
-5. **Erste Projektkonfiguration mit MicroPython Embed**: Für die erste Einrichtung des Projekts benötigen Sie drei Dateien aus dem MicroPython-Embed-Projekt:
-    - `micropython_embed.mk`: Diese Datei enthält die Make-Regeln zum Bauen des Embed-Ports.
-    - `mpconfigport.h`: Diese Konfigurationsdatei enthält die Definitionen für die erforderlichen Komponenten des MicroPython-Projekts.
+6. **Erste Projektkonfiguration mit MicroPython Embed**:    
+    Für die Initialisierung des Projekts habe ich zwei Dateien aus dem MicroPython-Embed-Projekt verwendet:
+    - [`micropython_embed.mk`](): Diese Datei enthält die Make-Regeln für den Embed-Port.
+    - [`mpconfigport.h`](): Diese Datei enthält die erforderlichen Definitionen für die Komponenten des MicroPython-Projekts.
 
-6. **Änderungen am geforkten MicroPython-Projekt**: Änderungen an der Datei `mpconfigport_common.h` sind erforderlich. Diese Datei ist für den Build-Prozess unter Linux vorgesehen und enthält Definitionen aus `alloca.h` für die Speicherzuweisung. Der äquivalente Windows-Header `malloc.h` ist jedoch nicht enthalten. Daher musste ich eine If/Else-Anweisung hinzufügen.
+7. **Änderungen am geforkten MicroPython-Projekt**:   
+   Ich musste Anpassungen an der Datei [`mpconfigport_common.h`]() vornehmen. Diese Datei ist für den Build-Prozess unter Linux vorgesehen und enthält Definitionen aus `alloca.h` für die Speicherzuweisung. Da der äquivalente Windows-Header `malloc.h` fehlt, habe ich eine If/Else-Anweisung hinzugefügt, um dieses Problem zu beheben.
 
-7. **Pfadanpassung in `micropython_embed.mk`**: In der Make-Datei `micropython_embed.mk` musste der Pfad für `MICROPYTHON_TOP` auf Folgendes geändert werden:
+8. **Pfadanpassung in `micropython_embed.mk`**:  
+    In der Make-Datei `micropython_embed.mk` habe ich den Pfad für `MICROPYTHON_TOP` auf folgenden Wert angepasst:
     ```makefile
     MICROPYTHON_TOP = ../micropython
     ```
 
-8. **Kompilieren des MicroPython-Projekts**: Das MicroPython-Projekt kann nun kompiliert werden. Stellen Sie sicher, dass die Umgebung konfiguriert ist, einschließlich der Installation erforderlicher Werkzeuge wie MSYS2, Cygwin, GCC und Python. Starten Sie die Kompilierung mit folgendem Befehl:
+9. **Kompilieren des MicroPython-Projekts**:  
+    Anschließend habe ich das MicroPython-Projekt kompiliert. Dazu habe ich sichergestellt, dass alle notwendigen Werkzeuge wie Make, GCC und Python installiert sind. Die Kompilierung habe ich mit folgendem Befehl gestartet:
     ```bash
     make -f .\micropython_embed.mk
     ```
 
-9. **Einrichten des Code::Blocks-Projekts**: Erstellen Sie ein leeres Projekt in Code::Blocks und konfigurieren Sie es mit einer Debug-Einstellung, die den GCC-Compiler verwendet.
+10. **Einrichten des Code::Blocks-Projekts**:  
+    Danach habe ich ein leeres C++-Projekt in Code::Blocks erstellt und eingestellt das dieses den GCC-Compiler verwendet.
 
-10. **`main.c` erstellen und Suchverzeichnisse konfigurieren**: Entwickeln Sie eine `main.c`-Datei und richten Sie die Suchverzeichnisse für den Compiler ein, um folgende Pfade einzuschließen:
+11. **`main.c` erstellen und Suchverzeichnisse konfigurieren**:  
+    Ich habe eine `main.c`-Datei erstellt und die Suchverzeichnisse für den Compiler so eingerichtet, dass folgende Pfade inkludiert wurden:
     - `src/`
     - `libs/`
     - `libs/micropython_embed`
     - `libs/micropython_embed/port`
 
-11. **Compiler-Flags hinzufügen**: Fügen Sie die Flags `-Og` und `-g` hinzu, um ein korrektes Debugging zu ermöglichen. Diese Flags sind entscheidend für die korrekte Kompilierung des Projekts mit dem GCC-Compiler in Code::Blocks. Ohne diese Flags kann es zu Kompilierungsproblemen kommen, deren genaue Ursachen noch untersucht werden müssen.
+12. **Erste ausführung**  
+//todo hier darüber schreiben das ich probleme mit den compiler flags hatte.
 
-    > Die Verwendung des `-Og`-Flags beim Kompilieren von MicroPython mit Code::Blocks stellt sicher, dass der generierte Code so nah wie möglich am Quellcode bleibt und das ursprüngliche Verhalten sowie die Debugging-Fähigkeiten erhalten bleiben. Dieser Ansatz minimiert das Risiko von Problemen durch aggressivere Optimierungen. Wenn der Code ohne dieses Flag nicht korrekt ausgeführt wird, liegt es wahrscheinlich daran, dass die Optimierungen kritische Teile der MicroPython-Operationen oder die Interaktion zwischen dem Code und der Hardware-Plattform beeinträchtigen.
-  
-12. **Code:Blocks Build Targets anpassen**: Zu diesem Zeitpunkt ist der Build Prozess des Code:Blocks Projektes von dem des MP-Embed-Port los gelöst. Im bestenfall sollte aus der Code:Blocks umgebung auch der MP-Embed-Port gebaut werden können. Zu diesem Zweck habe ich dem Code:Blocks Projekt 2 Build-Target gegeben : *Build* und *Rebuild* während build der vorher configurierte Prozess ist, ist rebuild erweitert durch einen Pre-Build-Step. Das *Rebuild*-Build-Target ruft ein batch script auf welches die commandos für das 'clear' und 'build' des MP-Embed-ports enhält. Die Verwendung der Target ist wie Folgt gedacht, entwickelt man nur in der Code:Blocks umgebung ohne neue Module/Funktionen hinzuzfügen so reicht das Build-Target aus. Da die MP-Embed-Port ressourcen nicht immer neu generiert werden müssen. Kommen nun neue Module hinzu, werden alte Umbgenannt oder neue Funktionen eingeführt, so kann man einmal das Rebuild-Target ausführen. Danach verwendet man wieder wie gewohn Build.
-
-### ORB-Modul hinzufügen
-
-#### Anpassungen an `micropython_embed.mk`:
-
-1. **USER_C_MODULES Pfad erweitern**: Hier das Root-Verzeichnis für Module angeben und den entsprechenden Pfad definieren.
-2. **CFLAGS für Include-Verzeichnisse hinzufügen**: Diese Verzeichnisse sollten in den CFLAGS aufgenommen werden.
-3. **`embed.mk` verlinken**: Die Datei `embed.mk` einbinden mit der Zeile `include $(MICROPYTHON_TOP)/ports/embed/embed.mk` und den Pfad zu `MICROPYTHON_TOP` angeben.
-
-Zurzeit gibt es zwei Include-Verzeichnisse: `Mockups` und `Module`.
-
-Die `micropython_embed.mk` Datei sucht im `USER_C_MODULES` Pfad nach Ordnern, geht in diese hinein und ruft jede Datei mit dem Namen `micropython.mk` auf. Im `modules`-Ordner selbst können jedoch keine `micropython.mk` Dateien liegen, da diese ignoriert werden.
-
-Deshalb habe ich einen Ordner `ORB` erstellt, der als Modulbasis für alle Implementierungen des ORB-Moduls dient. In diesem Modul werden weitere Klassen und Typen angebunden und bereitgestellt.
-
-#### Micropython-Types
-Für die Umsetzung meines Projektes sind 2 Arten von Types die mit Micropython abgebildet werden können wichtig. Die Modul und Typ klassen. Im Folgenden werden diese Genauer erklärt.
-
-#### Module-Type
-Modul Klassen sind vom Daten-Typ `mp_obj_module_t` und werden verwendet um Module abzubilden. Im einfachten Fall bestehen diese aus zwei Teilen, bzw. definierungs schritten. 
-1. Erstellen eines Dictionarys, diese werden verwendet um Modul Meta Informationen zu verwalten. Wie z.b. Module name, oder die Init funktion welche bei Import des Moduls aufgerufen wird.
-    ```cpp
-    static const mp_rom_map_elem_t devices_globals_table[] = {
-        { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_devices) },
-        { MP_ROM_QSTR(MP_QSTR___init__), MP_ROM_PTR(&devices___init___obj) },
-        { MP_ROM_QSTR(MP_QSTR_motor),  MP_ROM_PTR(&motor_type) },
-    };
-    static MP_DEFINE_CONST_DICT(devices_globals, devices_globals_table);
-    ```
-    Solche Dictionaries bestehen idr. aus einem paar aus `MP_ROM_QSTR` hier wird der Name der Funktionalität deffiniert. Hier ist `___name___` eine in Micropython eingabaute Funktion.
-    Es wird dem Modul der Name 'devices' gegeben. Dies ist nicht der Name des Moduls für Imports, sondern der Name den das Modul für sich selber verwaltet gibt. Es ist wichtig solche Namen immer als 
-    QStrings mit Hilfe des Micropython Makros zu generieren. Die Zeile `{ MP_ROM_QSTR(MP_QSTR_motor),  MP_ROM_PTR(&motor_type) },` wird verwendet um eine Micropython Class-Type unter dem Module zu 
-    registrieren. Diese ist dann später durch das Modul erreichbar. Zu letzt muss man das mp_rom_map_elem_t array zu einem Dictionary umwandeln, durch das makro `MP_DEFINE_CONST_DICT`.   
-
-2. Als nächstes muss das Dictionary unter einem Module registriert werden. Hierfür gibt es den vorher erwähnte typ `mp_obj_module_t`. Dieser hat für uns an dieser Stelle 2 wichtige attribute.
-    ```cpp
-       const mp_obj_module_t devices_module = {
-        .base = { &mp_type_module },
-        .globals = (mp_obj_dict_t *)&devices_globals,
-        };
-        MP_REGISTER_MODULE(MP_QSTR_devices, devices_module);
-    ```
-    Die base, eine Pointer welcher eine art Typ zuweisung für den Micropython-Interpreter ist. Die Modul base ist hier `&mp_type_module` jedes modul hat diesen pointer als Base. Und erhält somit 
-    alle Funktionalitäten und Eigenschaften die man von einem Modul erwarten würde. Das `globals` attribut ist die durch das Modul errichbaren Klassen, Funktionen, etc. kurz gesagt das even 
-    generierte Dictionary. `MP_REGISTER_MODULE` registriert das Module, hier wird ein QString angegeben werden welcher den Name des Moduls deffiniert. Dies ist dann später der Name welcher für einen
-    import verwendet wird.
+13. **Compiler-Flags hinzufügen**:  
+Um sicher zu stellen, das Micropython korrekt Compiliert und problemlos ausgeführt werden kann ist es wichtig die richtigen Compiler flags zu setzen. Ich konnte durch das betrachten von verschiedenen Ports die durch das Micropython-Projekt bereit gestellt werden herraus finden das Folgende Flags als sicher betrachtet werden können.  Die `-Og` und `-Os` Flags werden für Micropython-Ports verwendet. An sonsten sehe ich das Compilieren mit `-O0` also das optimierungs freie compilieren als unproblematisch. Jedoch hier hier bei ein unter Windows auftretender Bug zu brachten, siehe [Windows-Bug: Falsches Register bei Non-Local Return-Adressierung](Konzepte.md#windows-bug-falsches-register-bei-non-local-return-adressierung). An dieser Stelle sind kompatibilitäts überlegungen der Compiler Flags unter berücksichtigung der ORB-Firmware zu machen. Im Konzept unter [Compiler Flag Kompatibilität](Konzepte.md#compiler-flag-kompatibilität) ist genauer erklärung warum ich es als notwenig ansehe nur diese Flags zu verwenden falls Optimierung von nöten ist.
       
-    Aus der Datei makemodulesdef.py ist zu entnehmen das es 2 arten gibt Module zu registrieren MP_REGISTER_MODULE, ,MP_REGISTER_EXTENSIBLE_MODULE and MP_REGISTER_MODULE_DELEGATION.
-    MP_REGISTER_MODULE Declare a module as a builtin.  
-    MP_REGISTER_EXTENSIBLE_MODULE allow this module to be extended from the filesystem.  
-    MP_REGISTER_MODULE_DELEGATION is used to delegate the registration or initialization of a module to an external function.  
+14. **Code:Blocks Build Targets anpassen**: Zu diesem Zeitpunkt ist der Build Prozess des Code:Blocks Projektes von dem des MP-Embed-Port los gelöst. Im bestenfall sollte aus der Code:Blocks umgebung auch der MP-Embed-Port gebaut werden können. Zu diesem Zweck habe ich dem Code:Blocks Projekt 2 Build-Target gegeben : *Build* und *Rebuild* während build der vorher configurierte Prozess ist, ist rebuild erweitert durch einen Pre-Build-Step. Das *Rebuild*-Build-Target ruft ein batch script auf welches die commandos für das `clear` und `build` des Micropython-Embed-ports enhält. Die Verwendung der Target ist wie Folgt gedacht, entwickelt man nur in der Code:Blocks umgebung ohne neue Module/Funktionen hinzuzfügen so reicht das Build-Target aus. Da die MP-Embed-Port ressourcen nicht immer neu generiert werden müssen. Kommen nun neue Module hinzu, werden alte Umbenannt oder neue Funktionen eingeführt. So kann man einmal das Rebuild-Target ausführen. Danach verwendet man wieder wie gewohn Build.
 
-#### Class-Type
-//TODO
+## 2. Micropython Modul Registrierung
+|Packet|Abschnitt|
+|------|---------|
+| 1.2. |   2.1.2.| 
+| 1.3. |   2.1.1.|
+| 1.7. | 2.2. , 2.3.|
+| 1.8. |    2.4. |
 
-## Problematik mit Namespaces
+//das hier stimmt nicht mehr, überschrift  nummern geändert
 
-#### Super- & Submodule
+### 2.1. Registrieren eines Test-Moduls
+Alle aller erstes Modul habe ich ein Test-Modul umgesetzt. Dies war eine direkte Kopie `examplemodule.c` das ich nicht weiter konfiguriert habe. 
 
-Hier möchte ich kurz erklären, was ich mit Super- und Submodulen meine. Ein Modul kann in diesem weiten Sinne auch synonym mit Unterklassen oder registrierten Funktionen verwendet werden. Möglicherweise wird hier ein anderer Name gebraucht.
+Um dieses mit meinem Embed-Port verwenden zu können, habe ich in meinem `src`-Directory einen Modul-Ordner erstellt. 
+Ich musste in dem Micropython-Embed-Makefile (`micropython-embed.mk`)
+die `USER_C_MODULES` Variable um den Pfad zu meinem Modul ordner erweitern. 
+Außerdem habe ich bei diesem Schritt direkt die C-Flag um die Includ-Directive `-I` für den Modul-Ordern erweitert.  
+Die Include-Pfäde für Module sollen immer Relativ zu diesem Ordner gesetzt sein. 
 
-#### Dictionaries und QStrings
+Ich konnte das durch Micropython bereit gestellte Beispiel-Modul problemlos einbinden und vallidieren das ich mein Projekt an dieser Stelle korrekt Konfiguriert hatte. 
 
-Dictionaries halten die Informationen über QStrings (Namen von Modulen, Funktionen, Typen, etc.).
+An dieser Stelle habe ich jedoch noch den Klar-Text-Interpreter der für den Micropython-Embed-Port vorkonfiguriert ist verwendet.
 
-#### Limitierungen des MicroPython-Interpreters
-
-Imports von Modulen funktionieren nur eine Ebene tiefer. Hat man z.B. ein Modul `Devices` und registriert darin das Submodul `Sensors`, welches wiederum einen spezifischen Sensor wie `EV3-Lichtsensor` enthält, so könnte man erwarten, dass die Syntax `import Devices.Sensors.EV3-Lichtsensor` oder `from Devices.Sensors import EV3-Lichtsensor` funktioniert. Jedoch findet der MicroPython-Interpreter diese Module nicht.
-
-Für solche Submodule bietet MicroPython ein alternatives Vorgehen an, wie es auch in dessen Submodule-Beispiel erklärt wird. Diese Methode bringt jedoch andere Probleme mit sich.
-
-#### Submodule als QString Alias
-
-Ein alternatives Vorgehen für solche Submodul-Strukturen wäre, das Modul `Devices` gar nicht umzusetzen. Dadurch kann man diesem jedoch keine eigenen Funktionen zuweisen (erste Einschränkung). Zudem ist man beim Importieren der Module in die andere Richtung begrenzt.
-
-Man würde ein Modul `Sensor` schreiben, registriert dieses jedoch nicht bei einem Supermodul, sondern gibt ihm den Namen `MP_QSTR_devices_dot_sensors`. Anschließend muss man eine QString-Datei erstellen (welche in den MicroPython-Build-Prozess eingebunden wird) und darin die Strings ohne Punkt bereitstellen, z.B. `Q(devices.sensors)`. Erst dadurch erhält das Modul den Namen mit ".".
-
-Jetzt kann man jedoch das Modul `devices` selbst nicht importieren, sondern muss stattdessen `from devices.sensors import EV3-Lichtsensor` verwenden.
-<!-- TODO: Kann man auch `import devices.sensors.EV3-Lichtsensor` schreiben? -->
-
-#### Kombination von Submodulen, QString und Supermodulen
-
-Man könnte auf die Idee kommen, beide Ansätze zu kombinieren. Man erstellt ein Supermodul `devices`, registriert dieses sowie das zugehörige Untermodule. Das Untermodule selbst wird ebenfalls registriert. Dieses Vorgehen scheint auf den ersten Blick zu funktionieren und löst die oben beschriebenen Probleme, hat jedoch auch unerwartetes Verhalten.
-
-Führt man `import devices.sensors` aus, so scheint der Import korrekt zu funktionieren. Bei näherer Betrachtung wird jedoch nicht das Modul `sensors` importiert, sondern es wird das Modul `sensors` unter dem Namen `devices` importiert. Führt man dann `print(devices)` aus, so wird der Name des `sensors` Moduls ausgegeben und überschreibt das `devices` Modul, zumindest bis `import devices` ausgeführt wurde.
-
-#### Schlussfolgerung zu diesen Problemen
-
-Ich hatte ursprünglich geplant, den Namespace `orb` zu verwenden, um Module zu organisieren, die Klassen und Funktionen zusammenfassen, wie z.B. `orb.sensors`, `orb.devices`, usw. Aufgrund der oben genannten Probleme ist dies jedoch nicht möglich. Der `orb`-Prefix muss gestrichen werden, um das von Python erwartete Verhalten zu gewährleisten.
-
-Es gibt daher die Einschränkung, Module nur eine Ebene tief zu gestalten. Funktionen und Klassen auf einer dritten Ebene registriere ich nur, wenn sie ausschließlich im Zusammenhang mit dem Supermodul Sinn machen, z.B. Funktionen einer Klasse, die zuvor instanziiert werden muss.
-
-### Micropython Flags
-  
-Die Micropython Flags werden in der Datei `mpconfigport.h` definiert, ein auszug aus dieser Datei könnte so aussehen.
+### 2.2. Compilieren und Ausführen einer MPY-Binär-Datei
+Im nächsten Schritt wollte ich den Byte-Code Interpreter Testen.
+Dafür ist es Wichtig das folgende Flags in der `mpconfigport.h` gesetzt sind:
 ```cpp
-#define MICROPY_CONFIG_ROM_LEVEL                (MICROPY_CONFIG_ROM_LEVEL_MINIMUM)
-
 #define MICROPY_PERSISTENT_CODE_LOAD            (1)
-#define MICROPY_ENABLE_COMPILER                 (1)
-
 #define MICROPY_ENABLE_GC                       (1)
 #define MICROPY_PY_GC                           (1)
-#define MICROPY_FLOAT_IMPL                      (MICROPY_FLOAT_IMPL_FLOAT)
-```
-Diese Flags werden benutzt um Micropython mitzuteilen welche Module zu dem Port hinzu geladen werden sollen und welche nicht. Es gibt eine ganze mänge an Standart Module welche für unseren Zweck nicht braucht werden. Daher ist als erstes die verwendung von   
-`#define MICROPY_CONFIG_ROM_LEVEL (MICROPY_CONFIG_ROM_LEVEL_MINIMUM)`  
-hervor zu heben, dies bewirkt das wir keine Standart Module , sondern nud das absolut minimale grund gerüst des MP-Interpreters hinzufügen.
-Darauf folgen kommen zweit weitere Wichtige Flags, `MICROPY_PERSISTENT_CODE_LOAD` fügt den Micropython-Byte-Interpreter hinzu. Dieser ist später einmal für mein Projekt der einzige weg Micropython-Programme auszuführen.  
-`MICROPY_ENABLE_COMPILER` Hingegen in der String Interpreter, dieser ist aus bequemlichkeits zwecken zu diesem Zeitpunkt noch hinzu geschaltet, und kann auch (solange er dies nur für Entwicklungs zwecke ist, aktiv bleiben). Im fertigen Projekt wird diese Flag jedoch nicht mehr aktiv sein.  
+````
+Nachdem ich dies Konfiguriert hatte, habe ich mein Code::Blocks-Projekt darum erweitert das die MPY-Datei in einByte-Array geladen werden kann. 
 
+Mit dieser Funktion war des dann möglich auf den Byte-Code-Interpreter zu Testen. Mit dem Aufruf `mpy-cross program.py` lasst sich das Micropython-Program Compilieren und ich kann die program.mpy datei von meinem `Code::Blocks`-Projekt laden lassen. 
 
-## Code::Blocks und Mockup
+## 2.3. ORB-Python-Module hinzufügen
 
-Wie in [Warum den MicroPython Embed Port verwenden?](#warum-den-micropython-embed-port-verwenden) bereits beschrieben, soll der MicroPython Embed Port ohne die direkte Einbindung der ORB-Firmware kompiliert werden. Zu diesem Zweck werden sogenannte "Mockups" eingeführt. Diese Mockups sind C-Dateien, die die C-Interface-Methoden der ORB-Firmware simulieren (welche ich später selbst in das ORB-Firmware-Projekt einfügen werde).
+### 2.3.1. Klassen, Objekt und Funktionen ermitteln
+Der erste Schritt meine Implementierung war es mir zu überlegen welche Module ich umsetzen möchte. Wie meinen Anforderungen zu entnehmen ist, möchste ich alle funktionen der `orblocal.h` in Micropython Abbilden. Dazu gehört es nicht nur die Funktionen Abzubilden, sondern mir auch zu überlegen wie ich die Funktionen am besten in die "Python-Welt" übertragen kann.   
+  
+Ich sehe es als Sinnvoll an z.b. Motor Funktionen in einem Motor-Object zu bündeln. Geräte welche an das ORB angeschlossen werden können sind in dem Modul Devices zusammen gefasst. Alle anderen Funktionen sind in einem Gesonderten Modul wie z.b. die `wait()`-Funktion des `time`-Moduls.   
+  
+Die genaue Strukturierung ist der [Python-Api: "sphinx-python-api.pdf"](sphinx-python-api.pdf) zu entnehmen. Ursprünglich hatte ich den Plan mit mehr Name-Spaces zu arbeiten bzw. allen Modulen einen `orb.` prefix zu geben, um klar zu machen das es sich hier um die ORB-Implementationen handelt.  
+Davon musste ich jedoch absehen: siehe  [Problematik bei der Verwendung von Namespaces](Konzepte.md#problematik-bei-der-verwendung-von-namespaces).
+
+### 2.3.2 Aufbauen der Module
+//TODO aufschreiben wie man Module aufbaut, wie sieht der design prozess aus (dafür schon einmal ein diagramm vorbereitet)
+
+### 2.3.3. Code::Blocks und Mockups
+
+Wie in [Warum den MicroPython Embed Port verwenden?](#warum-den-micropython-embed-port-verwenden) bereits beschrieben, soll der MicroPython Embed Port ohne die direkte Einbindung der ORB-Firmware kompiliert werden können. Zu diesem Zweck werden sogenannte "Mockups" eingeführt. Diese Mockups sind C-Dateien, die die C-Interface-Methoden der ORB-Firmware simulieren (welche ich später selbst in das ORB-Firmware-Projekt einfügen werde).
 
 Das bedeutet, dass Mockups die gleichen Enums, Funktionen und Variablen enthalten, die später von der ORB-Firmware benötigt werden, um die Funktionalitäten für die MicroPython-Umgebung bereitzustellen. Sie bieten jedoch selbst keine vollständige Implementierung dieser Funktionen an. Ein Beispiel könnte folgendermaßen aussehen:
 
@@ -228,63 +175,40 @@ static mp_obj_t set(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) 
 static MP_DEFINE_CONST_FUN_OBJ_KW(set_obj, 1, set);
 ```
 
-Im Gegensatz dazu wird die ORB-Firmware anstelle der Mockup-Datei eine andere Motor-Datei einbinden, die die tatsächliche Funktionalität als C-Code bereitstellt.
+Im Gegensatz dazu wird die ORB-Firmware anstelle der Mockup-Datei eine andere Motor-Implementations-Datei einbinden. Diese setzt die tatsächliche Funktionalität um bzw. bietet ein C-Interface für die C++ Funktionen der ORB-Firmware.
 
+## 3. Erstellen der Sphinx-Dokumentation
+|Packet|Abschnitt|
+|------|---------|
+| 1.2. |   2.1.2.| 
 
-### Das Problem des Micropython Heaps
+//nur ein ganz kurzes kapitel
+### 3.1. Aufsetzen der Sphinx-Dokumentation
 
-Micropython hat einen sehr begrenzten Heap für die Speicherverwaltung. Dies stellt einige Probleme dar, die bei der Implementierung einer Micropython-Firmware sowie beim Arbeiten mit Micropython selbst berücksichtigt werden müssen. 
-Ein Problem, das ich gefunden habe und das das Arbeiten mit Micropython kompliziert, ist folgendes. (Ich werde das Problem beispielhaft für einen Datentyp besprechen, dieses Konzept gilt auch für andere Typen.) Betrachtet man sich Floats in Micropython an fällt folgendes auf. In Micropython sind Floats einfach Objekte, die das Verhalten aufweisen, das man von Floats erwarten würde; sie sind keine primitiven Typen.   
-Nehmen wir an, wir haben den folgenden Code:  
-```python
-import gc
-a = 0.5
-while a < 10000:
-    a = a + 0.5
-    gc.mem_free()
-```
-  
-Jedes Mal, wenn a = a + 0.5 aufgerufen wird, liest die virtuelle Maschine den alten Wert von a und erstellt ein neues Objekt mit dem neuen Wert. Das alte Objekt bleibt jedoch im Speicher. Dieses kleine Programm kann sehr schnell zu einem Speichermangel führen, aufgrund unzureichender Heap-Speicherkapazität. Wir können dieses Überlaufen verfolgen, indem wir den freien Speicher (`gc.mem_free()`) ausgeben. Eine Lösung für dieses Problem besteht darin, den integrierten Garbage Collector zu verwenden.  
+### 3.2. Umfang der Dokumentation 
+//installation  
+//erstellen der .rst dateien  
+//verwenden von python platzhalter dateien welche die Micropython-Module abbilden
+//problem mit der pip installation vllt auch & lösung
 
-```python
-import gc
-a = 0.5
-while a < 10000:
-    a = a + 0.5
-    gc.collect()
-    gc.mem_free()
-```
+## 4. Erster Entwurf der Micropython VM-Schnittstelle
+|Packet|Abschnitt|
+|------|---------|
+| 1.4. |   4.    |
+| 1.5. |   4.1. , 4.2|
 
-Wenn wir nun die Ausgabe von `gc.mem_free()` betrachten, sehen wir, dass der verwendete Speicher nicht unbegrenzt ansteigt. Dies ist eine gute Lösung, aber der Benutzer muss über dieses Problem Bescheid wissen.  
+>Hier kurz erklärten welche Funktionen umgesetzt werden sollen
+auslagern der loadProgram / getProgramLength Funktion
+entscheidung erkären, darauf verweisen das im zuge dieser entscheidung im anschluss das compule script entstanden ist
 
-Eine mögliche Lösung für dieses Problem ist das Integrieren eines Aufrufs zum Garbage Collector in die Routine zur Erstellung neuer Objekte. Dies könnte eine Lösung sein, wenn das Hinzufügen von möglicherweise unnötigem Overhead kein Problem darstellt. In den Meisten fällen hat man bei Microcontrollern jedoch hier eine starke begrenzung, daher ist die wohl zumeist keine gute lösung. Für mich sind die Klassen, die von diesem Problem betroffen sind, Sensoren, Motoren usw. Alle diese Klassen entsprechen einem an einem Port angeundenen Gerät. Daher bestand meine Lösung darin, Listen mit einem Objekt pro Port zu erstellen. Hier für die 2 Servo-Ports: 
-  
-```cpp
-servo_obj_t servo_obj_list[2] = {
-    { .base = { .type = &servo_type }, .port = 0, .speed = 0, .angle = 0 },
-    { .base = { .type = &servo_type }, .port = 1, .speed = 0, .angle = 0 },
-};
-```
+erklären was wir brauchen Start/Stop/isRunning
 
-Wann immer ein Benutzer ein neues Objekt erstellt , erhält er eines dieser zuvor vorbereiteten Objekte. Das Ausführen des folgenden Codes:
-```python
-from devices import servo
-a = servo(0)
-b = servo(0)
-a.set(speed=10, angle=20)
-```
-wird nicht nur den Zustand von Servo `a` aktualisieren, sondern auch Servo `b` beeinflussen, da sie ein gemeinsames Objekt haben. Auf diese Weise treten keine Speicherprobleme im Zusammenhang mit dem zuvor erwähnten Problem mehr auf. Der Benutzer hat immer Objekte, die den aktuellen Zustand der realen Geräte oder zumindest der angewendeten Einstellungen repräsentieren.  
+### 4.1. Ausführung der VM in einem Thread
+>Hier kurz erkären wofür des außführen in thead
+darauf verweisen, die vm soll später in einer task ausgeführt werden.
+Die oben gennanten Funktionen lassen sich nur so sinnvoll testen.
 
-```python
-a = servo(0)
-b = servo(0)
-a.set(speed=20)
-b.set(angle=30)
-```
-Der Servo wird nun auf `angle(30)` mit `speed(20)` bewegen.
-
-
-## Wie man eine Micropython-Ausführung stoppt
+### 4.2. Micropython-Ausführung unterbrechen
 
 Für das Anbinden des Python-VM muss es eine möglichkeit geben dies VM-Ausführung durch die ORB-Firmware zu unterbrechen.  
 Betrachtung der bereits bestehenden Systeme wie das Microbit haben folgende erkenntnis gebracht. Bereits bestehende Systeme setzen einfach den gesamten Mikrocontroller zurück. Dies ist für einen Microcontroller, der nur Microypthon ausführt eine gut lösung. Für unseren Anwedungsfalls jedoch eher eine unpassende Lösung.  
@@ -355,15 +279,104 @@ if (exc_sp >= exc_stack
     #endif
     ) {
     // catch exception and pass to byte code
- #endif
 ) {
 <...>
 ```
 Nun kann der VM-Interrupt geplant werden. Da die Dispatch-Schleife jedes Mal besucht wird, wenn etwas verarbeitet werden muss, wird dies immer dazu führen, dass die Ausführung nach Abschluss der aktuellen Befehlsverarbeitung unterbrochen wird.  
   
-## Micropython und Defines
+## 5. User Program Compile-Script
+//das hier habe ich eigentlich schon fürher erstellt wusste nur noch nicht wo genau ich es am besten unterbringe, außedem ergenzung um information der error flag, falls compilierung hier fehlschlägt bricht der build prozess in code blocks ab.
 
-//TODO
-Idee der Defines, für z.b. Sensor Klasse 
-vergleichbar mit vererbungs-struktur eine OOP-Sprache
+|Packet|Abschnitt|
+|------|---------|
+| 1.9. |    5.   |
 
+Um den Compile Prozess von Python nach MPY-Byte-Code zu vereinfachen und in Code::Blocks einzugiben, habe ich ein compile script erstellt. Dieses ist in Python geschrieben. 
+Diese Compile Script hat Folgende Aufgabe:  
+1. Aufrufen des MPY-Cross-Compilers und Compilieren des Codes.  
+2. Erfassen der Programm-Länge
+3. MPY-Byte-Code und Programm länge in eine Datei schreiben
+4. Das Compile script nimmt als kommando zeilen argument den namen/pfad der zu compiliernden Datei 
+
+Ich verwende das Python `tempfile` Modul die micropython datei in ein temporäres verzeichnis zu schreiben und dort den compile prozess durchzuführen. Die daraus entstehende temporäre `.mpy` Datei wird dann wieder ausgelesen und für die weitere verarbeitung verwendet.
+Der hintergedanke hierzu ist wie Folgt:  
+  
+1. Micropython wenn es später auf dem ORB ist, muss über die Information verfügen wie lang das zu ladende Programm ist. Die Programm länge seht immer am Anfang der MPY-Datei. Und auch immer genau die länge 4-Byte. Diese Information wird immer an der selben stelle stehen. Mit dieser Information kann dann später das Programm korrekt geladen werden. 
+2. Das Laden eines Neuen Programmes geschieht so in einer Datei.
+3. Durch das erstellen der Temporären Ordner, kann das compile script so auch später in das Open Roberta Lab eingebaut bzw. übernommen werden.  
+
+Auch wenn es unter Windows bessere wege gibt als die länge der Programmes immer mit vor die Datei zu schreiben, so sehe ich es doch als eine möglichkeit dieses Prinzip hier auszuprobieren. Da es sich als eine Sinnvolle Lösung für eine Später auftretendes Problem anbietet. 
+
+> [!NOTE]  
+>An dieser Stelle währe es auch eine
+überlegung wert dem nutzer die 
+möglichkeit zu geben in der `.bin` Datei voreingestelle kallibrationen für sensoren miz zu liefen oder allgemein ein nutzdaten feld anzubieten.
+Hier könnte man Nutzerdaten aus der Speicherbereich den der Nutzer bereit gestellt bekommt wieder einlesen, dafür müsste man aber auch einen weg haben den speicher des ORB bzw. der Nutzer-Speicher des ORB auszulesen.
+
+## 6. Testen
+//habe ich schon gemacht nur noch nicht festgehalten, hier später auf die Tests verweisen bzw. diese in einzelne Dateien auslagern.   
+also  MonitorTest,ExceptionTest,.... und auch falls notwendig wie die ORB-Firmware verändert werden muss damit man Testen kann  
+(z.B. ausschalten der automatischen gc flag usw.)
+
+## 7. Integration in ORB-Firmware
+### 7.1. Entwicklungs Gerüst
+> d.h. ausbauen der ORB-Tasks, einbinden der Micropython-Bibliotheken
+MPY-Byte-Code als Statisches Array in die Firmware Integriert  
+Verwendung von DFUtil, warum wieso wehalb ?   
+Testen mit usrLed  
+
+### 7.2. Übertragung des Programmes
+> Sektor 11 da weit weg von allen anderen Verwendeten Speicherblöcken
+ink. firmware-code  
+Umsetzen der Programm-Lade-Funktion  
+Hier verweisen auf der Aufbau der Bin-Datei (Gespeicherte-Länge)  
+verwenden von dfutil 
+installation/bereitstellung von dfutil
+in tools&referenzen aufnehmen
+
+### 7.3. Umsetzen der Tatsächlichen Modul Funktionen
+> verbinden mit durch AppTask bereit gestellten funktionen  
+bis jetzt nur mit Motoren/Speicher getestet da ich sonst keine EV3-Teile habe  
+
+> memeory klasse ausversehen firmware-code überschrieben, save/unsave mode vielleicht einführen oder zumindest kurz erwähnen das dies möglich ist  
+-> gedankt nutzer speicher bereich einschränken
+
+### 7.4. Einbinden in die Python-Task & Verbinden mit USB-Task
+> Erster schritt in richtung verwendung von Tasks  
+Danach auch umsetzen/anpassen der Monitor funktionen hier erwähnen das print nicht richtig funktioniert hat -> kleine anpassung an ORB-Application  
+im späteren verlauf noch überarbeiten
+
+>problem mit monitor klasse wie funktioniert die micropython `print()`-Funktion (in konzepte erstellen)  
+darauf verweisen und erkläten wie mit dem problem umgegangen wird bzw. das dieses problem erst einmal nicht gelöst wird  
+da monitor.setText als funktion bereit steht  
+Hier problem mit print von exceptions weiter erkläten und warum das hier kein problem ist.  
+
+#### 7.4.x Problem der Micropython-Vm (Mem-Fault)
+> Registrieren des Fault-Handlers und gedanken dahinter erklären
+vllt hier auch auf Konzepte auslagern/verweisen und einfach nur sagen das ich die anbindung gemacht habe. 
+
+#### 7.4.x Zusätzliche Konfigurations-Flags für ease of use  
+Z.B. Heap-Size, Enable_Interrupt, Enable_Automatic gc,.....  also quasi alles was in der mphalport erweiter wurde  
+gedanken hinter der erweiterung vielleicht kurz erklären  
+//Hier könnte man dann auch auf Konzepte verweisen und die Philosophie hinter flags in dem Microypthon-Projekt erklären "Modulatität"  
+//->"good practice" solche konzepte mit umzusetzen usw.
+
+
+## Firmware-Architektur
+> Die Firmware Architektur sieht wie folgt aus,....
+
+<img src="Bilder/architektur.png" alt="Mein Bild" width="80%" />
+//hier warscheinlich noch den text anpassen,.... soll gut lesbar sein
+Wie in dem Diagramm zu erkennen ist Teilt sich die Firmware-Archtektur in 3 Hauptteile unter.
+
+1. ORB-Firmware  
+    1. API(also ORBLocal bzw. das Interface das ich dann verwende)
+    2. Internals
+2. MP-API
+3. MP-VM
+
+//die überschriften hier sind dann später links zu den kapiteln....
+>Hier die dann Einzelteile erklären interaktion zwischen den Einzelteilen
+Involvierte klassen und genanken hinter den interfaces, besonders auf Systemgrenzen eingehene und gedanken hinter diesen.
+z.b. MP-API hat flags welche nur von außen beschrieben werden, funktionen immer nur inerhalb einer task verwenden, MR-RTOS-Task führt in sich geschlossen die VM aus usw.  
+Kurzgesagt einen groben überblick über alle System-Komponenten

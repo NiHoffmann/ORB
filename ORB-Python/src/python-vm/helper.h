@@ -35,7 +35,7 @@
     }
 
 //TODO make this also use a static list of sensors, maybe move static sensor list to its own file so there will be no duplicate elements
-#define GENERATE_SENSOR(name, get_func, conf_func) \
+#define GENERATE_SIMPLE_SENSOR(name, _get_func, _conf_func) \
     \
     typedef struct _##name##_obj_t { \
         mp_obj_base_t base; \
@@ -56,9 +56,11 @@
         mp_arg_parse_all_kw_array(n_args, n_kw, all_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args); \
         \
         int port = args[ARG_port].u_int; \
-        \
+        if ((port) >= (4) || (port) < 0) { \
+        mp_raise_ValueError(MP_ERROR_TEXT("Invalid Port")); \
+        }\
         name##_obj_t *self = m_new_obj(name##_obj_t); \
-        conf_func(port);\
+        _conf_func(port);\
         self->base.type = type; \
         self->port = port; \
         \
@@ -68,7 +70,7 @@
     static mp_obj_t get_func(mp_obj_t self_in) { \
         name##_obj_t *self = MP_OBJ_TO_PTR(self_in); \
         sensor_return_values *ret = getSensor(self->port); \
-        return get_func(ret);  \
+        return _get_func(ret);  \
     } \
     static MP_DEFINE_CONST_FUN_OBJ_1(get_func##_obj, get_func); \
     \
@@ -79,7 +81,7 @@
     \
     MP_DEFINE_CONST_OBJ_TYPE( \
         name##_type, \
-        MP_QSTR_simple_sensor, \
+        MP_QSTR_##name, \
         MP_TYPE_FLAG_NONE, \
         make_new, mp_##name##_make_new, \
         print, mp_##name##_print, \

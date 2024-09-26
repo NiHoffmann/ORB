@@ -1,0 +1,1 @@
+Testen des User-Interrupts. Der Exit-Status sollte 2 sein und aus dem Exit-Typ sollte heervor gehen das ein User-Interrupt verwendet wurde.

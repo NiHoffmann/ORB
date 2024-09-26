@@ -1,5 +1,5 @@
 #include "SensorModule.h"
-#include "Sensor.h"
+#include "Sensor_C_Interface.h"
 #include "helper.h"
 
 const mp_obj_type_t sensor_type;
@@ -68,7 +68,7 @@ static MP_DEFINE_CONST_FUN_OBJ_1(get_digital_obj, get_digital);
 
 static mp_obj_t get_value_ext(mp_obj_t self_in, mp_obj_t ch) {
     sensor_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    return mp_obj_new_int(getSensorValueExt(self->port, (ch)));
+    return mp_obj_new_int(getSensorValueExt(self->port, (mp_obj_get_int(ch))));
 }
 static MP_DEFINE_CONST_FUN_OBJ_2(get_value_ext_obj, get_value_ext);
 

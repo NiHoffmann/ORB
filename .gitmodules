@@ -1,3 +1,6 @@
 [submodule "micropython"]
 	path = micropython
 	url = https://github.com/NiHoffmann/micropython
+[submodule "ORB-Firmware"]
+	path = ORB-Firmware
+	url = https://github.com/NiHoffmann/ORB-Firmware

@@ -5,6 +5,7 @@
 #include "py/stackctrl.h"
 #include "buttonType.h"
 #include "helper.h"
+#include "Sensor_C_Interface.h"
 
 const mp_obj_type_t button_type;
 

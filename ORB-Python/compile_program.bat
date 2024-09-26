@@ -1,1 +1,1 @@
-python ./Tools/compile.py Program/program.py True
+python ./tools/compile.py program/program.py True

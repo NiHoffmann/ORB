@@ -15,6 +15,4 @@ typedef struct _sensor_obj_t {
     uint32_t mem_offset;
 } sensor_obj_t;
 
-sensor_obj_t sensor_obj_list[4];
-
 #endif

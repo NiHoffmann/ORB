@@ -1,6 +1,6 @@
 #include "py/runtime.h"
 #include "KeyConstants.h"
-#include "monitor.h"
+#include "Monitor_C_Interface.h"
 
 static const mp_rom_map_elem_t monitor_keys_module_locals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_monitor_keys) },

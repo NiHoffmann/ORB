@@ -1,0 +1,31 @@
+from devices import sensor
+
+def testSensor():
+    print("=== Constructor Function ===")
+    print("a = sensor(port=sensor.S1, type = sensor.TOF)")
+    a = sensor(port=sensor.S1, type = sensor.TOF)
+    print("\n=== Config Function ===")
+    print("a.config(mode = 1)")
+    a.config(mode = 1)
+    print("\n=== Get Function ===")
+    print("#this will retrieve a placeholder sensor-report object values to not match sensor")
+    print("a.get()")
+    print(a.get())
+    print("\n=== getValueExt Function ===")
+    print("ch1: " + str(a.getValueExt(0)))
+    print("ch2: " + str(a.getValueExt(1)))
+    
+    print("\n=== Sensor Parameter ===")
+    print(f"sensor S1:       {sensor.S1}")
+    print(f"sensor S2:       {sensor.S2}")
+    print(f"sensor S3:       {sensor.S3}")
+    print(f"sensor S4:       {sensor.S4}")
+    print("---------------------")
+    print(f"sensor.Analog:   {sensor.Analog}")
+    print(f"sensor.I2C:      {sensor.I2C}")
+    print(f"sensor.TOF:      {sensor.TOF}")
+    print(f"sensor.Touch:    {sensor.Touch}")
+    print(f"sensor.UART:     {sensor.UART}")
+    print("=======================")
+
+testSensor()

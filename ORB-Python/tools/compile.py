@@ -61,6 +61,7 @@ if __name__ == "__main__":
     print("data: " + str(list(data)))
     print("length: " + str(len(data)))
     mpy_size = len(data).to_bytes(4,'big')
+    print(mpy_size)
 
     with open(bin_path, 'wb') as bin_file:
         bin_file.write(mpy_size)

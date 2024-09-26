@@ -4,8 +4,6 @@
 #include "Devices/Servo/ServoModule.h"
 #include "Devices/Sensor/SensorModule.h"
 #include "Devices/Button/ButtonType.h"
-#include "Devices/EV3Ultrasonic/EV3UltrasonicType.h"
-#include "Devices/EV3Touch/EV3TouchType.h"
 
 static mp_obj_t devices___init__(void) {
     if (!MP_STATE_VM(devices_initialised)) {
@@ -24,9 +22,6 @@ static const mp_rom_map_elem_t devices_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_servo),  MP_ROM_PTR(&servo_type) },
 	{ MP_ROM_QSTR(MP_QSTR_sensor),  MP_ROM_PTR(&sensor_type) },
 	{ MP_ROM_QSTR(MP_QSTR_button),  MP_ROM_PTR(&button_type) },
-
-	{ MP_ROM_QSTR(MP_QSTR_EV3Ultrasonic),  MP_ROM_PTR(&ev3_ultrasonic_type) },
-	{ MP_ROM_QSTR(MP_QSTR_EV3Touch),  MP_ROM_PTR(&ev3_touch_type) },
 };
 static MP_DEFINE_CONST_DICT(devices_globals, devices_globals_table);
 

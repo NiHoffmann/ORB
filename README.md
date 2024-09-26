@@ -39,7 +39,7 @@
     mpy-cross --verison
     ```
 7. Open the Code:Blocks Project.  
-   1. Select the GNU GCC-Compiler make sure you have the -g compiler flag set.
+   1. Select the GNU GCC-Compiler make sure you have the -Og compiler flag set.
        (This will suppress potentially application breaking aggressive optimiztaion)    
    2. Select the "Rebuil" Target this will build the Projekt as well as Rebuild the Micropython Embed Port.
        Once this step if completed the Projekt setup is complete.

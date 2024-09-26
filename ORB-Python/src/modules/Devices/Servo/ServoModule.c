@@ -4,7 +4,7 @@
 #include "py/objstr.h"
 #include "py/stackctrl.h"
 #include "servoModule.h"
-#include "Servo.h"
+#include "Servo_C_Interface.h"
 #include "helper.h"
 
 const mp_obj_type_t servo_type;
@@ -38,7 +38,7 @@ static mp_obj_t mp_servo_make_new(const mp_obj_type_t *type, size_t n_args, size
 
     CHECK_VALID_PORT(port, servo_obj_list);
 
-    servo_obj_t *self = &servo_obj_list;
+    servo_obj_t *self = &servo_obj_list[port];
 
     return MP_OBJ_FROM_PTR(self);
 }

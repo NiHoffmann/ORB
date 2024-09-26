@@ -8,7 +8,7 @@ MICROPYTHON_TOP = ../../../micropython
 # Add C modules.
 USER_C_MODULES = ../../src/modules
 CFLAGS += -I../../src/modules
-CFLAGS += -I../../src/mockups
+CFLAGS += -I../../src/c_interface/mockups
 CFLAGS += -I../../src/python-vm
 
 

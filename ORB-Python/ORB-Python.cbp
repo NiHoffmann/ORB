@@ -7,14 +7,14 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Build">
-				<Option output="bin/Release/ORB-Python" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
+				<Option output="build/bin/Release/ORB-Python" prefix_auto="1" extension_auto="1" />
+				<Option object_output="build/obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 			</Target>
 			<Target title="Rebuild">
-				<Option output="bin/Release/ORB-Python" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
+				<Option output="build/bin/Release/ORB-Python" prefix_auto="1" extension_auto="1" />
+				<Option object_output="build/obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<ExtraCommands>
@@ -23,15 +23,13 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-Og" />
-			<Add option="-g" />
-			<Add option="-fexceptions" />
+			<Add option="-O0" />
 			<Add directory="libs/mp_embed" />
 			<Add directory="libs/mp_embed/micropython_embed" />
 			<Add directory="libs/mp_embed/micropython_embed/port" />
 			<Add directory="src" />
 			<Add directory="src/modules" />
-			<Add directory="src/mockups" />
+			<Add directory="src/c_interface/mockups" />
 			<Add directory="src/python-vm" />
 		</Compiler>
 		<ExtraCommands>
@@ -561,20 +559,15 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="libs/mp_embed/mpconfigport.h" />
+		<Unit filename="src/c_interface/mockups/Memory_C_Interface.h" />
+		<Unit filename="src/c_interface/mockups/Monitor_C_Interface.cpp" />
+		<Unit filename="src/c_interface/mockups/Monitor_C_Interface.h" />
+		<Unit filename="src/c_interface/mockups/Motor_C_Interface.h" />
+		<Unit filename="src/c_interface/mockups/Sensor_C_Interface.cpp" />
+		<Unit filename="src/c_interface/mockups/Sensor_C_Interface.h" />
+		<Unit filename="src/c_interface/mockups/Servo_C_Interface.h" />
+		<Unit filename="src/c_interface/mockups/Time_C_Interface.h" />
 		<Unit filename="src/main.cpp" />
-		<Unit filename="src/mockups/Memory.h" />
-		<Unit filename="src/mockups/Monitor.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/mockups/Monitor.h" />
-		<Unit filename="src/mockups/Motor.h" />
-		<Unit filename="src/mockups/Sensor.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/mockups/Sensor.h" />
-		<Unit filename="src/mockups/Servo.h" />
-		<Unit filename="src/mockups/Time.h" />
-		<Unit filename="src/mockups/_Time.h" />
 		<Unit filename="src/modules/Devices/Button/ButtonType.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -582,14 +575,6 @@
 		<Unit filename="src/modules/Devices/DevicesModule.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/modules/Devices/EV3Touch/EV3TouchType.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/modules/Devices/EV3Touch/EV3TouchType.h" />
-		<Unit filename="src/modules/Devices/EV3Ultrasonic/EV3UltrasonicType.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/modules/Devices/EV3Ultrasonic/EV3UltrasonicType.h" />
 		<Unit filename="src/modules/Devices/Motor/MotorModule.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -617,9 +602,8 @@
 		</Unit>
 		<Unit filename="src/modules/qstr.h" />
 		<Unit filename="src/python-vm/helper.h" />
-		<Unit filename="src/python-vm/python-vm.c">
-			<Option compilerVar="CC" />
-		</Unit>
+		<Unit filename="src/python-vm/orb_config_port.h" />
+		<Unit filename="src/python-vm/python-vm.cpp" />
 		<Unit filename="src/python-vm/python-vm.h" />
 		<Extensions>
 			<debugger>

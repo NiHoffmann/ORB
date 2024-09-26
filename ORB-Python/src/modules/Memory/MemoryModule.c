@@ -1,6 +1,6 @@
 // Include MicroPython API.
 #include "py/runtime.h"
-#include "memory.h"
+#include "Memory_C_Interface.h"
 
 static mp_obj_t memory___init__(void) {
     if (!MP_STATE_VM(memory_initialised)) {
@@ -23,6 +23,7 @@ static mp_obj_t mp_get_memory(mp_obj_t addr_obj, mp_obj_t length_obj) {
 
     uint8_t* memory_pointer = getMemory(addr, length);
     mp_obj_t bytes_obj  = mp_obj_new_bytes(memory_pointer, length);
+    //we can free the memory since mp_obj_new_bytes copies the data
     free(memory_pointer);
 
     return bytes_obj;

@@ -2,10 +2,9 @@
 #include "py/mphal.h"
 #include "py/runtime.h"
 #include "MotorModule.h"
-#include "Motor.h"
+#include "Motor_C_Interface.h"
 #include "helper.h"
 #include <stdio.h>
-
 
 const mp_obj_type_t motor_type;
 
@@ -29,7 +28,7 @@ motor_obj_t motor_obj_list[4] = {
     { .base = { .type = &motor_type }, .port = 3, .direction = 0, .ticks = 0, .acc = 0, .kp = 0, .ki = 0, .mode = 0, .speed = 0, .position = 0 }
 };
 
-static int mp_motor_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
+static void mp_motor_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
     motor_obj_t *self = MP_OBJ_TO_PTR(self_in);
     mp_printf(print, "Motor(%d)", self->port);
 }
@@ -61,6 +60,7 @@ static mp_obj_t mp_motor_make_new(const mp_obj_type_t *type, size_t n_args, size
     self->ki      =   args[ARG_ki].u_int;
 
     motorSettings(self->port, self->ticks, self->acc, self->kp, self->ki );
+    setMotor(self->port, self->mode, self->speed * self->direction , self->position * self->direction);
 
     return MP_OBJ_FROM_PTR(self);
 }
@@ -90,6 +90,7 @@ static mp_obj_t config(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_arg
 
     int port = self->port;
     motorSettings(port,self->ticks,self->acc,self->kp,self->ki);
+    setMotor(self->port, self->mode, self->speed * self->direction , self->position * self->direction);
 
     return MP_OBJ_FROM_PTR(self);
 }
