@@ -17,7 +17,7 @@ PythonVM::PythonVM() {}
 
 PythonVM::~PythonVM() {}
 
-char heap[HEAP_SIZE_KB * 1024 * 8];
+static char heap[HEAP_SIZE_KB * 1024] = {0};
 
 void PythonVM::initVM() {
     int stack_top = 0;
@@ -92,7 +92,7 @@ const char* PythonVM::getExitType(){
             return _exit_message_gc_abort;
     #endif
     //i cant use NULL in EmBitz
-    if( *MP_STATE_VM(orb_exit_message) == 0 &&  MP_STATE_VM(orb_exit_status) == NORMAL){
+    if( MP_STATE_VM(orb_exit_message) == 0 &&  MP_STATE_VM(orb_exit_status) == NORMAL){
         return _exit_message_normal;
     }
 

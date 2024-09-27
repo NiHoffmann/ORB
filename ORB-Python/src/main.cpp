@@ -119,7 +119,6 @@ int main(int argc, char* argv[]) {
     switch(argc){
         case 1:
             executionFromIDE();
-
             break;
         case 2:
             executionNoThread();
