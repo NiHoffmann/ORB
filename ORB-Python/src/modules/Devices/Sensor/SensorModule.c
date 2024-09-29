@@ -20,22 +20,19 @@ static mp_obj_t mp_sensor_make_new(const mp_obj_type_t *type, size_t n_args, siz
     enum { ARG_port, ARG_type, ARG_mode, ARG_mem_offset};
     static const mp_arg_t allowed_args[] = {
         { MP_QSTR_port,         MP_ARG_REQUIRED | MP_ARG_INT, {.u_int = -1 } },
-        { MP_QSTR_type,         MP_ARG_INT, {.u_int = 0 } },
-        { MP_QSTR_mode,         MP_ARG_INT, {.u_int = 0 } },
-        { MP_QSTR_mem_offset,   MP_ARG_INT, {.u_int = 0 } },
+        { MP_QSTR_type,         MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
+        { MP_QSTR_mode,         MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
+        { MP_QSTR_mem_offset,   MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
     };
-    mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
-    mp_arg_parse_all_kw_array(n_args, n_kw, all_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
+    PARSE_KW_ARGS_CONSTRUCTOR(n_args, n_kw, all_args, allowed_args);
 
-    int port =   args[ARG_port].u_int;
-
-    CHECK_VALID_PORT(port, sensor_obj_list);
+    int port = ACCEPT_PORT(ARG_port, sensor_obj_list);
 
     sensor_obj_t *self = &sensor_obj_list[port];
 
-    self->type      = args[ARG_type].u_int;
-    self->mode      = args[ARG_mode].u_int;
-    self->mem_offset= args[ARG_mem_offset].u_int;
+    ACCEPT_KW_ARG(ARG_type, self->type, mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_mode, self->mode, mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_mem_offset, self->mem_offset, mp_obj_get_int);
 
     configSensor(self->port, self->type, self->mode, self->mem_offset);
     return MP_OBJ_FROM_PTR(self);
@@ -76,19 +73,17 @@ static mp_obj_t config(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_arg
     enum { ARG_type, ARG_mode, ARG_mem_offset};
 
     static const mp_arg_t allowed_args[] = {
-        { MP_QSTR_type,                 MP_ARG_KW_ONLY  | MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
-        { MP_QSTR_mode,                 MP_ARG_KW_ONLY  | MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL } },
-        { MP_QSTR_mem_offset,           MP_ARG_KW_ONLY  | MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
+        { MP_QSTR_type,                 MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
+        { MP_QSTR_mode,                 MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL } },
+        { MP_QSTR_mem_offset,           MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
     };
-
-    mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
-    mp_arg_parse_all(n_args - 1  , pos_args + 1 , kw_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
+    PARSE_KW_ARGS_INSTANCE_FUNCTION(n_args, pos_args, kw_args, allowed_args);
 
     sensor_obj_t *self = MP_OBJ_TO_PTR(pos_args[0]);
 
-    ACCEPT_VALUE_KW_GIVEN(ARG_type, self->type, mp_obj_get_int);
-    ACCEPT_VALUE_KW_GIVEN(ARG_mode, self->mode, mp_obj_get_int);
-    ACCEPT_VALUE_KW_GIVEN(ARG_mem_offset, self->mem_offset , mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_type, self->type, mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_mode, self->mode, mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_mem_offset, self->mem_offset , mp_obj_get_int);
 
     configSensor(self->port,self->type,self->mode,self->mem_offset);
 

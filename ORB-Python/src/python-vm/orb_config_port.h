@@ -1,4 +1,8 @@
-
+/*
+The original C standard (ANSI 1989/ISO 1990) required that a compiler successfully translate at least one program containing at least one example of a set of environmental limits. One of those limits was being able to create an object of at least 32,767 bytes.
+This minimum limit was raised in the 1999 update to the C standard to be at least 65,535 bytes.
+No C implementation is required to provide for objects greater than that size, which means that they don't need to allow for an array of ints greater than (int)(65535 / sizeof(int)).
+*/
 #define HEAP_SIZE_KB                            (32)
 #define STACK_SIZE_KB                           (32)
 

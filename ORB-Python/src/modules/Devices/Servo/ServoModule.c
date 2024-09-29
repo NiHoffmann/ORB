@@ -31,12 +31,9 @@ static mp_obj_t mp_servo_make_new(const mp_obj_type_t *type, size_t n_args, size
     static const mp_arg_t allowed_args[] = {
         { MP_QSTR_port,         MP_ARG_REQUIRED | MP_ARG_INT, {.u_int = -1 } },
     };
-    mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
-    mp_arg_parse_all_kw_array(n_args, n_kw, all_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
+    PARSE_KW_ARGS_CONSTRUCTOR(n_args, n_kw, all_args, allowed_args);
 
-    int port =   args[ARG_port].u_int;
-
-    CHECK_VALID_PORT(port, servo_obj_list);
+    int port = ACCEPT_PORT(ARG_port, servo_obj_list);
 
     servo_obj_t *self = &servo_obj_list[port];
 
@@ -49,17 +46,12 @@ static mp_obj_t set(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args){
         { MP_QSTR_speed, MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL } },
         { MP_QSTR_angle, MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL } },
     };
-    mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
-    mp_arg_parse_all(n_args - 1  , pos_args + 1 , kw_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
+    PARSE_KW_ARGS_INSTANCE_FUNCTION(n_args, pos_args, kw_args, allowed_args);
 
     servo_obj_t *self = MP_OBJ_TO_PTR(pos_args[0]);
 
-    if(kw_args->used > 0){
-            ACCEPT_VALUE_KW_GIVEN(ARG_speed, self->speed, mp_obj_get_int);
-            ACCEPT_VALUE_KW_GIVEN(ARG_angle, self->angle, mp_obj_get_int);
-    } else {
-        ACCEPT_VALUES_NO_KW_2(n_args - 1 , ARG_speed, self->speed, mp_obj_get_int, ARG_angle, self->angle, mp_obj_get_int);
-    }
+    ACCEPT_KW_ARG(ARG_speed, self->speed, mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_angle, self->angle, mp_obj_get_int);
 
     setModelServo(self->port,self->speed,self->angle);
 

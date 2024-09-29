@@ -29,12 +29,9 @@ static mp_obj_t mp_button_make_new(const mp_obj_type_t *type, size_t n_args, siz
     static const mp_arg_t allowed_args[] = {
         { MP_QSTR_id,         MP_ARG_REQUIRED | MP_ARG_INT, {.u_int = -1 } },
     };
-    mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
-    mp_arg_parse_all_kw_array(n_args, n_kw, all_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
+    PARSE_KW_ARGS_CONSTRUCTOR(n_args, n_kw, all_args, allowed_args);
 
-    int id =   args[ARG_id].u_int;
-
-    CHECK_VALID_ID(id, button_obj_list);
+    int id = ACCEPT_ID(ARG_id, button_obj_list);
 
     button_obj_t *self = &button_obj_list[id];
 

@@ -1,24 +1,30 @@
 #ifndef MP_HELPER
 #define MP_HELPER
 
-#define ACCEPT_VALUE_KW_GIVEN(Keyword, target, mp_type_getter) \
+#define ACCEPT_KW_ARG(Keyword, target, mp_type_getter) \
     if (args[Keyword].u_obj != MP_OBJ_NULL) {                    \
         target = mp_type_getter(args[Keyword].u_obj);                   \
     }
 
-#define ACCEPT_VALUES_NO_KW_2(n_args, Keyword1, Target1, type_getter1, Keyword2, Target2, type_getter2) \
-    switch(n_args) { \
-        case 1: \
-            Target1 = (type_getter1)(args[Keyword1].u_obj); \
-            break; \
-        case 2: \
-            Target1 = (type_getter1)(args[Keyword1].u_obj); \
-            Target2 = (type_getter2)(args[Keyword2].u_obj); \
-            break; \
-        default: \
-            break; \
-    }
+#define PARSE_KW_ARGS_INSTANCE_FUNCTION(n_args, pos_args, kw_args, allowed_args) \
+    mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)]; \
+    mp_arg_parse_all((n_args) - 1, (pos_args) + 1, (kw_args), MP_ARRAY_SIZE(allowed_args), (allowed_args), args);
 
+#define PARSE_KW_ARGS_CONSTRUCTOR(n_args, pos_args, kw_args, allowed_args) \
+    mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)]; \
+    mp_arg_parse_all_kw_array((n_args), (n_kw), (all_args), MP_ARRAY_SIZE(allowed_args), (allowed_args), args);
+
+#define ACCEPT_PORT(ARG, list) ({ \
+    int port = args[ARG].u_int; \
+    CHECK_VALID_PORT(port, list); \
+    port; \
+})
+
+#define ACCEPT_ID(ARG, list) ({ \
+    int id = args[ARG].u_int; \
+    CHECK_VALID_ID(id, list); \
+    id; \
+})
 
 #define CHECK_VALID_PORT(port, obj_list){\
     __CHECK_VALID(port, obj_list, "Invalid Port")\

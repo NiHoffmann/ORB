@@ -22,10 +22,10 @@ typedef struct _motor_obj_t {
 } motor_obj_t;
 
 motor_obj_t motor_obj_list[4] = {
-    { .base = { .type = &motor_type }, .port = 0, .direction = 0, .ticks = 0, .acc = 0, .kp = 0, .ki = 0, .mode = 0, .speed = 0, .position = 0 },
-    { .base = { .type = &motor_type }, .port = 1, .direction = 0, .ticks = 0, .acc = 0, .kp = 0, .ki = 0, .mode = 0, .speed = 0, .position = 0 },
-    { .base = { .type = &motor_type }, .port = 2, .direction = 0, .ticks = 0, .acc = 0, .kp = 0, .ki = 0, .mode = 0, .speed = 0, .position = 0 },
-    { .base = { .type = &motor_type }, .port = 3, .direction = 0, .ticks = 0, .acc = 0, .kp = 0, .ki = 0, .mode = 0, .speed = 0, .position = 0 }
+    { .base = { .type = &motor_type }, .port = 0, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 },
+    { .base = { .type = &motor_type }, .port = 1, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 },
+    { .base = { .type = &motor_type }, .port = 2, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 },
+    { .base = { .type = &motor_type }, .port = 3, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 },
 };
 
 static void mp_motor_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
@@ -37,27 +37,26 @@ static mp_obj_t mp_motor_make_new(const mp_obj_type_t *type, size_t n_args, size
     enum { ARG_port, ARG_direction, ARG_ticks, ARG_acc, ARG_kp, ARG_ki};
     static const mp_arg_t allowed_args[] = {
         { MP_QSTR_port,         MP_ARG_REQUIRED | MP_ARG_INT, {.u_int = -1 } },
-        { MP_QSTR_direction,    MP_ARG_KW_ONLY  | MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
-        { MP_QSTR_ticks,        MP_ARG_KW_ONLY  | MP_ARG_INT, {.u_int = 72 } },
-        { MP_QSTR_acc,          MP_ARG_KW_ONLY  | MP_ARG_INT, {.u_int = 25 } },
-        { MP_QSTR_kp,           MP_ARG_KW_ONLY  | MP_ARG_INT, {.u_int = 50 } },
-        { MP_QSTR_ki,           MP_ARG_KW_ONLY  | MP_ARG_INT, {.u_int = 30 } },
+        { MP_QSTR_direction,    MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
+        { MP_QSTR_ticks,        MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
+        { MP_QSTR_acc,          MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
+        { MP_QSTR_kp,           MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
+        { MP_QSTR_ki,           MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
     };
-    mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
-    mp_arg_parse_all_kw_array(n_args, n_kw, all_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
+    PARSE_KW_ARGS_CONSTRUCTOR(n_args, n_kw, all_args, allowed_args);
 
-    int port         =   args[ARG_port].u_int;
-    float direction =  (args[ARG_direction].u_obj != MP_OBJ_NULL)?mp_obj_get_float(args[ARG_direction].u_obj):1;
-
-    CHECK_VALID_PORT(port, motor_obj_list)
+    int port = ACCEPT_PORT(ARG_port, motor_obj_list);
 
     motor_obj_t *self = &motor_obj_list[port];
 
-    self->direction = (direction>=0)?FORWARD:REVERSE;
-    self->ticks   =   args[ARG_ticks].u_int;
-    self->acc     =   args[ARG_acc].u_int;
-    self->kp      =   args[ARG_kp].u_int;
-    self->ki      =   args[ARG_ki].u_int;
+    ACCEPT_KW_ARG(ARG_direction, self->direction, mp_obj_get_float);
+    ACCEPT_KW_ARG(ARG_ticks, self->ticks, mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_acc, self->acc, mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_kp , self->kp, mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_ki  , self->ki, mp_obj_get_int);
+
+    //map direction to +1/-1
+    self->direction = (self->direction>=0)?FORWARD:REVERSE;
 
     motorSettings(self->port, self->ticks, self->acc, self->kp, self->ki );
     setMotor(self->port, self->mode, self->speed * self->direction , self->position * self->direction);
@@ -70,23 +69,22 @@ static mp_obj_t config(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_arg
 
     // Define the allowed arguments
     static const mp_arg_t allowed_args[] = {
-        { MP_QSTR_direction,    MP_ARG_KW_ONLY  | MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
-        { MP_QSTR_ticks,        MP_ARG_KW_ONLY  | MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL } },
-        { MP_QSTR_acc,          MP_ARG_KW_ONLY  | MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
-        { MP_QSTR_kp,           MP_ARG_KW_ONLY  | MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
-        { MP_QSTR_ki,           MP_ARG_KW_ONLY  | MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
+        { MP_QSTR_direction,    MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
+        { MP_QSTR_ticks,        MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL } },
+        { MP_QSTR_acc,          MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
+        { MP_QSTR_kp,           MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
+        { MP_QSTR_ki,           MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
     };
 
-    mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
-    mp_arg_parse_all(n_args - 1  , pos_args + 1 , kw_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
+    PARSE_KW_ARGS_INSTANCE_FUNCTION(n_args, pos_args, kw_args, allowed_args);
 
     motor_obj_t *self = MP_OBJ_TO_PTR(pos_args[0]);
 
-    ACCEPT_VALUE_KW_GIVEN(ARG_direction, self->direction, mp_obj_get_float);
-    ACCEPT_VALUE_KW_GIVEN(ARG_ticks, self->ticks, mp_obj_get_int);
-    ACCEPT_VALUE_KW_GIVEN(ARG_acc, self->acc , mp_obj_get_int);
-    ACCEPT_VALUE_KW_GIVEN(ARG_kp, self->kp , mp_obj_get_int);
-    ACCEPT_VALUE_KW_GIVEN(ARG_ki, self->ki , mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_direction, self->direction, mp_obj_get_float);
+    ACCEPT_KW_ARG(ARG_ticks, self->ticks, mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_acc, self->acc , mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_kp, self->kp , mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_ki, self->ki , mp_obj_get_int);
 
     int port = self->port;
     motorSettings(port,self->ticks,self->acc,self->kp,self->ki);
@@ -105,17 +103,13 @@ static mp_obj_t set(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args){
         { MP_QSTR_speed,             MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
         { MP_QSTR_position,          MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
     };
-
-    // Parse the arguments
-    mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
-
-    mp_arg_parse_all(n_args - 1  , pos_args + 1 , kw_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
+    PARSE_KW_ARGS_INSTANCE_FUNCTION(n_args, pos_args, kw_args, allowed_args);
 
     motor_obj_t *self = MP_OBJ_TO_PTR(pos_args[0]);
 
-    ACCEPT_VALUE_KW_GIVEN(ARG_mode, self->mode, mp_obj_get_int);
-    ACCEPT_VALUE_KW_GIVEN(ARG_speed, self->speed, mp_obj_get_int);
-    ACCEPT_VALUE_KW_GIVEN(ARG_position, self->position , mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_mode, self->mode, mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_speed, self->speed, mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_position, self->position , mp_obj_get_int);
 
     setMotor(self->port, self->mode, self->speed * self->direction , self->position * self->direction);
 
