@@ -2,13 +2,16 @@
 #include "Sensor_C_Interface.h"
 #include "helper.h"
 
+#define UPDATE_SENSOR_CONFIG(self) \
+    configSensor((self)->port, (self)->type, (self)->mode, (self)->mem_offset)
+
 const mp_obj_type_t sensor_type;
 
 sensor_obj_t sensor_obj_list[4] = {
-    { .base = { .type = &sensor_type }, .port = 0, .type = 0, .mode = 0, .mem_offset = 0 },
-    { .base = { .type = &sensor_type }, .port = 1, .type = 0, .mode = 0, .mem_offset = 0 },
-    { .base = { .type = &sensor_type }, .port = 2, .type = 0, .mode = 0, .mem_offset = 0 },
-    { .base = { .type = &sensor_type }, .port = 3, .type = 0, .mode = 0, .mem_offset = 0 }
+    { .base = { .type = &sensor_type }, .port = S1, .type = 0, .mode = 0, .mem_offset = 0 },
+    { .base = { .type = &sensor_type }, .port = S2, .type = 0, .mode = 0, .mem_offset = 0 },
+    { .base = { .type = &sensor_type }, .port = S3, .type = 0, .mode = 0, .mem_offset = 0 },
+    { .base = { .type = &sensor_type }, .port = S4, .type = 0, .mode = 0, .mem_offset = 0 }
 };
 
 static void mp_sensor_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
@@ -34,7 +37,8 @@ static mp_obj_t mp_sensor_make_new(const mp_obj_type_t *type, size_t n_args, siz
     ACCEPT_KW_ARG(ARG_mode, self->mode, mp_obj_get_int);
     ACCEPT_KW_ARG(ARG_mem_offset, self->mem_offset, mp_obj_get_int);
 
-    configSensor(self->port, self->type, self->mode, self->mem_offset);
+    UPDATE_SENSOR_CONFIG(self);
+
     return MP_OBJ_FROM_PTR(self);
 }
 
@@ -85,12 +89,11 @@ static mp_obj_t config(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_arg
     ACCEPT_KW_ARG(ARG_mode, self->mode, mp_obj_get_int);
     ACCEPT_KW_ARG(ARG_mem_offset, self->mem_offset , mp_obj_get_int);
 
-    configSensor(self->port,self->type,self->mode,self->mem_offset);
+    UPDATE_SENSOR_CONFIG(self);
 
     return MP_OBJ_FROM_PTR(self);
 }
 static MP_DEFINE_CONST_FUN_OBJ_KW(config_obj, 0, config);
-
 
 static const mp_rom_map_elem_t sensor_local_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_get), MP_ROM_PTR(&get_obj) },

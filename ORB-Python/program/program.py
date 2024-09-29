@@ -1,8 +1,15 @@
+import monitor
 from devices import motor
 
+a = motor(0)
+a.set(mode=motor.POWER_MODE, speed = 50)
+
 def testMotor():
-    a = motor(port = motor.M1, direction =  motor.REVERSE,ticks=100,acc=10,kp=5,ki=15)
-    a.set(10, 20, 24)
-    a.config(1)
+    i = 0
+    while i < 10000:
+        monitor.setText(0, "Hallo" + str(i) + "\n")
+        i += 1
 
 testMotor()
+
+a.set(mode = motor.BRAKE_MODE)

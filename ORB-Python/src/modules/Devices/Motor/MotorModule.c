@@ -6,6 +6,19 @@
 #include "helper.h"
 #include <stdio.h>
 
+#define SET_MOTOR(self) \
+    setMotor((self)->port, \
+             (self)->mode, \
+             CONDITIONAL_CLAMP((self)->mode == SPEED_MODE, \
+                               (self)->speed * (self)->direction, \
+                               -100, 100), \
+             (self)->position * (self)->direction)
+
+#define UPDATE_MOTOR_SETTINGS(self) \
+    SET_MOTOR(self);\
+    motorSettings((self)->port, (self)->ticks, (self)->acc, (self)->kp, (self)->ki)
+
+
 const mp_obj_type_t motor_type;
 
 typedef struct _motor_obj_t {
@@ -22,10 +35,10 @@ typedef struct _motor_obj_t {
 } motor_obj_t;
 
 motor_obj_t motor_obj_list[4] = {
-    { .base = { .type = &motor_type }, .port = 0, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 },
-    { .base = { .type = &motor_type }, .port = 1, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 },
-    { .base = { .type = &motor_type }, .port = 2, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 },
-    { .base = { .type = &motor_type }, .port = 3, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 },
+    { .base = { .type = &motor_type }, .port = M1, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 },
+    { .base = { .type = &motor_type }, .port = M2, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 },
+    { .base = { .type = &motor_type }, .port = M3, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 },
+    { .base = { .type = &motor_type }, .port = M4, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 },
 };
 
 static void mp_motor_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
@@ -55,11 +68,9 @@ static mp_obj_t mp_motor_make_new(const mp_obj_type_t *type, size_t n_args, size
     ACCEPT_KW_ARG(ARG_kp , self->kp, mp_obj_get_int);
     ACCEPT_KW_ARG(ARG_ki  , self->ki, mp_obj_get_int);
 
-    //map direction to +1/-1
     self->direction = (self->direction>=0)?FORWARD:REVERSE;
 
-    motorSettings(self->port, self->ticks, self->acc, self->kp, self->ki );
-    setMotor(self->port, self->mode, self->speed * self->direction , self->position * self->direction);
+    UPDATE_MOTOR_SETTINGS(self);
 
     return MP_OBJ_FROM_PTR(self);
 }
@@ -70,7 +81,7 @@ static mp_obj_t config(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_arg
     // Define the allowed arguments
     static const mp_arg_t allowed_args[] = {
         { MP_QSTR_direction,    MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
-        { MP_QSTR_ticks,        MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL } },
+        { MP_QSTR_ticks,        MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
         { MP_QSTR_acc,          MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
         { MP_QSTR_kp,           MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
         { MP_QSTR_ki,           MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
@@ -86,9 +97,7 @@ static mp_obj_t config(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_arg
     ACCEPT_KW_ARG(ARG_kp, self->kp , mp_obj_get_int);
     ACCEPT_KW_ARG(ARG_ki, self->ki , mp_obj_get_int);
 
-    int port = self->port;
-    motorSettings(port,self->ticks,self->acc,self->kp,self->ki);
-    setMotor(self->port, self->mode, self->speed * self->direction , self->position * self->direction);
+    UPDATE_MOTOR_SETTINGS(self);
 
     return MP_OBJ_FROM_PTR(self);
 }
@@ -111,7 +120,7 @@ static mp_obj_t set(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args){
     ACCEPT_KW_ARG(ARG_speed, self->speed, mp_obj_get_int);
     ACCEPT_KW_ARG(ARG_position, self->position , mp_obj_get_int);
 
-    setMotor(self->port, self->mode, self->speed * self->direction , self->position * self->direction);
+    SET_MOTOR(self);
 
     return MP_OBJ_FROM_PTR(self);
 }

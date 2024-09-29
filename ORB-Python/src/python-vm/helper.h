@@ -6,6 +6,10 @@
         target = mp_type_getter(args[Keyword].u_obj);                   \
     }
 
+#define CONDITIONAL_CLAMP(condition, target, min_val, max_val) \
+    ((condition) ? MIN(MAX((target), (min_val)), (max_val)) : (target)) \
+
+//instance functions also get self as argument we want to ignore this for argument parsing
 #define PARSE_KW_ARGS_INSTANCE_FUNCTION(n_args, pos_args, kw_args, allowed_args) \
     mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)]; \
     mp_arg_parse_all((n_args) - 1, (pos_args) + 1, (kw_args), MP_ARRAY_SIZE(allowed_args), (allowed_args), args);

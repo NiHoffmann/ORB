@@ -41,6 +41,89 @@ def rreplace(s, old, new, occurence = 1):
         else:
             return rreplace(left, old, new, occurence - 1) + new + right
 
+HEX_LINE_LEN = 32
+
+def ConstructRecord(recordType, address, data) -> bytes:
+
+    assert 0 <= address < 0x10000
+    assert 0 <= recordType <= 255
+    record = []
+
+    recordType = recordType & 0xFF
+    address = (address >> 8) & 0xFF, address & 0xFF
+    numBytes = len(data) & 0xFF
+    
+    record.append(numBytes)
+    record += address
+    record.append(recordType)
+    record += data
+    
+    checksum = 0
+    for x in record:
+        checksum += x
+    checksum &= 0xFF
+    
+    # Two's complement
+    checksum = ~checksum + 1
+    checksum &= 0xFF
+    
+    record.append(checksum)
+
+    recordStr = ':'
+    for byte in record:
+        recordStr += '{:02X}'.format(byte)
+    recordStr += '\n'
+    
+    return recordStr.encode('ascii', errors='strict')
+
+#Code joinked from https://gist.github.com/pavel-a/89d71b3aba9d7a9e6f8a61d728b08a8e
+#Bin-to-hex.py (intel-hex)
+
+def convertBinaryToHex(binaryPath, hexPath, start_addr = 0, noEndRecord = False, ignoreErasedRecords = True):
+    
+    address = start_addr & 0xFFFF  # initial offset, low part
+    addr_high = (start_addr >> 16) & 0xFFFF
+
+    hexFile = open(hexPath, 'wb')
+    
+    if address != 0 :
+        hexFile.write(ConstructRecord(0x04, 0x0000, addr_high.to_bytes(2, 'big')))
+
+    with open(binaryPath, 'rb') as binaryFile:
+        byte = binaryFile.read(1)
+        data = []
+        while byte != b'':
+            if address == 0 :
+                hexFile.write(ConstructRecord(0x04, 0x0000, addr_high.to_bytes(2, 'big')))
+
+            byte = int.from_bytes(byte, byteorder='big') & 0xFF
+            data.append(byte)
+            address += 1
+            
+            if len(data) >= HEX_LINE_LEN:
+                for val in data:
+                    if val != 0xFF or not ignoreErasedRecords:
+                        hexFile.write(ConstructRecord(0x00, address - len(data), data))
+                        break
+                data = []
+                if address > 0xFFFF:
+                    addr_high += 1
+                    address   -= 0x10000
+                    assert address == 0, "start addr must be aligned on HEX_LINE_LEN else revise!"
+                
+            byte = binaryFile.read(1)
+
+        # last incomplete row
+        if len(data) :
+            for val in data:
+                if val != 0xFF or not ignoreErasedRecords:
+                    hexFile.write(ConstructRecord(0x00, address - len(data), data))
+                    break
+        
+    if not noEndRecord:
+        hexFile.write(ConstructRecord(0x01, 0x0000, []))
+    hexFile.close()
+
 
 if __name__ == "__main__":
     if len(sys.argv) > 2 and sys.argv[2] == "True" :
@@ -66,3 +149,9 @@ if __name__ == "__main__":
     with open(bin_path, 'wb') as bin_file:
         bin_file.write(mpy_size)
         bin_file.write(data)
+    
+    hex_path = rreplace(path, '.py' , '.hex' , 1)
+
+    convertBinaryToHex(bin_path, hex_path)
+
+
