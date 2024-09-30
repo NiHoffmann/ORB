@@ -3,8 +3,14 @@ The original C standard (ANSI 1989/ISO 1990) required that a compiler successful
 This minimum limit was raised in the 1999 update to the C standard to be at least 65,535 bytes.
 No C implementation is required to provide for objects greater than that size, which means that they don't need to allow for an array of ints greater than (int)(65535 / sizeof(int)).
 */
-#define HEAP_SIZE_KB                            (32)
-#define STACK_SIZE_KB                           (32)
+#define HEAP_SIZE_KB                            (16)
+#define STACK_SIZE_KB                           (16)
+//Memory-Layout: <FLAG><PROGRAM_LENGTH><PROGRAM_BYTE_CODE>
+#define PROGRAM_LENGTH_BYTE                     (4)
+#define LANGUAGE_FLAG_BYTE                      (1)
+
+#define LANGUAGE_PYTHON                         (0b00001111)
+#define LANGUAGE_CPP                            (0b11110000)
 
 // Use the minimal starting configuration (disables all optional features).
 #define MICROPY_CONFIG_ROM_LEVEL                (MICROPY_CONFIG_ROM_LEVEL_MINIMUM)

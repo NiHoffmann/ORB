@@ -41,6 +41,9 @@ def rreplace(s, old, new, occurence = 1):
         else:
             return rreplace(left, old, new, occurence - 1) + new + right
 
+
+#Code joinked from https://gist.github.com/pavel-a/89d71b3aba9d7a9e6f8a61d728b08a8e
+#Bin-to-hex.py (intel-hex)
 HEX_LINE_LEN = 32
 
 def ConstructRecord(recordType, address, data) -> bytes:
@@ -75,9 +78,6 @@ def ConstructRecord(recordType, address, data) -> bytes:
     recordStr += '\n'
     
     return recordStr.encode('ascii', errors='strict')
-
-#Code joinked from https://gist.github.com/pavel-a/89d71b3aba9d7a9e6f8a61d728b08a8e
-#Bin-to-hex.py (intel-hex)
 
 def convertBinaryToHex(binaryPath, hexPath, start_addr = 0, noEndRecord = False, ignoreErasedRecords = True):
     
@@ -143,14 +143,16 @@ if __name__ == "__main__":
     print("compilation: " + status)
     print("data: " + str(list(data)))
     print("length: " + str(len(data)))
+    flag = (0b00001111).to_bytes(1,'big')
     mpy_size = len(data).to_bytes(4,'big')
     print(mpy_size)
 
     with open(bin_path, 'wb') as bin_file:
+        bin_file.write(flag)
         bin_file.write(mpy_size)
         bin_file.write(data)
     
-    hex_path = rreplace(path, '.py' , '.hex' , 1)
+    hex_path = rreplace(path, '.py' , '.orb' , 1)
 
     convertBinaryToHex(bin_path, hex_path)
 
