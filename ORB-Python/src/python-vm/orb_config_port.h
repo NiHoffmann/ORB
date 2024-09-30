@@ -9,9 +9,6 @@ No C implementation is required to provide for objects greater than that size, w
 #define PROGRAM_LENGTH_BYTE                     (4)
 #define LANGUAGE_FLAG_BYTE                      (1)
 
-#define LANGUAGE_PYTHON                         (0b00001111)
-#define LANGUAGE_CPP                            (0b11110000)
-
 // Use the minimal starting configuration (disables all optional features).
 #define MICROPY_CONFIG_ROM_LEVEL                (MICROPY_CONFIG_ROM_LEVEL_MINIMUM)
 
