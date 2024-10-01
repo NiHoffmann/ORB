@@ -25,7 +25,7 @@ uint8_t* loadFile(int length) {
         return nullptr;
     }
 
-    file.ignore(4);
+    file.ignore(5);
     std::vector<uint8_t> byteArray(length);
 
     file.read(reinterpret_cast<char*>(byteArray.data()), length);
@@ -61,7 +61,7 @@ uint32_t loadFileLength() {
         return 0;
     }
 
-    uint32_t length = (byteArray[0] << 24) | (byteArray[1] << 16) | (byteArray[2] << 8) | byteArray[3];
+    uint32_t length = (byteArray[1] << 24) | (byteArray[2] << 16) | (byteArray[3] << 8) | byteArray[4];
 
     file.close();
     return length;

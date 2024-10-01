@@ -145,14 +145,15 @@ if __name__ == "__main__":
     print("length: " + str(len(data)))
     flag = (0b00001111).to_bytes(1,'big')
     mpy_size = len(data).to_bytes(4,'big')
-    print(mpy_size)
+    print("size: "  + str(mpy_size))
+    print("flag : " + str(flag))
 
     with open(bin_path, 'wb') as bin_file:
         bin_file.write(flag)
         bin_file.write(mpy_size)
         bin_file.write(data)
     
-    hex_path = rreplace(path, '.py' , '.orb' , 1)
+    hex_path = rreplace(path, '.py' , '.hex' , 1)
 
     convertBinaryToHex(bin_path, hex_path)
 
