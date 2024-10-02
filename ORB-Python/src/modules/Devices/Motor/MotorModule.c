@@ -30,7 +30,7 @@ typedef struct _motor_obj_t {
     uint8_t kp;
     uint8_t ki;
     uint8_t mode;
-    uint8_t speed;
+    int16_t speed;
     uint8_t position;
 } motor_obj_t;
 

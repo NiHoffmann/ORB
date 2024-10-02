@@ -2,6 +2,7 @@ from devices import sensor, motor
 import time
 import monitor
 import time
+from devices import button
 
 class NXTLightSensor:
     class Mode:
@@ -27,14 +28,17 @@ class NXTLightSensor:
         val = 0
         for i in range(250):
             val += self.me.get()["values"][0] & 0xFFFF
-        return min(100, max(0, NXTLightSensor.gain * ((val/250.0) - NXTLightSensor.offset)))
+        ret = min(100, max(0, NXTLightSensor.gain * ((val/250.0) - NXTLightSensor.offset)))
+        monitor.setText(3, str(ret))
+        return ret
 
-colorLeft = NXTLightSensor(sensor.S1)
+colorRight = NXTLightSensor(sensor.S1)
+colorLeft = NXTLightSensor(sensor.S2)
 
-motorLeft = motor(port = motor.M1)
-motorRight = motor(port = motor.M2)
-motorLeft.set(mode = motor.SPEED_MODE)
-motorRight.set(mode = motor.SPEED_MODE)
+motorRight = motor(port = motor.M1, direction = motor.REVERSE)
+motorLeft = motor(port = motor.M2, direction = motor.REVERSE)
+motorLeft.set(mode = motor.POWER_MODE)
+motorRight.set(mode = motor.POWER_MODE)
 
 speedLeft =  25.0
 speedRight = 25.0
@@ -42,25 +46,25 @@ speedRight = 25.0
 last = time.getTime()
 current = last
 deltaTime = 0
-gain = 0.00001
+gain = 0.1
 
 while True:
-    monitor.setText(0, "Left: " + str(colorLeft.get()))
-    """
     current = time.getTime()
-    deltaTime = last - current
+    deltaTime =  current - last
     last = current
 
-    if colorLeft.get() == Color.BLACK:
-        speedLeft = min(speedLeft + (gain * deltaTime), 100)
+    if colorRight.get() < 25:
+        speedLeft = min(speedLeft + (gain * deltaTime), 150)
     else:
-        speedLeft = max(speedLeft - (gain * deltaTime), 0)
+        speedLeft = max(speedLeft - (gain * deltaTime), 80)
 
-    if colorRight.get() == Color.BLACK:
-        speedRight = min(speedRight + (gain * deltaTime), 100)
+    if colorLeft.get() < 25:
+        speedRight = min(speedRight + (gain * deltaTime), 150)
     else:
-        speedRight = max(speedRight - (gain * deltaTime), 0)
+        speedRight = max(speedRight - (gain * deltaTime), 80)
+
+    monitor.setText(0,"Left: " + str(speedLeft))
+    monitor.setText(1,"Right: " + str(speedRight))
 
     motorLeft.set(speed = int(speedLeft))
     motorRight.set(speed = int(speedRight))
-    """
