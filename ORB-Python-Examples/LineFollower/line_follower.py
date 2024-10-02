@@ -2,15 +2,18 @@ from devices import sensor, motor
 import time
 import monitor
 import time
-from devices import button
 
 class NXTLightSensor:
+    NONE  = 0
+    BLACK = 1
+    WHITE = 2
+
     class Mode:
         LIGHT_OFF = 0
         LIGHT_ON  = 1  
 
-    kalib0 = 19500.0
-    kalib1 = 20000.0
+    kalib0 = 19600.0
+    kalib1 = 20400.0
 
     gain   = 100.0 /(kalib1- kalib0)
     offset = kalib0
@@ -25,14 +28,27 @@ class NXTLightSensor:
             self.me.config(option = (0x08|0x07)<<8)
 
     def get(self):
-        val = 0
+        val = self.me.get()["values"][0] & 0xFFFF
+        filter_coeffitient = 0.4
+
+        first_val = self.me.get()["values"][0] & 0xFFFF
+        filtered_val = first_val
+
         for i in range(250):
-            val += self.me.get()["values"][0] & 0xFFFF
-        ret = min(100, max(0, NXTLightSensor.gain * ((val/250.0) - NXTLightSensor.offset)))
-        monitor.setText(3, str(ret))
-        return ret
+            current_val = self.me.get()["values"][0] & 0xFFFF
+            filtered_val = filter_coeffitient * current_val + (1 - filter_coeffitient) * filtered_val
+
+            val += filtered_val
+
+        monitor.setText(2, "filter val: "+ str(filtered_val))
+        monitor.setText(0,"value: " + str(val/250.0))
+        ret = min(100, max(0, NXTLightSensor.gain * ((val / 250.0) - NXTLightSensor.offset)))
+        monitor.setText(1, "value(%) : " + str(ret))
+
+        return ret > 50
 
 colorRight = NXTLightSensor(sensor.S1)
+"""
 colorLeft = NXTLightSensor(sensor.S2)
 
 motorRight = motor(port = motor.M1, direction = motor.REVERSE)
@@ -47,8 +63,11 @@ last = time.getTime()
 current = last
 deltaTime = 0
 gain = 0.1
+"""
 
 while True:
+    monitor.setText(3, "isblack : " + str(colorRight.get()))
+    """
     current = time.getTime()
     deltaTime =  current - last
     last = current
@@ -68,3 +87,4 @@ while True:
 
     motorLeft.set(speed = int(speedLeft))
     motorRight.set(speed = int(speedRight))
+    """
