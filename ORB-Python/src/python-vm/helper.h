@@ -98,4 +98,7 @@
         locals_dict, &name##_local \
     );
 
+//this macro can be used if we except floats or int
+#define MP_OBJ_GET_NUMBER_VALUE(obj) (mp_obj_is_int(obj) ? (float)mp_obj_get_int(obj) : mp_obj_is_float(obj) ? mp_obj_get_float(obj) : (mp_raise_TypeError(MP_ERROR_TEXT("expected int or float")), 0))
+
 #endif // MP_HELPER

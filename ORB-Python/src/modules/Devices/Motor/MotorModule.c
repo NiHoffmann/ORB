@@ -168,6 +168,48 @@ static MP_DEFINE_CONST_FUN_OBJ_1(get_obj , get);
     }
     static MP_DEFINE_CONST_FUN_OBJ_1(get_motor_position_obj, get_motor_position);
 
+    static mp_obj_t run_motor_speed(mp_obj_t self_in, mp_obj_t speed){
+        motor_obj_t *self = MP_OBJ_TO_PTR(self_in);
+        float speed_val = MP_OBJ_GET_NUMBER_VALUE(speed);
+
+        self->mode = SPEED_MODE;
+        self->speed = speed_val;
+
+        SET_MOTOR(self);
+
+        return MP_OBJ_FROM_PTR(self);
+    }
+    static MP_DEFINE_CONST_FUN_OBJ_2(run_motor_speed_obj, run_motor_speed);
+
+
+    static mp_obj_t run_motor_power(mp_obj_t self_in, mp_obj_t power) {
+        motor_obj_t *self = MP_OBJ_TO_PTR(self_in);
+        float power_val = MP_OBJ_GET_NUMBER_VALUE(power);
+
+        self->mode = POWER_MODE;
+        self->speed = power_val;
+
+        SET_MOTOR(self);
+
+        return MP_OBJ_FROM_PTR(self);
+    }
+    static MP_DEFINE_CONST_FUN_OBJ_2(run_motor_power_obj, run_motor_power);
+
+    static mp_obj_t motor_move_to(mp_obj_t self_in, mp_obj_t speed, mp_obj_t position) {
+        motor_obj_t *self = MP_OBJ_TO_PTR(self_in);
+        float speed_val = MP_OBJ_GET_NUMBER_VALUE(speed);
+        float position_val = MP_OBJ_GET_NUMBER_VALUE(position);
+
+        self->mode = SPEED_MODE;
+        self->speed = speed_val;
+        self->position = position_val;
+
+        SET_MOTOR(self);
+
+        return MP_OBJ_FROM_PTR(self);
+    }
+    static MP_DEFINE_CONST_FUN_OBJ_3(motor_move_to_obj, motor_move_to);
+
 // END ADDITIONAL FUNCTIONS
 
 static const mp_rom_map_elem_t motor_local_dict_table[] = {
@@ -191,6 +233,9 @@ static const mp_rom_map_elem_t motor_local_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_getSpeed), MP_ROM_PTR(&get_motor_speed_obj) },
     { MP_ROM_QSTR(MP_QSTR_getPower), MP_ROM_PTR(&get_motor_power_obj) },
     { MP_ROM_QSTR(MP_QSTR_getPosition), MP_ROM_PTR(&get_motor_position_obj) },
+    { MP_ROM_QSTR(MP_QSTR_runSpeed), MP_ROM_PTR(&run_motor_speed_obj) },
+    { MP_ROM_QSTR(MP_QSTR_runPower), MP_ROM_PTR(&run_motor_power_obj) },
+    { MP_ROM_QSTR(MP_QSTR_moveTo), MP_ROM_PTR(&motor_move_to_obj) },
 };
 static MP_DEFINE_CONST_DICT(motor_local, motor_local_dict_table);
 

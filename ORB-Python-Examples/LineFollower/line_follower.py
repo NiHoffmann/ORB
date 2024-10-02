@@ -18,7 +18,7 @@ class Color():
 
 class EV3ColorSensor:
     def __init__(self, _port):   
-        self.me = sensor(port = _port, type = sensor.UART,mode = Mode.COLOR)    
+        self.me = sensor(port = _port, type = sensor.UART, mode = Mode.COLOR)    
 
     def get(self):
         return self.me.get()["values"][0] & 0xFFFF
@@ -32,16 +32,6 @@ motorRight.set(mode = motor.SPEED_MODE)
 
 speedLeft =  25.0
 speedRight = 25.0
-
-def max(l,r):
-    if(l > r):
-        return l
-    return r
-
-def min(l,r):
-    if(l < r):
-        return l
-    return r
 
 last = time.getTime()
 current = last

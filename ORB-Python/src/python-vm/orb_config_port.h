@@ -37,3 +37,9 @@ No C implementation is required to provide for objects greater than that size, w
 
 #define MICROPY_FLOAT_IMPL                      (MICROPY_FLOAT_IMPL_FLOAT)
 #define OMIT_FRAME_POINTER_ON_WINDOWS           (1)
+
+
+//Additional Functions
+#define MICROPY_PY_MATH (1)
+#define ORB_EXIT        (1)
+#define MICROPY_PY_BUILTINS_MIN_MAX  (1)
