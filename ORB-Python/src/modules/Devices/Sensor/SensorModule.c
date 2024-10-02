@@ -3,15 +3,15 @@
 #include "helper.h"
 
 #define UPDATE_SENSOR_CONFIG(self) \
-    configSensor((self)->port, (self)->type, (self)->mode, (self)->mem_offset)
+    configSensor((self)->port, (self)->type, (self)->mode, (self)->option)
 
 const mp_obj_type_t sensor_type;
 
 sensor_obj_t sensor_obj_list[4] = {
-    { .base = { .type = &sensor_type }, .port = S1, .type = 0, .mode = 0, .mem_offset = 0 },
-    { .base = { .type = &sensor_type }, .port = S2, .type = 0, .mode = 0, .mem_offset = 0 },
-    { .base = { .type = &sensor_type }, .port = S3, .type = 0, .mode = 0, .mem_offset = 0 },
-    { .base = { .type = &sensor_type }, .port = S4, .type = 0, .mode = 0, .mem_offset = 0 }
+    { .base = { .type = &sensor_type }, .port = S1, .type = 0, .mode = 0, .option = 0 },
+    { .base = { .type = &sensor_type }, .port = S2, .type = 0, .mode = 0, .option = 0 },
+    { .base = { .type = &sensor_type }, .port = S3, .type = 0, .mode = 0, .option = 0 },
+    { .base = { .type = &sensor_type }, .port = S4, .type = 0, .mode = 0, .option = 0 }
 };
 
 static void mp_sensor_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
@@ -20,12 +20,12 @@ static void mp_sensor_print(const mp_print_t *print, mp_obj_t self_in, mp_print_
 }
 
 static mp_obj_t mp_sensor_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, const mp_obj_t *all_args){
-    enum { ARG_port, ARG_type, ARG_mode, ARG_mem_offset};
+    enum { ARG_port, ARG_type, ARG_mode, ARG_option};
     static const mp_arg_t allowed_args[] = {
         { MP_QSTR_port,         MP_ARG_REQUIRED | MP_ARG_INT, {.u_int = -1 } },
         { MP_QSTR_type,         MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
         { MP_QSTR_mode,         MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
-        { MP_QSTR_mem_offset,   MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
+        { MP_QSTR_option,   MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
     };
     PARSE_KW_ARGS_CONSTRUCTOR(n_args, n_kw, all_args, allowed_args);
 
@@ -35,7 +35,7 @@ static mp_obj_t mp_sensor_make_new(const mp_obj_type_t *type, size_t n_args, siz
 
     ACCEPT_KW_ARG(ARG_type, self->type, mp_obj_get_int);
     ACCEPT_KW_ARG(ARG_mode, self->mode, mp_obj_get_int);
-    ACCEPT_KW_ARG(ARG_mem_offset, self->mem_offset, mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_option, self->option, mp_obj_get_int);
 
     UPDATE_SENSOR_CONFIG(self);
 
@@ -74,12 +74,12 @@ static mp_obj_t get_value_ext(mp_obj_t self_in, mp_obj_t ch) {
 static MP_DEFINE_CONST_FUN_OBJ_2(get_value_ext_obj, get_value_ext);
 
 static mp_obj_t config(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args){
-    enum { ARG_type, ARG_mode, ARG_mem_offset};
+    enum { ARG_type, ARG_mode, ARG_option};
 
     static const mp_arg_t allowed_args[] = {
         { MP_QSTR_type,                 MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
         { MP_QSTR_mode,                 MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL } },
-        { MP_QSTR_mem_offset,           MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
+        { MP_QSTR_option,               MP_ARG_OBJ, {.u_obj  = MP_OBJ_NULL  } },
     };
     PARSE_KW_ARGS_INSTANCE_FUNCTION(n_args, pos_args, kw_args, allowed_args);
 
@@ -87,7 +87,7 @@ static mp_obj_t config(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_arg
 
     ACCEPT_KW_ARG(ARG_type, self->type, mp_obj_get_int);
     ACCEPT_KW_ARG(ARG_mode, self->mode, mp_obj_get_int);
-    ACCEPT_KW_ARG(ARG_mem_offset, self->mem_offset , mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_option, self->option , mp_obj_get_int);
 
     UPDATE_SENSOR_CONFIG(self);
 

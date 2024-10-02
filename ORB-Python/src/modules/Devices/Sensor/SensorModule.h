@@ -12,7 +12,7 @@ typedef struct _sensor_obj_t {
     uint8_t port;
     uint8_t type;
     uint8_t mode;
-    uint32_t mem_offset;
+    uint32_t option;
 } sensor_obj_t;
 
 #endif

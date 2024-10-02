@@ -181,7 +181,6 @@ static MP_DEFINE_CONST_FUN_OBJ_1(get_obj , get);
     }
     static MP_DEFINE_CONST_FUN_OBJ_2(run_motor_speed_obj, run_motor_speed);
 
-
     static mp_obj_t run_motor_power(mp_obj_t self_in, mp_obj_t power) {
         motor_obj_t *self = MP_OBJ_TO_PTR(self_in);
         float power_val = MP_OBJ_GET_NUMBER_VALUE(power);

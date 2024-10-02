@@ -1,30 +1,36 @@
 from devices import sensor, motor
 import time
+import monitor
+import time
 
-class Mode():
-    LIGHT = 0
-    AMBIENT = 1
-    COLOR = 2      
+class NXTLightSensor:
+    class Mode:
+        LIGHT_OFF = 0
+        LIGHT_ON  = 1  
 
-class Color():
-    NONE = 0
-    BLACK = 1
-    BLUE = 2
-    GREEN = 3
-    YELLOW = 4
-    RED = 5
-    WHITE = 6
-    BROWN = 7
+    kalib0 = 19500.0
+    kalib1 = 20000.0
 
-class EV3ColorSensor:
+    gain   = 100.0 /(kalib1- kalib0)
+    offset = kalib0
+
     def __init__(self, _port):   
-        self.me = sensor(port = _port, type = sensor.UART, mode = Mode.COLOR)    
+        self.me = sensor(port = _port, type = sensor.Analog, mode = 0, option = (0x08|0x07)<<8)
+
+    def setMode(self, mode):
+        if mode == NXTLightSensor.Mode.LIGHT_OFF:
+            self.me.config(option = (0x00|0x07)<<8)
+        if mode == NXTLightSensor.Mode.LIGHT_ON:
+            self.me.config(option = (0x08|0x07)<<8)
 
     def get(self):
-        return self.me.get()["values"][0] & 0xFFFF
+        val = 0
+        for i in range(250):
+            val += self.me.get()["values"][0] & 0xFFFF
+        return min(100, max(0, NXTLightSensor.gain * ((val/250.0) - NXTLightSensor.offset)))
 
-colorLeft = EV3ColorSensor(sensor.S1)
-colorRight = EV3ColorSensor(sensor.S2)
+colorLeft = NXTLightSensor(sensor.S1)
+
 motorLeft = motor(port = motor.M1)
 motorRight = motor(port = motor.M2)
 motorLeft.set(mode = motor.SPEED_MODE)
@@ -39,6 +45,8 @@ deltaTime = 0
 gain = 0.00001
 
 while True:
+    monitor.setText(0, "Left: " + str(colorLeft.get()))
+    """
     current = time.getTime()
     deltaTime = last - current
     last = current
@@ -55,3 +63,4 @@ while True:
 
     motorLeft.set(speed = int(speedLeft))
     motorRight.set(speed = int(speedRight))
+    """
