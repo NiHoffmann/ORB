@@ -6,3 +6,5 @@
 #include "py/stackctrl.h"
 
 extern const mp_obj_type_t motor_type;
+
+void init_motor();

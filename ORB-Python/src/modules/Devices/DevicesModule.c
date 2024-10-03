@@ -8,6 +8,7 @@
 static mp_obj_t devices___init__(void) {
     if (!MP_STATE_VM(devices_initialised)) {
         MP_STATE_VM(devices_initialised) = true;
+        init_motor();
     }
     return mp_const_none;
 }

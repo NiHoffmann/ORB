@@ -35,18 +35,12 @@ typedef struct _motor_obj_t {
 
 motor_obj_t motor_obj_list[4];
 
-static mp_obj_t motor___init___(void) {
-    if (!MP_STATE_VM(motor_initialised)) {
-        MP_STATE_VM(motor_initialised) = true;
-            motor_obj_list[0] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M1, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
-            motor_obj_list[1] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M2, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
-            motor_obj_list[2] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M3, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
-            motor_obj_list[3] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M4, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
-    }
-    return mp_const_none;
+void init_motor() {
+    motor_obj_list[0] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M1, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
+    motor_obj_list[1] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M2, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
+    motor_obj_list[2] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M3, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
+    motor_obj_list[3] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M4, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
 }
-static MP_DEFINE_CONST_FUN_OBJ_0(motor___init___obj, motor___init___);
-MP_REGISTER_ROOT_POINTER(int motor_initialised);
 
 static void mp_motor_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
     motor_obj_t *self = MP_OBJ_TO_PTR(self_in);
@@ -219,7 +213,6 @@ static MP_DEFINE_CONST_FUN_OBJ_1(get_obj , get);
 // END ADDITIONAL FUNCTIONS
 
 static const mp_rom_map_elem_t motor_local_dict_table[] = {
-    { MP_ROM_QSTR(MP_QSTR___init__), MP_ROM_PTR(&motor___init___obj) },
     { MP_ROM_QSTR(MP_QSTR_M1), MP_ROM_INT(M1) },
     { MP_ROM_QSTR(MP_QSTR_M2), MP_ROM_INT(M2) },
     { MP_ROM_QSTR(MP_QSTR_M3), MP_ROM_INT(M3) },

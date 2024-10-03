@@ -43,3 +43,4 @@ No C implementation is required to provide for objects greater than that size, w
 #define MICROPY_PY_MATH (1)
 #define ORB_EXIT        (1)
 #define MICROPY_PY_BUILTINS_MIN_MAX  (1)
+#define MICROPY_MODULE_BUILTIN_INIT (1)

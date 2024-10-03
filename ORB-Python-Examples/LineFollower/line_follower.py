@@ -4,10 +4,6 @@ import monitor
 import time
 
 class NXTLightSensor:
-    NONE  = 0
-    BLACK = 1
-    WHITE = 2
-
     class Mode:
         LIGHT_OFF = 0
         LIGHT_ON  = 1  

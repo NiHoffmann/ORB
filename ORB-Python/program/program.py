@@ -4,4 +4,4 @@ import math
 
 a = motor(motor.M1)
 
-a.moveTo(50.2,100.3)
+a.moveTo(50,100)
