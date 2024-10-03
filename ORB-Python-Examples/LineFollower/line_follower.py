@@ -12,8 +12,12 @@ class NXTLightSensor:
         LIGHT_OFF = 0
         LIGHT_ON  = 1  
 
-    kalib0 = 19600.0
-    kalib1 = 20400.0
+    #all of this can be callibarated by tracking the lowest/higheset values and removing them with 
+    #after that determin kallib0 and kallib1
+    kalib0 = 10000.0
+    kalib1 = 6000.0
+    spike = 19000.0
+    dipp = 4000.0
 
     gain   = 100.0 /(kalib1- kalib0)
     offset = kalib0
@@ -27,25 +31,26 @@ class NXTLightSensor:
         if mode == NXTLightSensor.Mode.LIGHT_ON:
             self.me.config(option = (0x08|0x07)<<8)
 
-    def get(self):
-        val = self.me.get()["values"][0] & 0xFFFF
-        filter_coeffitient = 0.4
+    def get(self, iterations = 50, coeffitient = 0.075):
+        it = iterations
+        val = self.kalib0 - self.kalib0
+        filter_coeffitient = coeffitient
+        filtered_val = 0
 
-        first_val = self.me.get()["values"][0] & 0xFFFF
-        filtered_val = first_val
-
-        for i in range(250):
+        for i in range(iterations):
             current_val = self.me.get()["values"][0] & 0xFFFF
+            if current_val > self.spike or current_val < self.dipp:
+                it -= 1
+                continue
             filtered_val = filter_coeffitient * current_val + (1 - filter_coeffitient) * filtered_val
-
             val += filtered_val
 
         monitor.setText(2, "filter val: "+ str(filtered_val))
-        monitor.setText(0,"value: " + str(val/250.0))
-        ret = min(100, max(0, NXTLightSensor.gain * ((val / 250.0) - NXTLightSensor.offset)))
-        monitor.setText(1, "value(%) : " + str(ret))
+        monitor.setText(0,"value: " + str(val/float(it)))
+        ret = min(100, max(0, self.gain * ((val / float(it)) - self.offset)))
+        #monitor.setText(1, "value(%) : " + str(ret))
 
-        return ret > 50
+        return ret
 
 colorRight = NXTLightSensor(sensor.S1)
 """
@@ -65,8 +70,14 @@ deltaTime = 0
 gain = 0.1
 """
 
+now = time.getTime()
+was = now
 while True:
+    now = time.getTime()
+    monitor.setText(2, "Time: "+str((now - was)/1000.0))
     monitor.setText(3, "isblack : " + str(colorRight.get()))
+    colorRight.get()
+    was = now
     """
     current = time.getTime()
     deltaTime =  current - last
