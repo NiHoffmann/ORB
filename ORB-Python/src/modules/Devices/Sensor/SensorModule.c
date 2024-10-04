@@ -2,16 +2,15 @@
 #include "Sensor_C_Interface.h"
 #include "helper.h"
 
-#define UPDATE_SENSOR_CONFIG(self) \
-    configSensor((self)->port, (self)->type, (self)->mode, (self)->option)
-
 const mp_obj_type_t sensor_type;
 
-sensor_obj_t sensor_obj_list[4] = {
-    { .base = { .type = &sensor_type }, .port = S1, .type = 0, .mode = 0, .option = 0 },
-    { .base = { .type = &sensor_type }, .port = S2, .type = 0, .mode = 0, .option = 0 },
-    { .base = { .type = &sensor_type }, .port = S3, .type = 0, .mode = 0, .option = 0 },
-    { .base = { .type = &sensor_type }, .port = S4, .type = 0, .mode = 0, .option = 0 }
+sensor_obj_t sensor_obj_list[4];
+
+void init_sensor_representations(){
+    sensor_obj_list[0] = (sensor_obj_t) { .base = { .type = &sensor_type }, .port = S1, .type = 0, .mode = 0, .option = 0 };
+    sensor_obj_list[1] = (sensor_obj_t) { .base = { .type = &sensor_type }, .port = S2, .type = 0, .mode = 0, .option = 0 };
+    sensor_obj_list[2] = (sensor_obj_t) { .base = { .type = &sensor_type }, .port = S3, .type = 0, .mode = 0, .option = 0 };
+    sensor_obj_list[3] = (sensor_obj_t) { .base = { .type = &sensor_type }, .port = S4, .type = 0, .mode = 0, .option = 0 };
 };
 
 static void mp_sensor_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {

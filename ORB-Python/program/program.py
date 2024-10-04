@@ -1,7 +1,6 @@
-import monitor
-from devices import motor
-import math
 
-a = motor(motor.M1)
+a = [1,2,3,4,5,6]
+print(a)
 
-a.moveTo(50,100)
+while True:
+    pass

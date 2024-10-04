@@ -30,13 +30,13 @@ enum MotorMode
   MOVETO_MODE = 3,
 };
 
-void motorSettings(uint8_t port, uint32_t ticsPerRotation,uint8_t acc,uint8_t kp,uint8_t ki );
+void motorSettings(uint8_t port, uint32_t ticsPerRotation,uint8_t acc, uint8_t kp, uint8_t ki );
 
-void setMotor( uint8_t  port, uint8_t  mode, int16_t speed, int pos );
+void setMotor(uint8_t port, uint8_t mode, int16_t speed, int pos );
 
 typedef struct _motor_return_values{
-	float pwr;
-	float speed;
+	int16_t pwr;
+	int16_t speed;
 	int pos;
 }motor_return_values;
 

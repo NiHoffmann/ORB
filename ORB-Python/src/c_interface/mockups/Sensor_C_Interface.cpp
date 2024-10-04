@@ -5,7 +5,7 @@ extern "C" {
 
 #include <stdio.h>
 
-void configSensor (uint8_t id,uint8_t t,uint8_t m,uint32_t o) {
+void configSensor (uint8_t id,uint8_t t,uint8_t m,uint16_t o) {
     printf("Sensor id:%d type:%d mode:%d offset:%d\n",id ,t ,m ,o);
 }
 

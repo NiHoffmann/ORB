@@ -77,10 +77,13 @@ int PythonVM::getExitStatus(){
     #endif
 }
 
+#if ORB_ENABLE_EXIT_STATUS
 static const char* _exit_message_user_intterupt = "User Interrupt";
+#ifdef ORB_ABORT_ON_GC_COLLECT_FAIL
 static const char* _exit_message_gc_abort = "GC Abort";
+#endif
 static const char* _exit_message_normal = "VM Normal Exit";
-
+#endif
 
 const char* PythonVM::getExitType(){
 

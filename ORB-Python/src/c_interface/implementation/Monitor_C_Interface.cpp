@@ -4,7 +4,7 @@
 
 extern "C" {
 
-    uint8_t getMonitorKey(){
+    BYTE getMonitorKey(){
         return AppTask::getMonitorKey(nullptr);
     }
 
@@ -16,7 +16,7 @@ extern "C" {
         va_end(args);
     }
 
-    void setMonitorText(int line, const char *str, size_t len){
+    void setMonitorText(BYTE line, const char *str, size_t len){
         line %= 4;
 		print(line, "%.*s", len, str);
     }

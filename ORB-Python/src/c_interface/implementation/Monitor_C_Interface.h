@@ -43,7 +43,7 @@ enum Taste_enum
 
 uint8_t getMonitorKey();
 
-void setMonitorText(int line, const char *str, size_t len);
+void setMonitorText(uint8_t line, const char *str, size_t len);
 
 #ifdef __cplusplus
 }

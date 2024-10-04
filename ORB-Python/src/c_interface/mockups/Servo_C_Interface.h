@@ -11,7 +11,7 @@ enum ServoPort_type{
   S2 = 1,
 };
 
-void setModelServo(uint16_t port, uint16_t speed, uint16_t angle){
+void setModelServo(uint8_t port, uint8_t speed, uint8_t angle){
     printf("set servo(%d) speed(%d) angle(%d)\n", port, speed, angle);
 }
 

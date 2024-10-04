@@ -6,18 +6,6 @@
 #include "helper.h"
 #include <stdio.h>
 
-#define SET_MOTOR(self) \
-    setMotor((self)->port, \
-             (self)->mode, \
-             CONDITIONAL_CLAMP((self)->mode == SPEED_MODE, \
-                               (self)->speed * (self)->direction, \
-                               -100, 100), \
-             (self)->position * (self)->direction)
-
-#define UPDATE_MOTOR_SETTINGS(self) \
-    SET_MOTOR(self);\
-    motorSettings((self)->port, (self)->ticks, (self)->acc, (self)->kp, (self)->ki)
-
 const mp_obj_type_t motor_type;
 
 typedef struct _motor_obj_t {
@@ -35,7 +23,7 @@ typedef struct _motor_obj_t {
 
 motor_obj_t motor_obj_list[4];
 
-void init_motor() {
+void init_motor_representations() {
     motor_obj_list[0] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M1, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
     motor_obj_list[1] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M2, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
     motor_obj_list[2] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M3, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };

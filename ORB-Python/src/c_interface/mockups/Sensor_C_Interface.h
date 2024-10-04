@@ -23,7 +23,7 @@ typedef enum
       TOUCH  = 4  //!< NXT/EV3-Touch-Sensor
     } SensorType;
 
-void configSensor (uint8_t id,uint8_t t,uint8_t m,uint32_t o);
+void configSensor (uint8_t id,uint8_t t,uint8_t m,uint16_t o);
 
 typedef struct _sensor_return_values{
 	uint32_t value[2];

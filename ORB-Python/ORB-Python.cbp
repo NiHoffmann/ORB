@@ -568,13 +568,13 @@
 		<Unit filename="src/c_interface/mockups/Servo_C_Interface.h" />
 		<Unit filename="src/c_interface/mockups/Time_C_Interface.h" />
 		<Unit filename="src/main.cpp" />
-		<Unit filename="src/modules/Devices/Button/ButtonType.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/modules/Devices/Button/ButtonType.h" />
 		<Unit filename="src/modules/Devices/DevicesModule.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/modules/Devices/ExternButton/ExternButtonType.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/modules/Devices/ExternButton/ExternButtonType.h" />
 		<Unit filename="src/modules/Devices/Motor/MotorModule.c">
 			<Option compilerVar="CC" />
 		</Unit>

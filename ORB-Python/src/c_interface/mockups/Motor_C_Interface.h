@@ -28,7 +28,7 @@ enum MotorMode
   MOVETO_MODE = 3,
 };
 
-void motorSettings(uint8_t port, uint32_t ticsPerRotation,uint8_t acc,uint8_t kp,uint8_t ki ){
+void motorSettings(uint8_t port, uint16_t ticsPerRotation,uint8_t acc,uint8_t kp,uint8_t ki ){
     printf("motor settings\nport(%u) ticks(%u) acc(%u) kp(%u) ki(%u)\n",port,  ticsPerRotation, acc, kp, ki);
 }
 

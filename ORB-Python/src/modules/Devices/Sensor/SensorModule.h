@@ -5,6 +5,9 @@
 #include "py/runtime.h"
 #include "py/mphal.h"
 
+#define UPDATE_SENSOR_CONFIG(self) \
+    configSensor((self)->port, (self)->type, (self)->mode, (self)->option)
+
 extern const mp_obj_type_t sensor_type;
 
 typedef struct _sensor_obj_t {
@@ -14,5 +17,7 @@ typedef struct _sensor_obj_t {
     uint8_t mode;
     uint32_t option;
 } sensor_obj_t;
+
+void init_sensor_representations();
 
 #endif

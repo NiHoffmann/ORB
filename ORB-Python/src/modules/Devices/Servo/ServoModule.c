@@ -16,10 +16,12 @@ typedef struct _servo_obj_t {
     uint8_t angle;
 } servo_obj_t;
 
-servo_obj_t servo_obj_list[2] = {
-    { .base = { .type = &servo_type }, .port = 0, .speed = 0, .angle = 0 },
-    { .base = { .type = &servo_type }, .port = 1, .speed = 0, .angle = 0 },
-};
+servo_obj_t servo_obj_list[2];
+
+void init_servo_representations(){
+    servo_obj_list[0] = (servo_obj_t) { .base = { .type = &servo_type }, .port = 0, .speed = 0, .angle = 0 };
+    servo_obj_list[1] = (servo_obj_t) { .base = { .type = &servo_type }, .port = 1, .speed = 0, .angle = 0 };
+}
 
 static void mp_servo_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
     const servo_obj_t *self = MP_OBJ_TO_PTR(self_in);
