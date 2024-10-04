@@ -2,6 +2,9 @@
 #include "KeyConstants.h"
 #include "Monitor_C_Interface.h"
 
+//forward declaration to access in method returns
+extern const mp_obj_module_t monitor_module;
+
 static mp_obj_t mp_get_key() {
     return mp_obj_new_int(getMonitorKey());
 }
@@ -10,9 +13,18 @@ static MP_DEFINE_CONST_FUN_OBJ_0(mp_get_key_obj, mp_get_key);
 static mp_obj_t mp_set_text(mp_obj_t line_obj, mp_obj_t text_obj) {
     size_t len;
     const int line = mp_obj_int_get_checked(line_obj);
-    const char *str = mp_obj_str_get_data(text_obj, &len);
+    const char *str;
+
+    if (mp_obj_is_str(text_obj)) {
+        str = mp_obj_str_get_data(text_obj, &len);
+    } else {
+        mp_obj_t str_obj = mp_obj_str_make_new(&mp_type_str, 1, 0, &text_obj);
+        str = mp_obj_str_get_data(str_obj, &len);
+    }
+
     setMonitorText(line, str, len);
-    return mp_const_none;
+
+    return MP_OBJ_FROM_PTR(&monitor_module);
 }
 static MP_DEFINE_CONST_FUN_OBJ_2(mp_set_text_obj, mp_set_text);
 
