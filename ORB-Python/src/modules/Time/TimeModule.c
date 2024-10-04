@@ -2,6 +2,8 @@
 #include "py/runtime.h"
 #include "Time_C_Interface.h"
 
+extern const mp_obj_module_t time_module;
+
 static mp_obj_t time___init__(void) {
     if (!MP_STATE_VM(time_initialised)) {
         MP_STATE_VM(time_initialised) = true;
@@ -19,7 +21,7 @@ static MP_DEFINE_CONST_FUN_OBJ_0(mp_get_time_obj, mp_get_time);
 
 static mp_obj_t mp_wait(mp_obj_t arg) {
     wait(mp_obj_get_int(arg));
-    return mp_const_none;
+    return MP_OBJ_FROM_PTR(&time_module);
 }
 static MP_DEFINE_CONST_FUN_OBJ_1(mp_wait_obj, mp_wait);
 

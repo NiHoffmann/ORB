@@ -2,6 +2,8 @@
 #include "py/runtime.h"
 #include "Memory_C_Interface.h"
 
+extern const mp_obj_module_t memory_module;
+
 static mp_obj_t memory___init__(void) {
     if (!MP_STATE_VM(memory_initialised)) {
         MP_STATE_VM(memory_initialised) = true;
@@ -13,7 +15,7 @@ MP_REGISTER_ROOT_POINTER(int memory_initialised);
 
 static mp_obj_t mp_clear_memory() {
     clearMemory();
-    return mp_const_none;
+    return MP_OBJ_FROM_PTR(&memory_module);
 }
 static MP_DEFINE_CONST_FUN_OBJ_0(mp_clear_memory_obj, mp_clear_memory);
 
@@ -45,7 +47,7 @@ static mp_obj_t mp_set_memory(mp_obj_t addr_obj, mp_obj_t data_obj) {
     }
 
     setMemory(addr, array, length);
-    return mp_const_none;
+    return MP_OBJ_FROM_PTR(&memory_module);
 }
 static MP_DEFINE_CONST_FUN_OBJ_2(mp_set_memory_obj, mp_set_memory);
 
