@@ -49,49 +49,28 @@ class NXTLightSensor:
 
 colorRight = NXTLightSensor(sensor.S1, 10000.0, 6000.0, 19000.0, 4000.0, 0.075)
 colorLeft  = NXTLightSensor(sensor.S2, 1100.0, 600.0,  10000.0, 2000.0, 0.015)
-"""
-colorLeft = NXTLightSensor(sensor.S2)
 
 motorRight = motor(port = motor.M1, direction = motor.REVERSE)
 motorLeft = motor(port = motor.M2, direction = motor.REVERSE)
 motorLeft.set(mode = motor.POWER_MODE)
 motorRight.set(mode = motor.POWER_MODE)
 
-speedLeft =  25.0
-speedRight = 25.0
+speedLeft =  200.0
+speedRight = 200.0
 
 last = time.getTime()
 current = last
-deltaTime = 0
-gain = 0.1
-"""
 
-now = time.getTime()
-was = now
 while True:
-    now = time.getTime()
-    monitor.setText(0, "Time: "+str((now - was)/1000.0))
-    monitor.setText(1, "Left isblack : "  + str(colorLeft.get()))
-    monitor.setText(2, "Right isblack : " + str(colorRight.get()))
-    was = now
-    """
     current = time.getTime()
-    deltaTime =  current - last
     last = current
 
-    if colorRight.get() < 25:
-        speedLeft = min(speedLeft + (gain * deltaTime), 150)
-    else:
-        speedLeft = max(speedLeft - (gain * deltaTime), 80)
+    monitor.setText(0, "Time: "+str((current - last)))
+    monitor.setText(1, "Left isblack : "  + str(colorLeft.get()))
+    monitor.setText(2, "Right isblack : " + str(colorRight.get()))
 
-    if colorLeft.get() < 25:
-        speedRight = min(speedRight + (gain * deltaTime), 150)
-    else:
-        speedRight = max(speedRight - (gain * deltaTime), 80)
+    left_is_white  = colorLeft.get()  < 50
+    right_is_white = colorRight.get() < 50
 
-    monitor.setText(0,"Left: " + str(speedLeft))
-    monitor.setText(1,"Right: " + str(speedRight))
-
-    motorLeft.set(speed = int(speedLeft))
-    motorRight.set(speed = int(speedRight))
-    """
+    motorLeft.set(speed = int(speedLeft) * left_is_white )
+    motorRight.set(speed = int(speedRight) * right_is_white)
