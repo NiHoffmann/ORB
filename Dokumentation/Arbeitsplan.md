@@ -32,13 +32,13 @@
     > Festgehalten im Sphinx-Api-Doc
 
 - [ ] **3. Vollständige Firmware Integration** 
-    - [ ] 3.1. Wiederherstellen der ORB-Programm-Logik
-    - [ ] 3.2. Konflikte zwischen Tasks identifizieren & Dokumentieren
+    - [x] 3.1. Wiederherstellen der ORB-Programm-Logik
+    - [x] 3.2. Konflikte zwischen Tasks identifizieren & Dokumentieren
     > Hier z.b. das UserInterface schaltet Motoren aus wenn keien AppTask läuft und der Monitor nicht überträt das diese eingeschaltet seien sollen.
-    - [ ] 3.3. Konflike Lösen & Dokumentieren
+    - [x] 3.3. Konflike Lösen & Dokumentieren
     - [ ] 3.4. Kontrollfluss Dokumentation (aus 3.2. & 3.3.) erstellen.
     >Welcher Button startet Python-Vm welcher AppTask, etc. diser schritt ist abhängig von vorher getroffenen Designentscheidungen.
-    - [ ] 3.5. Testen & Dokumentieren der ORB-Python-Funktionalitäten im zusammenhang mit Kontrollfluss und ORB-Firmware Kompatibilität.
+    - [x] 3.5. Testen & Dokumentieren der ORB-Python-Funktionalitäten im zusammenhang mit Kontrollfluss und ORB-Firmware Kompatibilität.
     - [ ] 3.6. Micropython-VM-Api Dokumentation nach bessern
     > Das hier könnte eine eigene Einheit sein, bis zu diesem Punkt wurde erste einem mal nur der Fokus darauf gesetzt das die PythonTask ihre Aufgabe erfüllen kann. Jetzt muss das Zusammenspiel mit den anderen Komponenten untersucht werden (hier also vllt. `4. Analyse des zusammenspiels zwischen bestehender ORB-Firmware-Architektur & PythonTask`)
     - [ ] 3.7. Analyse der ORB-Python Anforderungen  
@@ -46,14 +46,3 @@
             - [ ] 3.7.1.1. Wie groß kann / sollte die HeapSize sein.
             - [ ] 3.7.1.2. Wie große kann / sollte der PythonTask Stack sein.
             - [ ] 3.7.1.3. Welche Speicherblöcke bekommt die PythonTask um die MPY-Binary abzulegen
-
-//TODO das hier würde ich gerne noch machen wenn genug Zeit ist.
-
-- [ ] **5. Kamera-Modul bereit stellen** 
-    > Das hier soll ein Platzhalter Modul für das Spätere erweitern mit Smartphone verbindung sein. Das Umsetzen dieser Funktion ist an dieser Stelle ein proof-of-concept. 
-    - [ ] 5.1. Karmera-Modul & Mockup in Code::Blocks erstellen
-    > Hier erst einmal nur `Camera.getBall(color c)`
-    - [ ] 5.2. Kamera-Modul in C-Interface-Implementation umsetzen
-    - [ ] 5.3. ORB-Monitor für Testzwecke Modifizieren
-    > D.h. ein Butten des ORB-Monitors sendet `position(x,y)` anstelle des eigentlichen Key-Codes
-    - [ ] 5.4. Funktionalität Testen
