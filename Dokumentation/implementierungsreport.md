@@ -1,5 +1,4 @@
 # Inhaltsverzeichnis
-- [0. Zuordung zu Arbeits-Packeten](#0-zuordung-zu-arbeits-packeten)
 - [1. Aufsetzen des GitHub-Projekts](#1-aufsetzen-des-github-projekts)
 - [2. Micropython Modul Registrierung](#2-micropython-modul-registrierung)
     - [2.1. Registrieren eines Test-Moduls](#21-registrieren-eines-test-moduls)
@@ -14,22 +13,10 @@
 - [4. Erster Entwurf der Micropython VM-Schnittstelle](#4-erster-entwurf-der-micropython-vm-schnittstelle)
     - [4.1. Ausführung der VM in einem Thread](#41-ausführung-der-vm-in-einem-thread)
     - [4.2. Micropython-Ausführung unterbrechen](#42-micropython-ausführung-unterbrechen)
-- [5. User Program Compile-Script](#5-user-program-compile-script) //TODO test, integration orb
+- [5. User Program Compile-Script](#5-user-program-compile-script) 
 - [x. Firmware-Architektur](#firmware-architektur)
 
-## 0. Zuordung zu Arbeits-Packeten
-Zu beginn jeden Abschnittes meines Implementierungs Reports, führe ich eine Tabelle dieser Form ein. So soll ersichtlich werden wo welche Arbeitspackete umgesetzt wurden.
-|Packet|Abschnitt|
-|------|---------|
-| x.x  |  titel  |
-
->eine andere idee wäre es das der Arbeitsplan so eine Tabelle bekommt ich ich da eine Zuordnung mache, mit Links auf die Titel
-
 ## 1. Aufsetzen des GitHub-Projekts
-|Packet|Abschnitt|
-|------|---------|
-| 1.1. |  1.-14. | 
-| 1.6. |  14.    |
 
 1. **Repository erstellen**:  
 Zunächst habe ich ein neues Repository auf GitHub angelegt. Das ich direkt mit einer `README.md`-Datei versehen habe.
@@ -89,14 +76,6 @@ Um sicher zu stellen, das Micropython korrekt Compiliert und problemlos ausgefü
 14. **Code:Blocks Build Targets anpassen**: Zu diesem Zeitpunkt ist der Build Prozess des Code:Blocks Projektes von dem des MP-Embed-Port los gelöst. Im bestenfall sollte aus der Code:Blocks umgebung auch der MP-Embed-Port gebaut werden können. Zu diesem Zweck habe ich dem Code:Blocks Projekt 2 Build-Target gegeben : *Build* und *Rebuild* während build der vorher configurierte Prozess ist, ist rebuild erweitert durch einen Pre-Build-Step. Das *Rebuild*-Build-Target ruft ein batch script auf welches die commandos für das `clear` und `build` des Micropython-Embed-ports enhält. Die Verwendung der Target ist wie Folgt gedacht, entwickelt man nur in der Code:Blocks umgebung ohne neue Module/Funktionen hinzuzfügen so reicht das Build-Target aus. Da die MP-Embed-Port ressourcen nicht immer neu generiert werden müssen. Kommen nun neue Module hinzu, werden alte Umbenannt oder neue Funktionen eingeführt. So kann man einmal das Rebuild-Target ausführen. Danach verwendet man wieder wie gewohn Build.
 
 ## 2. Micropython Modul Registrierung
-|Packet|Abschnitt|
-|------|---------|
-| 1.2. |   2.1.2.| 
-| 1.3. |   2.1.1.|
-| 1.7. | 2.2. , 2.3.|
-| 1.8. |    2.4. |
-
-//das hier stimmt nicht mehr, überschrift  nummern geändert
 
 ### 2.1. Registrieren eines Test-Moduls
 Alle aller erstes Modul habe ich ein Test-Modul umgesetzt. Dies war eine direkte Kopie `examplemodule.c` das ich nicht weiter konfiguriert habe. 
@@ -178,11 +157,7 @@ static MP_DEFINE_CONST_FUN_OBJ_KW(set_obj, 1, set);
 Im Gegensatz dazu wird die ORB-Firmware anstelle der Mockup-Datei eine andere Motor-Implementations-Datei einbinden. Diese setzt die tatsächliche Funktionalität um bzw. bietet ein C-Interface für die C++ Funktionen der ORB-Firmware.
 
 ## 3. Erstellen der Sphinx-Dokumentation
-|Packet|Abschnitt|
-|------|---------|
-| 1.2. |   2.1.2.| 
 
-//nur ein ganz kurzes kapitel
 ### 3.1. Aufsetzen der Sphinx-Dokumentation
 
 ### 3.2. Umfang der Dokumentation 
@@ -192,10 +167,6 @@ Im Gegensatz dazu wird die ORB-Firmware anstelle der Mockup-Datei eine andere Mo
 //problem mit der pip installation vllt auch & lösung
 
 ## 4. Erster Entwurf der Micropython VM-Schnittstelle
-|Packet|Abschnitt|
-|------|---------|
-| 1.4. |   4.    |
-| 1.5. |   4.1. , 4.2|
 
 >Hier kurz erklärten welche Funktionen umgesetzt werden sollen
 auslagern der loadProgram / getProgramLength Funktion
@@ -285,11 +256,11 @@ if (exc_sp >= exc_stack
 Nun kann der VM-Interrupt geplant werden. Da die Dispatch-Schleife jedes Mal besucht wird, wenn etwas verarbeitet werden muss, wird dies immer dazu führen, dass die Ausführung nach Abschluss der aktuellen Befehlsverarbeitung unterbrochen wird.  
   
 ## 5. User Program Compile-Script
-//das hier habe ich eigentlich schon fürher erstellt wusste nur noch nicht wo genau ich es am besten unterbringe, außedem ergenzung um information der error flag, falls compilierung hier fehlschlägt bricht der build prozess in code blocks ab.
+//das hier habe ich eigentlich schon fürher   
+//ich denke das schiebe ich alles nach hinten da ich hier zum ende hin noch änderungen hatte
 
-|Packet|Abschnitt|
-|------|---------|
-| 1.9. |    5.   |
+   
+erstellt wusste nur noch nicht wo genau ich es am besten unterbringe, außedem ergenzung um information der error flag, falls compilierung hier fehlschlägt bricht der build prozess in code blocks ab.
 
 Um den Compile Prozess von Python nach MPY-Byte-Code zu vereinfachen und in Code::Blocks einzugiben, habe ich ein compile script erstellt. Dieses ist in Python geschrieben. 
 Diese Compile Script hat Folgende Aufgabe:  
@@ -319,27 +290,39 @@ also  MonitorTest,ExceptionTest,.... und auch falls notwendig wie die ORB-Firmwa
 (z.B. ausschalten der automatischen gc flag usw.)
 
 ## 7. Integration in ORB-Firmware
+
 ### 7.1. Entwicklungs Gerüst
-> d.h. ausbauen der ORB-Tasks, einbinden der Micropython-Bibliotheken
-MPY-Byte-Code als Statisches Array in die Firmware Integriert  
-Verwendung von DFUtil, warum wieso wehalb ?   
-Testen mit usrLed  
+Der erste Schritt meiner Entwicklung auf dem STM32-F405-Mikrocontroller bestand darin, das grundlegende Entwicklungsgerüst zu erstellen. Dabei ging es zunächst darum, die grundlegende Funktion des MicroPython-Ports zu testen. An diesem Punkt war es noch nicht entscheidend, Programme zu übertragen oder tatsächliche Funktionen zu nutzen.
+
+Ich habe die MicroPython-VM in das ORB-Firmware-Projekt integriert und leere C-Implementierungsklassen für die Firmware erstellt. Der auszuführende Byte-Code wurde dabei fest in die Firmware integriert und gemeinsam mit ihr übertragen. Mein erstes Test-Programm war ein einfacher Funktions-Aufruf welcher auf seiten der C-Implementierungsklassen eine LED eingeschlatet hat. In diesem Schritt habe ich die eigentliche ORB-Firmware zunächst außen vor gelassen. Das bedeutet, dass ich alle Tasks und zusätzlichen Funktionen, die normalerweise durch die ORB-Firmware realisiert werden, auskommentiert habe. Lediglich die eingebundene EMB-Sys-Lib der ORB-Firmware habe ich verwendet, um Zugriff auf die LED-Klassen zu erhalten.
+
+Um die Firmware auf den Mikrocontroller zu laden, habe ich das Tool `dfu-util` verwendet. Hierfür musste ich den Mikrocontroller zunächst in den DFU-Modus versetzen und mithilfe von Zadig als ein WinUSB-Gerät konfigurieren. 
+
+
+Nachdem ich diese vorbereitenden Schritte abgeschlossen hatte, konnte ich mit der eigentlichen Entwicklung des Embed-Ports beginnen und ihn schrittweise in die ORB-Firmware integrieren.
 
 ### 7.2. Übertragung des Programmes
-> Sektor 11 da weit weg von allen anderen Verwendeten Speicherblöcken
-ink. firmware-code  
-Umsetzen der Programm-Lade-Funktion  
-Hier verweisen auf der Aufbau der Bin-Datei (Gespeicherte-Länge)  
-verwenden von dfutil 
-installation/bereitstellung von dfutil
-in tools&referenzen aufnehmen
+Um meine Funktionen testen zu können, war zunächst die Programm-Übertragung auf die ORB-Firmware wichtig. Außerdem musste das Ausführen von Programmen direkt aus dem Flash-Speicher realisiert werden.
+ Dies würde die spätere Entwicklungszeit deutlich verkürzen und mir ermöglichen, effizienter zu testen.
+
+
+Ich habe mich entschieden, Sektor 11 als Speicherort zu wählen, da dieser weit von allen anderen genutzten Speicherblöcken, einschließlich des Firmware-Codes, entfernt liegt. 
+
+Sektor 11 befindet sich an der Adresse 0x080E0000. dfu-util kann Byte-Daten an definierte Stellen schreiben, was ich mit dem folgenden Befehl realisiere:
+```
+dfu-util -a address_offset --dfuse-address 0x080E0000 -D <bin_pfad>
+```
+Ich habe die Programm-Binärdatei in folgender Form strukturiert: `<4byte_länge><xxbyte_ mpy-bytes>`. Dadurch konnte ich problemlos an die gewünschte Adresse schreiben und das Programm später wieder aus dem Flash-Speicher auslesen. Im Späteren verlauf wurde dieser Daten-Frame erweitert siehe [link zu python/cpp flag]().
+
+Die Länge muss zusätzlich übertragen werden, um zu bestimmen, wie viele Bytes aus dem Flash-Speicher geladen werden müssen. Diese Längenangabe liegt an einer vordefinierten Speicheradresse (0x080E0000 - 0x080E0003). Die Kodierung dieses 32-Bit-Wertes erfolgt im Big-Endian-Format.
 
 ### 7.3. Umsetzen der Tatsächlichen Modul Funktionen
-> verbinden mit durch AppTask bereit gestellten funktionen  
-bis jetzt nur mit Motoren/Speicher getestet da ich sonst keine EV3-Teile habe  
-
+> verbinden mit durch AppTask bereit gestellten funktionen also die orblocal.h funktionen wie vorgegeben durch die Anforderugen
+ 
 > memeory klasse ausversehen firmware-code überschrieben, save/unsave mode vielleicht einführen oder zumindest kurz erwähnen das dies möglich ist  
 -> gedankt nutzer speicher bereich einschränken
+
+bis jetzt nur mit Motoren/Speicher getestet da ich sonst keine EV3-Teile habe  
 
 ### 7.4. Einbinden in die Python-Task & Verbinden mit USB-Task
 > Erster schritt in richtung verwendung von Tasks  
@@ -360,7 +343,6 @@ Z.B. Heap-Size, Enable_Interrupt, Enable_Automatic gc,.....  also quasi alles wa
 gedanken hinter der erweiterung vielleicht kurz erklären  
 //Hier könnte man dann auch auf Konzepte verweisen und die Philosophie hinter flags in dem Microypthon-Projekt erklären "Modulatität"  
 //->"good practice" solche konzepte mit umzusetzen usw.
-
 
 ## Firmware-Architektur
 > Die Firmware Architektur sieht wie folgt aus,....
