@@ -17,8 +17,6 @@ No C implementation is required to provide for objects greater than that size, w
 #define MICROPY_ENABLE_GC                       (1)
 #define MICROPY_PY_GC                           (1)
 #define ORB_ENABLE_INTERRUPT					(1)
-#define ORB_ENABLE_MONITOR_STD_OUT				(1)
-
 #define ORB_ENABLE_EXIT_STATUS                  (1)
 #define ORB_EXIT_NORMAL                         (0)
 #define ORB_EXIT_EXCEPTION                      (1)
@@ -38,6 +36,9 @@ No C implementation is required to provide for objects greater than that size, w
 #define MICROPY_FLOAT_IMPL                      (MICROPY_FLOAT_IMPL_FLOAT)
 #define OMIT_FRAME_POINTER_ON_WINDOWS           (1)
 
+#ifndef BUILD_FROM_CODE_BLOCKS
+    #define ORB_ENABLE_MONITOR_STD_OUT				(1)
+#endif
 
 //Additional Functions
 #define MICROPY_PY_MATH (1)

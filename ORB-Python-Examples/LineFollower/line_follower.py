@@ -63,9 +63,9 @@ current = last
 
 while True:
     current = time.getTime()
+    monitor.setText(0, "Time: "+str((current - last)))
     last = current
 
-    monitor.setText(0, "Time: "+str((current - last)))
     monitor.setText(1, "Left isblack : "  + str(colorLeft.get()))
     monitor.setText(2, "Right isblack : " + str(colorRight.get()))
 

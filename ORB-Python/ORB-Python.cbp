@@ -11,6 +11,9 @@
 				<Option object_output="build/obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Environment>
+					<Variable name="BUILD_FROM_CODE_BLOCKS" value="1" />
+				</Environment>
 			</Target>
 			<Target title="Rebuild">
 				<Option output="build/bin/Release/ORB-Python" prefix_auto="1" extension_auto="1" />
