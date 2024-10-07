@@ -1,1 +1,1 @@
-Testen des Vollständigen Funktions-Umgeangs des Memory-Moduls.
+Ein einfacher Test der Memory Funktionen. Es sollen alle Funktionen des Memory-Moduls verwendet werden.

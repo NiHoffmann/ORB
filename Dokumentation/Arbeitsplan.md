@@ -13,7 +13,7 @@
     - [x] 1.9. Program-Compile-Prozess in Code;Blocks Build Prozess einbauen 
     > Jetzt sollten alle Funktionen unter Windows Testbar sein.
     
-    - [ ] 1.10. Erstellen der Windows-Test-Spezifiakation
+    - [x] 1.10. Erstellen der Windows-Test-Spezifiakation
     - [ ] 1.11. Testen der Micropython-Funktionalitäten nach Spezifiakation
     > Hier Tests auch Anständig Dokumentieren, damit durch führung Reproduzierbar ist.
 

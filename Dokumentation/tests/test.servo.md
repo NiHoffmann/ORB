@@ -1,1 +1,1 @@
-Testen des Vollständigen Funktions-Umgeangs des Servo-Moduls.
+Ein einfacher Test der Servo Funktionen. Es sollen alle Funktionen des Servo-Moduls verwendet werden.

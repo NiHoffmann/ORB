@@ -17,17 +17,17 @@ typedef struct _motor_obj_t {
     uint8_t kp;
     uint8_t ki;
     uint8_t mode;
-    int16_t speed;
+    int speed;
     uint8_t position;
 } motor_obj_t;
 
 motor_obj_t motor_obj_list[4];
 
 void init_motor_representations() {
-    motor_obj_list[0] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M1, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
-    motor_obj_list[1] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M2, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
-    motor_obj_list[2] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M3, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
-    motor_obj_list[3] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M4, .direction = 1, .ticks = 72, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
+    motor_obj_list[0] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M1, .direction = 1, .ticks = 1000, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
+    motor_obj_list[1] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M2, .direction = 1, .ticks = 1000, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
+    motor_obj_list[2] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M3, .direction = 1, .ticks = 1000, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
+    motor_obj_list[3] = (motor_obj_t){ .base = { .type = &motor_type }, .port = M4, .direction = 1, .ticks = 1000, .acc = 25, .kp = 50, .ki = 30, .mode = 0, .speed = 0, .position = 0 };
 }
 
 static void mp_motor_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
@@ -51,11 +51,11 @@ static mp_obj_t mp_motor_make_new(const mp_obj_type_t *type, size_t n_args, size
 
     motor_obj_t *self = &motor_obj_list[port];
 
-    ACCEPT_KW_ARG(ARG_direction, self->direction, mp_obj_get_float);
-    ACCEPT_KW_ARG(ARG_ticks, self->ticks, mp_obj_get_int);
-    ACCEPT_KW_ARG(ARG_acc, self->acc, mp_obj_get_int);
-    ACCEPT_KW_ARG(ARG_kp , self->kp, mp_obj_get_int);
-    ACCEPT_KW_ARG(ARG_ki  , self->ki, mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_direction, self->direction, MP_OBJ_GET_NUMBER_VALUE);
+    ACCEPT_KW_ARG(ARG_ticks, self->ticks, MP_OBJ_GET_NUMBER_VALUE);
+    ACCEPT_KW_ARG(ARG_acc, self->acc, MP_OBJ_GET_NUMBER_VALUE);
+    ACCEPT_KW_ARG(ARG_kp , self->kp, MP_OBJ_GET_NUMBER_VALUE);
+    ACCEPT_KW_ARG(ARG_ki  , self->ki, MP_OBJ_GET_NUMBER_VALUE);
 
     self->direction = (self->direction>=0)?FORWARD:REVERSE;
 
@@ -80,11 +80,11 @@ static mp_obj_t config(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_arg
 
     motor_obj_t *self = MP_OBJ_TO_PTR(pos_args[0]);
 
-    ACCEPT_KW_ARG(ARG_direction, self->direction, mp_obj_get_float);
-    ACCEPT_KW_ARG(ARG_ticks, self->ticks, mp_obj_get_int);
-    ACCEPT_KW_ARG(ARG_acc, self->acc , mp_obj_get_int);
-    ACCEPT_KW_ARG(ARG_kp, self->kp , mp_obj_get_int);
-    ACCEPT_KW_ARG(ARG_ki, self->ki , mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_direction, self->direction, MP_OBJ_GET_NUMBER_VALUE);
+    ACCEPT_KW_ARG(ARG_ticks, self->ticks, MP_OBJ_GET_NUMBER_VALUE);
+    ACCEPT_KW_ARG(ARG_acc, self->acc , MP_OBJ_GET_NUMBER_VALUE);
+    ACCEPT_KW_ARG(ARG_kp, self->kp , MP_OBJ_GET_NUMBER_VALUE);
+    ACCEPT_KW_ARG(ARG_ki, self->ki , MP_OBJ_GET_NUMBER_VALUE);
 
     UPDATE_MOTOR_SETTINGS(self);
 
@@ -105,9 +105,9 @@ static mp_obj_t set(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args){
 
     motor_obj_t *self = MP_OBJ_TO_PTR(pos_args[0]);
 
-    ACCEPT_KW_ARG(ARG_mode, self->mode, mp_obj_get_int);
-    ACCEPT_KW_ARG(ARG_speed, self->speed, mp_obj_get_int);
-    ACCEPT_KW_ARG(ARG_position, self->position , mp_obj_get_int);
+    ACCEPT_KW_ARG(ARG_mode, self->mode, MP_OBJ_GET_NUMBER_VALUE);
+    ACCEPT_KW_ARG(ARG_speed, self->speed, MP_OBJ_GET_NUMBER_VALUE);
+    ACCEPT_KW_ARG(ARG_position, self->position , MP_OBJ_GET_NUMBER_VALUE);
 
     SET_MOTOR(self);
 

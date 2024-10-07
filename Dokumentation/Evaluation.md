@@ -1,0 +1,5 @@
+//Durch das Testen und das Umsetzen der Test klassen konnte grundsätlich die Funktions fähigkeit des Embed-Ports bestätigt werden.
+Die Funktionen der ORB-Application sind zusammen mit der Python-VM verwendbar. 
+//Andieser stelle auch den Performance verlgeich der ORB-Python vs ORB-Application bereit stellen und genauer darauf eingehen.
+//vielelicht noch einmal Anforderungen auflisten und "abhaken" oder auch nur grob erklären das alle Anforderungen erfüllt werden konnte ( falls es denn auch so ist).
+//Vielleicht hier auch auf noch bestehende bekannte probleme eingehen wie z.b. das die Micropython-VM in der lage ist die ORB-Firmware zum crashen zu bringen (happy path) aber nur in sehr seltenen fällen und das ein fault handler eingebaut wurde. Also wie damit umgegangen werden soll. Ein vollständiger umbau der Micropython-VM dahingehen das es aufwändige heap/stack speicher checks gibt ist unrealistisch da dies mit einem massiven performance verluss verbunden ist. in den meisten fällen lassen sich diese probleme sowie so durch überdenken von PythonProgrammen(z.b. einbau von gc_collect cyclen lösen)

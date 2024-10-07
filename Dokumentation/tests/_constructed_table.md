@@ -15,7 +15,7 @@ Diese test ist für das Compile-Script. Er sollte einen Value-Error werfen. Zus�
 test.exception
 </td>
 <td style="width: 40%;">
-Dieser Fehler überprüft ob Micropython-Exceptions als Normale programm beendung erkannt werden. Zusätzliche sollte die Art der Exception al `Exception Type` ausgegeben werden. 
+Dieser Fehler überprüft ob Micropython-Exceptions als solche erkannt werden (Exit-Code 1). Zusätzliche sollte die Art der Exception ausgegeben werden. In diesem Fall `Exception`. 
 </td>
 </tr>
 
@@ -24,7 +24,7 @@ Dieser Fehler überprüft ob Micropython-Exceptions als Normale programm beendun
 test.memFault
 </td>
 <td style="width: 40%;">
-Diese Script Test überprüft ob Memory-Allocation-Errors d.h. ungenügender Speicher im Micropython-Heap. Die VM sollte normal beended werden Exit-Status: 0. Der Exit-Typ sollte einen memory-error anzeigen.
+Diese Script Test überprüft ob Memory-Allocation-Errors d.h. ungenügender Speicher im Micropython-Heap. Die VM soll mit dem Exit-Code Exception(1) Beendet werde. Der Exit-Typ sollte einen memory-error anzeigen.
 </td>
 </tr>
 
@@ -33,7 +33,7 @@ Diese Script Test überprüft ob Memory-Allocation-Errors d.h. ungenügender Spe
 test.memory
 </td>
 <td style="width: 40%;">
-Testen des Vollständigen Funktions-Umgeangs des Memory-Moduls.
+Ein einfacher Test der Memory Funktionen. Es sollen alle Funktionen des Memory-Moduls verwendet werden.
 </td>
 </tr>
 
@@ -42,7 +42,7 @@ Testen des Vollständigen Funktions-Umgeangs des Memory-Moduls.
 test.monitor
 </td>
 <td style="width: 40%;">
-Testen des Vollständigen Funktions-Umgeangs des Monitor-Moduls.
+Ein einfacher Test der Monitor Funktionen. Es sollen alle Funktionen des Monitor-Moduls verwendet werden.
 </td>
 </tr>
 
@@ -51,7 +51,7 @@ Testen des Vollständigen Funktions-Umgeangs des Monitor-Moduls.
 test.motor
 </td>
 <td style="width: 40%;">
-Testen des Vollständigen Funktions-Umgeangs des Motor-Moduls.//ergänzen geteilte-objecte etc.
+Ein einfacher Test der Motor Funktionen. Es sollen alle Funktionen des Motor-Moduls verwendet werden.
 </td>
 </tr>
 
@@ -60,7 +60,7 @@ Testen des Vollständigen Funktions-Umgeangs des Motor-Moduls.//ergänzen geteil
 test.sensor
 </td>
 <td style="width: 40%;">
-Testen des Vollständigen Funktions-Umgeangs des Sensor-Moduls.
+Ein einfacher Test der Sensor Funktionen. Es sollen alle Funktionen des Sensor-Moduls verwendet werden.
 </td>
 </tr>
 
@@ -69,7 +69,7 @@ Testen des Vollständigen Funktions-Umgeangs des Sensor-Moduls.
 test.servo
 </td>
 <td style="width: 40%;">
-Testen des Vollständigen Funktions-Umgeangs des Servo-Moduls.
+Ein einfacher Test der Servo Funktionen. Es sollen alle Funktionen des Servo-Moduls verwendet werden.
 </td>
 </tr>
 
@@ -78,7 +78,7 @@ Testen des Vollständigen Funktions-Umgeangs des Servo-Moduls.
 test.time
 </td>
 <td style="width: 40%;">
-Testen des Vollständigen Funktions-Umgeangs des Time-Moduls.
+Ein einfacher Test der Time Funktionen. Es sollen alle Funktionen des Time-Moduls verwendet werden.
 </td>
 </tr>
 
@@ -87,7 +87,7 @@ Testen des Vollständigen Funktions-Umgeangs des Time-Moduls.
 test.userInterrupt
 </td>
 <td style="width: 40%;">
-Testen des User-Interrupts. Der Exit-Status sollte 2 sein und aus dem Exit-Typ sollte heervor gehen das ein User-Interrupt verwendet wurde.
+Testen des User-Interrupts. Der Exit-Status sollte 2 sein und aus dem Exit-Typ sollte hervor gehen, das ein User-Interrupt verwendet wurde.
 </td>
 </tr>
 

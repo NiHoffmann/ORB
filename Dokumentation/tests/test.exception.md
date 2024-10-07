@@ -1,1 +1,1 @@
-Dieser Fehler überprüft ob Micropython-Exceptions als Normale programm beendung erkannt werden. Zusätzliche sollte die Art der Exception al `Exception Type` ausgegeben werden. 
+Dieser Fehler überprüft ob Micropython-Exceptions als solche erkannt werden (Exit-Code 1). Zusätzliche sollte die Art der Exception ausgegeben werden. In diesem Fall `Exception`. 

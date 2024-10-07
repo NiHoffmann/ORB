@@ -22,7 +22,7 @@ No C implementation is required to provide for objects greater than that size, w
 #define ORB_EXIT_EXCEPTION                      (1)
 #define ORB_EXIT_INTERRUPT                      (2)
 
-//this was a terrible idea, we only lose performance here
+//this results in a massive performance drop
 /*
 #define ORB_EXIT_GC_ABORT                       (3)
 #define ORB_ENABLED_AUTOMATIC_GC                (1)
@@ -36,8 +36,9 @@ No C implementation is required to provide for objects greater than that size, w
 #define MICROPY_FLOAT_IMPL                      (MICROPY_FLOAT_IMPL_FLOAT)
 #define OMIT_FRAME_POINTER_ON_WINDOWS           (1)
 
+//we only want to use Monitor as STD OUT when on the microcontroller 
 #ifndef BUILD_FROM_CODE_BLOCKS
-    #define ORB_ENABLE_MONITOR_STD_OUT				(1)
+    #define ORB_ENABLE_MONITOR_STD_OUT	        (1)
 #endif
 
 //Additional Functions

@@ -1,1 +1,1 @@
-Testen des Vollständigen Funktions-Umgeangs des Monitor-Moduls.
+Ein einfacher Test der Monitor Funktionen. Es sollen alle Funktionen des Monitor-Moduls verwendet werden.

@@ -1,2 +1,1 @@
-Testen des Vollständigen Funktions-Umgeangs des Motor-Moduls.
-//ergänzen geteilte-objecte etc.
+Ein einfacher Test der Motor Funktionen. Es sollen alle Funktionen des Motor-Moduls verwendet werden.

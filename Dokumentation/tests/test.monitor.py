@@ -3,11 +3,11 @@ from monitor import getKey, setText, keys
 
 def monitorTest():
     print("=== getKey Test ===")
-    print("key = monitor.getKey()")
+    print("call key = monitor.getKey()")
     key = monitor.getKey()
     print(key)
     print("=== setText Test ===")
-    print("setText(1, \"hallo\")")
+    print("call setText(1, \"hallo\")")
     setText(1, "hallo")
     print("")
     print("=== Test keys ===")

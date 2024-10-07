@@ -6,16 +6,19 @@
     - [Konkrete-Typen](#konkrete-typen)
         - [Module-Type](#module-type)  
         - [Klassen-Type](#klassen-type)//hier noch die unter-titel eintragen wenn fertig.
+            - [Selbst Deffinierte Klassen](#selbst-deffinierte-klassen)
+            - [Bereit gestellte Funktionen und Konzepte](#bereit-gestellte-funktionen-und-konzepte)
 - [Micropython Typ Zuordnung](#micropython-typ-zuordnung)
     - [Worauf Stützt sich die Typ-Zuordnung](#worauf-stützt-sich-die-typ-zuordnung)
-    - [Wie Funktioniert die Typ-Zuordnung](#wie-funktioniert-die-typ-zuordnung)
+    - [Wie Funktioniert die Typ-Zuordnung (Non-Concrete-Types)](#wie-funktioniert-die-typ-zuordnung-non-concrete-types)
+    - [Wie Funktioniert die Typ-Zuordnung (Concrete-Types)](#wie-funktioniert-die-typ-zuordnung-concrete-types)
 - [Problematik bei der Verwendung von Namespaces](#problematik-bei-der-verwendung-von-namespaces) 
-    -  [Super- & Submodule](#super-&-submodule)
-    -   [Dictionaries und QStrings](#dictionaries-und-qstrings)
+    - [Super- & Submodule](#super-&-submodule)
+    - [Dictionaries und QStrings](#dictionaries-und-qstrings)
     - [Submodule als QString Alias](#submodule-als-qstring-alias)
     - [Kombination von Submodulen, QString und Supermodulen](#kombination-von-submodulen-qstring-und-supermodulen)
     - [Schlussfolgerung zu diesen Problemen](#schlussfolgerung-zu-diesen-problemen)
-    -   [Limitierungen des MicroPython-Interpreters](#limitierungen-des-micropython-interpreters)//noch nicht sortiert
+    - [Limitierungen des MicroPython-Interpreters](#limitierungen-des-micropython-interpreters)//noch nicht sortiert
 - [Micropython Flags](#micropython-flags)
 - [Reduzierung des Micropython-Heap-Verbrauchs durch Objektreferenzen](#reduzierung-des-micropython-heap-verbrauchs-durch-objektreferenzen)
 - [Thread Safety](#thread-safety)
@@ -24,6 +27,9 @@
     - [Beschreibung des Bugs](#beschreibung-des-bugs)
     - [Vorgehensweise zur Fehlerbehebung](#vorgehensweise-zur-fehlerbehebung)   
 - [Compiler Flag Kompatibilität](#compiler-flag-kompatibilität)
+    - [Micropython Compiler Flags](#micropython-compiler-flags)
+    - [ORB-Firmware Compiler Flags](#orb-firmware-compiler-flags)
+    - [Angepassten Compiler Flags](#angepassten-compiler-flags)
 - [Argument Parsing](#argument-parsing)  
 //TODO vorschriften/diagramme zuende machen und ins dokument bringen.  
 //das hier ist noch nicht nummeriert da sich noch einiges ändern kann 
@@ -35,20 +41,22 @@
 
 ## Warum den MicroPython Embed Port verwenden?
 
-Im Rahmen meiner Bachelorarbeit wurden zwei mögliche Ansätze zur Integration des MicroPython-Interpreters in die ORB-Firmware identifiziert. Der erste Ansatz basiert auf der Verwendung des MicroPython STM-Port. Dieser Ansatz würde die MicroPython-Umgebung als Grundlage nutzen, in die die ORB-Firmware integriert werden müsste. Allerdings erachtete ich diesen Weg als eher unpraktisch, da er Komplikationen im Build-Prozess mit sich bringen könnte. Möglicherweise wären umfangreiche Anpassungen oder sogar das Umschreiben von MicroPython in C++ erforderlich. 
+Im Rahmen meiner Bachelorarbeit habe ich zwei mögliche Ansätze zur Integration des MicroPython-Interpreters in die ORB-Firmware identifiziert. Der erste Ansatz basiert auf der Verwendung eines der MicroPython STM-Ports (Wie z.B. der [ADAFRUIT_F405_EXPRESS-Port](https://github.com/micropython/micropython/tree/master/ports/stm32/boards/ADAFRUIT_F405_EXPRESS)). Dieser Ansatz würde die MicroPython-Umgebung als Grundlage nutzen. Somit müsste die ORB-Firmware als erweiterung des Micropython-Port eingebunden werden. Allerdings sehe ich diesen Weg als eher unpraktisch. Da er Komplikationen im Build-Prozess mit sich bringen könnte. Möglicherweise wären auch umfangreiche Anpassungen an dem Micropython-Port vorzunehmen. Grade durch die Natur der ORB-Firmware als C++-Projekt.
 
-Da die ORB-Firmware idealerweise nur an den notwendigsten Stellen angepasst werden sollte und ein kompletter Umbau vermieden werden soll, ist dieser Ansatz nicht optimal. Wie im Exposé beschrieben, ist mein Ziel, den MicroPython-Interpreter als eigenständige Komponente einzubinden, anstatt die ORB-Firmware in das MicroPython-Projekt zu integrieren.
+Da die ORB-Firmware idealerweise nur an den notwendigsten Stellen angepasst werden solltn, ist dies kein guter Ansatz. Wie bereits im Exposé beschrieben, ist mein Ziel, den MicroPython-Interpreter als eigenständige Komponente einzubinden. Somit ist dies nicht das erwünschte Vorgehen.
 
-Der zweite Ansatz, für den ich mich entschieden habe, ist die Verwendung des MicroPython Embed Ports. Dieser Ansatz bietet den klaren Vorteil, dass der MicroPython-Interpreter als eigenständige Komponente in die ORB-Firmware eingebunden werden kann, ohne dass die Firmware selbst stark verändert werden muss. So muss ich lediglich sinnvolle Schnittstellen definieren. Der MicroPython Embed Port bleibt in C implementiert, was bedeutet, dass keine Änderungen am Interpreter-Code erforderlich sind. Die Schnittstellen zur ORB-Firmware ermöglichen dann später die Abbildung von C++- auf C-Funktionen.
+Der zweite Ansatz ist die Verwendung des MicroPython Embed Ports. Dieser Ansatz bietet einen klaren Vorteil. Der MicroPython-Interpreter kann eigenständige Komponente in die ORB-Firmware eingebunden werden kann. Und dies ohne dass die Firmware selbst stark verändert werden muss. Es müssen lediglich sinnvolle Schnittstellen definiert werden. Sowohl C++-Klassen um die Micropython-VM bereit zustellen. Als auch Schnittstellen der ORB-Firmware, welche die C++- auf C-Funktionen abbilden sollen und dadurch verwendbar im Micropython-Code werden.
 
-Gleichzeitig hat dieser Ansatz den Vorteil das ich den Embed-Port auch unter Windows compilieren kann. Hier kann ich mithilfe von Code::Blocks oder einer anderen Entwicklungs-Umgebung eine Debug-Umgebung schaffen. Mit hilfe von dieser sollte der Prozess zur Entwicklung für Micropython bedeutend erleichtert werden. 
+Gleichzeitig hat dieser Ansatz den Vorteil das ich den Embed-Port auch unter Windows compiliert werden kann. Hier kann ich mithilfe von Code::Blocks oder einer anderen Entwicklungs-Umgebung eine Debug-Umgebung geschafft werden. Mit hilfe von dieser sollte der Prozess zur Entwicklung für Micropython bedeutend erleichtert werden. 
+
+Aufgrund diese Vorteile habe ich mich für den zweiten Ansatz entschieden.
 
 ## Micropython-Types
 1. [Micropython-Object-Type](#micropython-object-type)  
 2. [Module-Type](#module-type)
 3. [Klassen-Typ](#klassen-type)  
 
-Für die Umsetzung meines Projektes sind 3  Arten von Types die mit Micropython abgebildet werden können wichtig. Die Objekt, Modul und Typ-Klassen. Im Folgenden werden diese Genauer erklärt.
+Für die Umsetzung meines Projektes sind 3 Arten von Types die mit Micropython abgebildet werden können wichtig. Die Objekt-, Modul- und Typ-Klassen. Im Folgenden werden diese Genauer erklärt.
 
 #### Micropython-Object-Type
 Der Micropython-Object-Typ (mp_obj_t) ist ein abstrakter Zeiger.  
@@ -107,7 +115,7 @@ Auch der Rückgabewert einer Methode ist immer vom Typ mp_obj_t. Selbst speziell
 > [NOTE!]  
 > Das Makro `MP_OBJ_FROM_PTR` wandelt einen Zeiger in ein `mp_obj_t` um.  
 
-Auch Primitive-Typen wie z.b. Integer werden auch als `mp_obj_t` von Methoden zurück gegeben. Bzw. falls diese argument sind werden diese als solches übergeben. Hier ist zu beachten das Small Int wie oben beschrieben eine sonderrolle haben. "Vollwertige" Integer werden als Objecte verwaltet und haben ein mp_orb_int_t struct.  
+Primitive-Typen wie z.b. Integer werden als `mp_obj_t` von Methoden zurück gegeben. Bzw. falls diese argument sind werden diese als solches übergeben. Hier ist zu beachten das Small Int wie oben beschrieben eine sonderrolle haben. "Vollwertige" Integer werden als Objecte verwaltet und haben ein mp_orb_int_t struct.  
 Der unterschied im Zugriff lässt sich an der Folgenden Methode gut erkennen:  
 (objint_longlong.c Zeil: 284)  
 ```cpp
@@ -121,7 +129,7 @@ mp_int_t mp_obj_int_get_truncated(mp_const_obj_t self_in) {
 }
 ```
 
-Diese Daten-Typen verhalten sich wie somit Konzeptionell wie jedes andere Micropython-Object. Arbeitet man mit selbst implementierten oder bereit gestellten Objecten, so sieht in zugriff in der Regel wie folgt aus:
+Diese Daten-Typen verhalten sich wie somit Konzeptionell wie jedes andere Micropython-Object. Arbeitet man mit selbst implementierten oder bereit gestellten Objekten, so sieht in zugriff in der Regel wie folgt aus:
 ```cpp
 <...>
 static void mp_funktion(..., mp_obj_t obj_input, ...){
@@ -520,7 +528,7 @@ Der Servo wird nun auf `angle(30)` mit `speed(20)` bewegen.
 
 ## Thread Safety
 Micropython ist nicht Thread-Safe. Dies ist bei der Implementierung der Micropython-Task zu beachten. Micropython selber sollte so lange nicht anders möglich seinen Speicher-Bereich vollständig selber verwalten. Die Micropython-Task sollte vollständig losgelöst von der Restlichen Firmware laufen. Kommunikation zwischen ORB-Firmware und Python-VM sollte nur über Flags geschehen die immer nur von einer der beiden Seiten beschrieben werden können. Dadurch enstehende Race-Conditions sollten bedacht werden. 
->Micropython selber bietet die möglichkeit an Threads (in der VM geschlossen) zu verwalten. Dafür muss man die in der Datei `mpthread.h` deffinierten Funktionen umsetzen. Da die ORB-Application ab von sich aus keine Threads anbietet und das Umsetzen dieser somit außerhalb des Umfangs meiner Bachelorarbeiet liegt wird dies nicht weiter geachtet.
+>Micropython selber bietet die möglichkeit an Threads (in der VM geschlossen) zu verwalten. Dafür muss man die in der Datei `mpthread.h` deffinierten Funktionen umsetzen. Da die ORB-Application ab von sich aus keine Threads anbietet und das Umsetzen dieser somit außerhalb des Umfangs meiner Bachelorarbeiet liegt wird dies nicht weiter beachtet.
 
 ## Windows-Bug: Falsches Register bei Non-Local Return-Adressierung 
 
@@ -597,8 +605,12 @@ Das heißt hier ist es Notwendig das rsp und nicht rbp von dem Compiler als "Rü
 Da dieses Problem nur unter Windows eine Rolle-Spielt und für den STM32F405 Microcontroller dies Problem nicht auftritt. Reicht es für mich immer mit Compiler-Flags zu Compilieren welche `-fomit-frame-pointer` setzen. Also `-Os` oder auch `-Og`. Das ORB verwendet in seinem Compilier-Prozess `-O0`, jedoch gibt es diesen Bug nicht bei der Verwendung mit diesem Microcontroller. D.h. __attribute__((optimize("omit-frame-pointer"))) wird korrekt gesetzt bzw. erreicht. 
 
 ## Compiler Flag Kompatibilität
+> [!Caution]
+>  Compiler-Flags sind ein Stolperstein für alle die einen eigenen Micropython-Port aufbauen wollen oder wie ich, in ein bereit bestehendes Projekt Integrieren wollen. Ist man bei seinem Ausgangsprojekt (in meinem Fall ORB) an Bestimmte Compiler Flags gebunden, so kann es grundsätzlich unmöglich oder sehr umständlich sein Micropython in sein Projekt zu integrieren. Die betrachtung der Compatibelen Compiler-Flags sollte also vor der Implementierung des Ports getestet und gut durch dacht werden.
+
+### Micropython Compiler Flags
 Möchte man Micropython Compilieren und auch Debuggen können, so ist es notwendig  `-Og` als Flags zu setzen.
-Dieses Flag sorgt für eine moderate Optimierung. Für uns ist an dieser Stelle aber wichtig das Debugg Informationen erhalten bleiben. Durch die verwendung dieser flag ist es möglich in der Code::Blocks Umgebung Micropython Code zu debuggung. 
+Dieses Flag sorgt für eine moderate Optimierung. Für uns ist an dieser Stelle aber wichtig das Debugg Informationen erhalten bleiben. Durch die verwendung dieser flag ist es möglich in der Code::Blocks Umgebung Micropython Code sinnvoll zu debuggung. 
     
 > Die verwendung dieser Flag erfüllt zugelich für uns einen zweiten zweck. Der Dokumentation der [gcc compiler flags](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) ist zu entnehmen, das viele optimierungs flags durch das verwenden von -Og unterdrückt werden.  
 Wie man im Kapitep 3.11 Options That Control Optimization nachlesen kann: "Most optimizations are completely disabled at -O0 or if an -O level is not set on the command line, even if individual optimization flags are specified. Similarly, -Og suppresses many optimization passes."   
@@ -610,16 +622,20 @@ Auch wenn es noch viele weitere gibt hier exemplarisch die -ftree-pta flag:
 >```
 Dieser Ansatz minimiert also das Risiko von Problemen durch aggressivere
 Optimierungen. Das dies auch wirklich so ist lässt sich einfach ausprobieren. 
-Test weise habe die `-Og` Flag entfernt und die `-O3` optimierung verwendet. Dies ist eine sehr aggresive Optimierung. Baue ich nur meinen Micropython-Port der mit der Richtigen Compiler Flag problemlos funktioniert so bekomme ich schon vor dem ausführen der ersten Python-Zeile den Fehler-Code `0xC0000005`, dies ist ein Speicher zugriffs Fehler. 
-Aufgrund der Natur von MicroPython, das stark auf das Casten von Zeigern und das dynamische Aufrufen von Funktionen auf Basis von Python-Code, der erst zur Laufzeit geladen wird, angewiesen ist, ist es entscheidend, dass Optimierungen, die beispielsweise ungenutzte MicroPython-Module aus Sicht des Compilers nicht genutzt werden, keinen negativen Einfluss haben. Daher sollte im besten Fall auf aggressive Optimierungen verzichtet werden, um die Funktionsfähigkeit und Stabilität des Systems zu gewährleisten.
+Test weise habe die `-Og` Flag entfernt und die `-O3` optimierung verwendet. Dies ist eine sehr aggresive Optimierung. Baue ich nur meinen Micropython-Port der mit der Richtigen Compiler Flag problemlos funktioniert so bekomme ich schon vor dem ausführen der ersten Python-Zeile den Fehler-Code `0xC0000005`. dies ist ein Speicher zugriffs Fehler. 
+Aufgrund der Natur von MicroPython, das stark auf das Casten von Zeigern und das dynamische Aufrufen von Funktionen basiert. Und das durch diese Operationen das dynamische aufrufen von Python-Funktionen realisiert. 
+Ist es entscheidend, dass Optimierungen die beispielsweise ungenutzte MicroPython-Module entfernt nicht genutzt werden. Daher sollte im besten Fall auf aggressive Optimierungen verzichtet werden, um die Funktionsfähigkeit und Stabilität des Systems zu gewährleisten.
 
 Ist das Deguggen nicht mehr notwendig, so ist es möglich `-Os` zu verwenden um Speicherplatz zu sparen. Abgesehen von der geringen Programm-Größe bietet dieses Flag jedoch keinen vorstellt. Wichtig anzumerken ist das dies die einzige optimierungs Flag ist welche ist als sicher im Rahmen der verwendung mit Micropython ansehe. Da dies die einzige Flag ist welche man in der vielzahl der Micropython-Ports findet.
 
-> [!NOTE]  
-> Die Finalle Version diese Projektes soll mit `-Os` gebaut werden, um einen möglicht großen speicherblock für die programm ablegung und nutzdaten übrig zu lassen, unter Code::Blocks auch wenn möglich wird diese Flag jedoch abgesehen von anfänglichen Testzwecken nicht verwendet.
+### ORB-Firmware Compiler Flags
+Die ORB-Firmware hat als vor Configurierte Optimizierunge `-O0` eingestellt. Zusätzlich sind die Flags: 
+`-ffunction-sections` und `-fdata-sections` eingestellt. Diese Optionen Isolieren Daten und Funktionen jeweil in ein eigenes Segment. Aus der [GNU GCC Dokumentation](https://gcc.gnu.org/onlinedocs/gnat_ugn/Compilation-options.html) ist zu entnehmen das diese Flags nur den generierten Code sortieren. Jedoch nicht ungenutzten Code entfernen. Für das entfernen hier "garbage collection" von ungenutzten code müsste man die Flag ` -Wl,--gc-sections` setzen. Daher würde ich diese Flags als eher unproblematisch einstufen. Zusätzliches Testen konnte vallidieren das diese Compiler-Flags mit dem Micropython-Projekt compatibel sind.  
+Außerdem ist in dem ORB-Firmware-Projekt configuriert, das Floating-Pointer operationen als **"FPU-specific calling convention"** generitert werden. Für uns bedeutet dies das wir Float-Operationen als Daten-Typ verwenden können und uns keine gedanken über die genaue verwendung von Floats auf der FPU des Microcontrollers machen müssen. Alle anderen Flags sind für Compiler-Warnings und zusätzliche Debug-Informationen.
 
-> [!Caution]
-> Lässt man alle Compiler-Flags weg kann es hier auch zu problemen kommen. Dies ist ein Stolperstein für alle die einen eigenen Micropython-Port aufbauen wollen oder wie ich, in ein bereit bestehendes Projekt Integrieren wollen. Ist man bei seinem Ausgangsprojekt (in meinem Fall ORB) an Bestimmte Compiler Flags gebunden, so kann es grundsätzlich unmöglich oder sehr umständlich sein Micropython in sein Projekt zu integrieren. Die betrachtung der Compatibelen Compiler-Flags sollte also vor der Implementierung des Ports getestet und gut durch dacht werden.
+### Angepassten Compiler Flags
+Da die Compiler Flags der ORB-Firmware ohne hin schon kompatiblem mit den erlaubten Compiler-Flags des Micropython-Ports sind müssen keine weiteren änderungen vorgenommen werden. Das Fertige Projekt soll mit `-O0` und den zusätzlichen Flags der ORB-Firmware compiliert werden.  
+
+Wird ein höherer grad an Optimierung von nöten sein, z.B. durch unzureichenden Speicherplatz. So sollte im besten fall die Optimierungs-Stufe `-Os` verwendet werden und die Kompatibilität von dieser im zusammenhang mit der ORB-Firmware getestet werden. Zu diesem Zeitpunkt ist jedoch keine zusätzliche Optimierung notwendig. Dies könnte jedoch bei zusätzlicher erweiterung der ORB-Firmware durch z.B. zusätzliche Funktionen in der Zukunft erforderlich sein.  
 
 ## Argument Parsing
-

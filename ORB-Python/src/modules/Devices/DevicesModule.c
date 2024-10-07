@@ -4,6 +4,7 @@
 #include "Devices/Servo/ServoModule.h"
 #include "Devices/Sensor/SensorModule.h"
 #include "Devices/ExternButton/ExternButtonType.h"
+//#include "Devices/NXTLightSensor/NXTLightSensor.h"
 
 static mp_obj_t devices___init__(void) {
     if (!MP_STATE_VM(devices_initialised)) {
@@ -26,6 +27,7 @@ static const mp_rom_map_elem_t devices_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_servo),  MP_ROM_PTR(&servo_type) },
 	{ MP_ROM_QSTR(MP_QSTR_sensor),  MP_ROM_PTR(&sensor_type) },
 	{ MP_ROM_QSTR(MP_QSTR_extern_button),  MP_ROM_PTR(&extern_button_type) },
+    //light sensor
 };
 static MP_DEFINE_CONST_DICT(devices_globals, devices_globals_table);
 

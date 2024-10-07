@@ -1,4 +1,10 @@
 # ORB
+The goal of this project is to integrate a MicroPython interpreter into the firmware of the Open Robotic Board (ORB).
+The ORB is a hardware platform that enables the modular construction of a robot. The ORB firmware provides appropriate functions, such as motor control, for robot programming.
+The aim is to make it possible to develop Python programs for the ORB, with a connection to the ORB monitor program.
+The ORB monitor program is a development tool that will allow text output, as well as the uploading, starting, and stopping of MicroPython programs.
+The existing functionalities of the ORB, such as the development of C++ programs, should remain functionally the same.
+
 ## Project Setup
 
 1. (Install Git and) Clone the project
@@ -57,3 +63,5 @@ You may use this build target to save on compile time.
 Rebuild will also regenerate the Micropython-Embed-Library this will register changes made to the Micropython-Interpreter.  
   
 Important Note, just running the Project will not re-compile the program.py file. It is suggested to always use the Build and Run function.  
+
+## Building the ORB-Firmware

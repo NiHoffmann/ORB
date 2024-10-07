@@ -1,3 +1,4 @@
+//TODO sortieren
 # Anforderungen 
 
 1. Der Micropython Embed Port kann unter Windows kompiliert und debuggt werden.

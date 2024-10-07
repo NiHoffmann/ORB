@@ -1,6 +1,7 @@
 #include "stdint.h"
 #include "AppTask.h"
 #include "lib.h"
+#include "Motor_C_Interface.h"
 
 extern "C" {
 
@@ -8,30 +9,21 @@ extern "C" {
         AppTask::configMotor(nullptr ,port,  ticsPerRotation, acc, kp, ki);
     }
 
+
     void setMotor( uint8_t  port, uint8_t  mode, int16_t speed, int pos ){
         AppTask::setMotor(nullptr, port , mode , speed, pos);
     }
 
-    typedef struct _motor_return_values{
-        float pwr;
-        float speed;
-        int pos;
-    }motor_return_values;
+    static motor_return_values values = {.pwr=0,.speed=0,.pos=0};
 
     motor_return_values* getMotor(uint8_t port) {
         ORB::Motor m =  AppTask::getMotor(nullptr, port);
 
-        motor_return_values* values = (motor_return_values*)malloc(sizeof(motor_return_values));
-        if (values == NULL) {
-            return NULL;
-        }
+        values.pwr =  m.pwr;
+        values.speed = m.speed;
+        values.pos = m.pos;
 
-
-        values->pwr =  m.pwr;
-        values->speed = m.speed;
-        values->pos = m.pos;
-
-        return values;
+        return &values;
     }
 
     //ADDITIONAL FUNCTIONS

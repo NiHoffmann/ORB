@@ -50,6 +50,7 @@ void PythonVM::startProgram(LoadLengthFunction loadLength, LoadProgramFunction l
 }
 
 void PythonVM::deinitVM() {
+    MP_STATE_VM(devices_initialised) = false;
     mp_embed_deinit();
 }
 

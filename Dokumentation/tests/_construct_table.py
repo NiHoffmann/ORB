@@ -34,15 +34,6 @@ for md_file in markdown_files:
 <td style="width: 10%;">
 {base_name}
 </td>
-<td style="width: 50%;">
-
-```python
-
-{python_content_formatted}
-    
-```
-
-</td>
 <td style="width: 40%;">
 {markdown_content_formated}
 </td>
