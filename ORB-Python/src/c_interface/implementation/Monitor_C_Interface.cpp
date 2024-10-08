@@ -11,6 +11,7 @@ extern "C" {
     void print(BYTE line, const char *format, ...) {
         va_list args;
         va_start(args, format);
+
         AppTask::setMonitorText(nullptr, line, format, args);
 
         va_end(args);

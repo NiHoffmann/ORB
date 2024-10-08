@@ -14,7 +14,7 @@
     > Jetzt sollten alle Funktionen unter Windows Testbar sein.
     
     - [x] 1.10. Erstellen der Windows-Test-Spezifiakation
-    - [ ] 1.11. Testen der Micropython-Funktionalitäten nach Spezifiakation
+    - [x] 1.11. Testen der Micropython-Funktionalitäten nach Spezifiakation
     > Hier Tests auch Anständig Dokumentieren, damit durch führung Reproduzierbar ist.
 
 - [ ] **2. Integration in EMBitz Projekt**

@@ -47,6 +47,8 @@ static mp_obj_t mp_set_memory(mp_obj_t addr_obj, mp_obj_t data_obj) {
     }
 
     setMemory(addr, array, length);
+    free(array);
+
     return MP_OBJ_FROM_PTR(&memory_module);
 }
 static MP_DEFINE_CONST_FUN_OBJ_2(mp_set_memory_obj, mp_set_memory);

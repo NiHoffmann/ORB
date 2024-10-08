@@ -26,7 +26,7 @@
     Der erste Schritt meines Projektes war es einen Fork des Micropython-Projektes zu erstellen.  
     Durch diesen Schritt ist einfach nachvollziehbar, an welchen stellen ich änderungen im Micropython-Projekt vorgenommen habe.
     > [!NOTE]  
-    > Der Embed-Port meines Projektes wird gegen den Embed-Port im Micropython-Projekt gebaut. D.h. änderungen an dem Code von Micropython wie z.b. änderungen an der `VM.c` (wie z.B. [Micropython-Ausführung unterbrechen](#micropython-ausführung-unterbrechen)) werden in diesem Fork gemacht.
+    > Der Embed-Port meines Projektes wird gegen den Embed-Port im Micropython-Projekt gebaut. D.h. änderungen an dem Code von Micropython wie z.b. änderungen an der `VM.c` (wie z.B. [Micropython-Ausführung unterbrechen](#42-micropython-ausführung-unterbrechen)) werden in diesem Fork gemacht.
 
 3. **MicroPython als Submodul hinzufügen**:
    Dadurch das ich ein Fork des Micropython-Projektes erstellt habe, konnte ich dieses als Submodul in mein GitHub-Projekt integriert. Dazu habe ich folgenden Befehl ausgeführt:
@@ -113,12 +113,12 @@ Die genaue Strukturierung ist der [Python-Api: "sphinx-python-api.pdf"](sphinx-p
 Davon musste ich jedoch absehen: siehe  [Problematik bei der Verwendung von Namespaces](Konzepte.md#problematik-bei-der-verwendung-von-namespaces).
 
 ### 2.3.2 Aufbauen der Module
-In diesem Schritt musste ich die Module, Klassen, Objekte und Funktionen meines Micropython-Port deffinieren. Abgeleitet werden diese wie bereits beschrieben als der `orblocal.h`.
+In diesem Schritt musste ich die Module, Klassen, Objekte und Funktionen meines Micropython-Port erstellen. Abgeleitet werden diese wie bereits beschrieben aus der `orblocal.h`.
 Der Modul Deisgn-Flow für Micropython Module hatte für mich ein klares vorgehen das in dem Folgenden Diagramm beschrieben ist.  
 <img src="Bilder/modul_design_flow.png" alt="Mein Bild" width="50%" />      
 Im wesentlichen musst ich hier Dictionaries für Module, Objekte, Konstanten und Funktionen anlegen. Diese werden verwendet zum C-Funktionen an ein Micropython-Aufruf zu binden. Die Registrierung dieser Module verwendet für die Namen der Aufrufe QStrings, durch die Natur dieser musste nach dem Erstellen oder umgennen von Modulen oder Funktionen der Micropython-Embed-Port neugebaut werden. Also im wesentlich wird hier das C-Bindeglied zu dem Micropython-Interpreter erstellt. Auch die Micropython C-Interface-Klassen bzw. deren Mockup version wurden in diesem Schritt erstellt. Mehr dazu und der Zweck der Mockup-Klassen im nächsten Kapitel [Code::Blocks und Mockups](#233-codeblocks-und-mockups).
-Im Folgenden ein kleineres Beispiel Modul welches das vorgehen bei der Entwicklung eines Micropython-Moduls deutlich machen soll:
-Leicht angepasst aus: [https://docs.micropython.org/en/latest/develop/library.html](https://docs.micropython.org/en/latest/develop/library.html)  
+Im Folgenden ein kleineres Beispiel Modul welches das vorgehen bei der Entwicklung eines Micropython-Moduls deutlich machen soll:  
+Leicht angepasst aus: [https://docs.micropython.org/en/latest/develop/library.html](https://docs.micropython.org/en/latest/develop/library.html)    
 ```cpp
 //include für die Micropython Methoden und Objekt-Deffinitionen
 #include "py/builtin.h"
@@ -154,7 +154,7 @@ const mp_obj_module_t mp_module_subsystem = {
 MP_REGISTER_MODULE(MP_QSTR_subsystem, mp_module_subsystem);
 
 ```
-Wie genau Module aufgebaut werden und die Registrierung aussieht ist aus dem Konzept zu entnehmen. Unter dem Kapitel [Micropython-Types](Konzepte.md/#micropython-types) findet sich ein guter Einstiegs Punkt, um diesen Prozess besser zu verstehen. Es finden sich noch Weitere Kapitel welche das Interne vorgehen des Micropython-Interpreters erläutern und genauer auf die Bausteine der Implementierung eingehen. Diese sind weitesgehend innerhalb dieses Kapitels verlinkt.
+Wie genau Module aufgebaut werden und die Registrierung aussieht ist aus dem Konzept zu entnehmen. Unter dem Kapitel [Micropython-Types](Konzepte.md/#micropython-types) findet sich einen guter Einstiegs Punkt. Es finden sich noch Weitere Kapitel welche das Interne vorgehen des Micropython-Interpreters erläutern und genauer auf die Bausteine der Implementierung eingehen. Diese sind weitesgehend innerhalb des genannten Kapitels verlinkt.
 
 ### 2.3.3. Code::Blocks und Mockups
 
@@ -248,7 +248,7 @@ Meine Beobachtung wurde bestätigt, als ich durch die Micropython-Community-Chat
   
 Die Lösung hier besteht darin, ein neues Flag einzuführen. Ich habe die Überprüfung meines Flags in die Datei vm.c am Anfang der dispatch_loop aufgenommen. Diese Schleife ist die Logik, die bestimmt, wie eine Zeile Code verarbeitet werden soll.  
 
-Da Micropython nicht threadsicher ist, sind einige wichtige Überlegungen zu beachten: Ich sollte nur innerhalb der VM, in den von der VM verwendeten Speicher schreiben. Daher habe ich die gesamte Logik zur Erstellung und Injection meiner Exceptuon an den Anfang der dispatch_loop verschoben , diese erkennt das eine Exception geplant ist und handbat sie dann im folgenden.  
+Da Micropython nicht threadsicher ist, sind einige wichtige Überlegungen zu beachten: Ich sollte nur innerhalb der VM, in den von der VM verwendeten Speicher schreiben. Daher habe ich die gesamte Logik zur Erstellung und Injection meiner Exceptuon an den Anfang der dispatch_loop verschoben , diese erkennt das eine Exception geplant ist und handelt sie dann wie folgt:    
 (vm.c Zeile: 309).  
 ```cpp
 <...>
@@ -280,12 +280,13 @@ Von außerhalb der VM muss nun im falle eines Interrupts nur das Flag `orb_inter
 
 Dieser Code plant eine einfache Exception. Der hier Nachteile ist, dass dies (mit einem unveränderten Micropython) von einem Try/Catch-Block erfasst wird.   
   
-Somit musste ich noch eine weitere Änderung vornehmen. Daher musste ich den folgenden Teil der VM ändern, um die Try-Catch-Logik zu ignorieren, falls das Interrupt-Flag gesetzt ist   
+Somit musste ich noch eine weitere Änderung vornehmen. Und den folgenden Teil der VM ändern. Dies ignoriert Try-Catch-Logik, falls das Interrupt-Flag gesetzt ist:   
 (vm.c Zeile: 1473).  
 ```cpp
 <...>
+//Diese abfarage Prüft wie die Tiefe der Exception sich zu der Tiefe der gehandelten Exceptions verhält.  
 if (exc_sp >= exc_stack
-    //this part of the code handles try/catch blocks, we dont want them to be treated as such, if orb interrupts treate any error as un-handled
+    //this part of the code handles try/catch blocks, we dont want them to be treated as such, if orb interrupts treat any error as un-handled
     #ifdef ORB_ENABLE_INTERRUPT
     && !MP_STATE_VM(orb_interrupt_injected)
     #endif

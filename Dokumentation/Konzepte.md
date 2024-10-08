@@ -5,7 +5,7 @@
     - [Micropython-Object-Type](#micropython-object-type)
     - [Konkrete-Typen](#konkrete-typen)
         - [Module-Type](#module-type)  
-        - [Klassen-Type](#klassen-type)//hier noch die unter-titel eintragen wenn fertig.
+        - [Klassen-Type](#klassen-type)
             - [Selbst Deffinierte Klassen](#selbst-deffinierte-klassen)
             - [Bereit gestellte Funktionen und Konzepte](#bereit-gestellte-funktionen-und-konzepte)
 - [Micropython Typ Zuordnung](#micropython-typ-zuordnung)
@@ -239,7 +239,7 @@ Es ist wichtig, solche Namen stets als QString mithilfe des MicroPython-Makros z
     Aus der Datei `makemodulesdef.py` ist zu entnehmen, das es 3 arten gibt Module zu registrieren.
     >  `makemodulesdef.py` ist ein Python-Script weches im Micropython-Build-Prozess verwendet wird
     
-    **MP_REGISTER_MODULE** Ein Modul als *Builtin*-Modul deklarieren.
+    **MP_REGISTER_MODULE** Ein Modul als *Builtin*-Modul deklarieren.  
     **MP_REGISTER_EXTENSIBLE_MODULE** Dieses Modul soll vom Dateisystem aus erweitert werden können.
     > Da wir kein Dateisystem implementieren, ist dieser Punkt uninteressant.
 
@@ -364,7 +364,7 @@ Die für uns Bereit gestellten Object-Klassifizierungen sehen wie folgt aus.
 
 Intermedia Objects sind, wie in [Intermedia Objects Type]() beschrieben, durch Micropython bereit gestellte Objekte wie Listen und Integer.  
 QStrings sind sind, wie in [QStrings-Type]() beschrieben, eine spezielle Repräsentation von Strings.     
-MP-Object-Base sind wie in in [Micropython-Object-Type](#micropython-object-type) beschrieben, im wesentlichen entweder Module- oder Klassen-Objecte. Eben solche Objecte welche eine Micropython Object Base besitzen. 
+MP-Object-Base sind wie in in [Micropython-Object-Type](#micropython-object-type) beschrieben, im wesentlichen entweder Modul-, Klassen-Objekte, Funktionen oder Konstanten bzw. Variablen. Eben solche Objecte welche eine Micropython Object Base besitzen. 
 > [!NOTE]
 > Diese Objecte könnte ich noch gut genauer erkären, eigene kapitel dazu
 
@@ -405,11 +405,11 @@ Im Gegensatz zu `mp_obj_base_t`-Pointer wird hier der `mp_obj_t`-Pointer nicht a
 mp_obj_t b = MP_OBJ_NEW_SMALL_INT(0x1); //b soll den wert 1 haben
 printf("Ausgabe(%d)", b); //Ausgabe(3) d.h. 0x..0011
                           //also 0x00000..x1 wir haben den typ small int
-                          //mit dem Nutzdaten-Wert von 1
+                          //mit dem Nutzdaten-Wert von (0x..011 > 1 =) 1
 ```
 > [!NOTE]  
 > //TODO diese note überarbeiten
-> Hier ist etwas wichtiges zu beachten. Arbeitet man mit mp_obj_t und erhält fälschlicherweise einen einfachen Datentyp als Parameter seiner Methoden. So ist es wichtig, Folgendes zu beachten: Das diese besonderen Datentype anders behandelt. Anders als mp_obj_t, welches direkt auf ein Struct referenzieren. Vor dem Casten auf ein tatsächlichhes Micropython-Object, solle man prüfen ob das eingabe object vom richtigen typ ist.  
+> Arbeitet man mit mp_obj_t und erhält fälschlicherweise einen einfachen Datentyp als Parameter seiner Methoden. So ist es wichtig, Folgendes zu beachten: Das diese besonderen Datentype anders behandelt. Anders als mp_obj_t, welches direkt auf ein Struct referenzieren. Vor dem Casten auf ein tatsächlichhes Micropython-Object, solle man prüfen ob das eingabe object vom richtigen typ ist.  
 Glücklicherweise bietet MicroPython eine Infrastruktur für diese Typ-Prüfungen.   
 //TODO an dieser stelle später auf die abschnitte verlinken
 

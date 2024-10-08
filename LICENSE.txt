@@ -1,0 +1,11 @@
+ORB
+@ 2024 by Nils Hoffmann
+This projekt builds ontop of a modified version of projects related to the OpenRoboticsBoard(ORB) designed and provided by Thomas Breuer. (https://github.com/ThBreuer/OpenRoboticBoard)
+His original commit history for this project is to be left unchanged to accredit and communicate his work, that this project is build on.
+This licensing is to be left unchanged and extends the OpenRoboticBoard as listed below.
+
+OpenRoboticBoard
+© 2023 by Thomas Breuer
+is licensed under CC BY-SA 4.0. 
+To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/
+

@@ -4,6 +4,9 @@ The ORB is a hardware platform that enables the modular construction of a robot.
 The aim is to make it possible to develop Python programs for the ORB, with a connection to the ORB monitor program.
 The ORB monitor program is a development tool that will allow text output, as well as the uploading, starting, and stopping of MicroPython programs.
 The existing functionalities of the ORB, such as the development of C++ programs, should remain functionally the same.
+> [!NOTE]  
+> The ORB uses the STM32F405 Microcontroller, schematics for the board are open to the public. All Informations on the Board, additional software, supported sensors, aswell as the original firmware can be found at: [https://github.com/ThBreuer/OpenRoboticBoard](https://github.com/ThBreuer/OpenRoboticBoard).  
+This project is based on the design and work of Thomas Breuer in regards to the ORB-Projects.
 
 ## Project Setup
 

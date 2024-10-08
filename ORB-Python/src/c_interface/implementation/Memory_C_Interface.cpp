@@ -9,7 +9,6 @@ extern "C" {
 
     void setMemory(uint32_t addr, uint8_t *data, uint32_t data_size){
         AppTask::setMemory(nullptr, addr, data, data_size);
-        free(data);
     }
 
     uint8_t* getMemory(uint32_t addr, uint32_t data_size){
