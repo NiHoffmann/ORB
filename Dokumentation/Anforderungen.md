@@ -17,23 +17,23 @@ Im Folgenden eine genauere Liste und Beschreibung der daraus entstehenden Anford
 7. Es sollen Micropython-Module und -Funktionen bereitgestellt werden, die sich aus den in `orblocal.h` definierten Funktionen ableiten.  
 Diese Funktionen werden von der ORB-Firmware für die Programmierung in C zur Verfügung gestellt:
 ```cpp
-...
-virtual void        configMotor      (BYTE id,WORD t,BYTE a,BYTE Kp,BYTE Ki)
-virtual void        setMotor         (BYTE id,BYTE m, short s, int p       )
-virtual ORB::Motor  getMotor         (BYTE id                              )
-virtual void        setModelServo    (BYTE id, BYTE s, BYTE w              ) 
-virtual DWORD       getTime          (                                     )
-virtual void        wait             (DWORD time                           )
-virtual void        setMonitorText   (BYTE line,const char *fmt, va_list va)
-virtual BYTE        getMonitorKey    (                                     )
-virtual void        clearMemory      (                                     )
-virtual void        setMemory        (DWORD addr, BYTE *data, DWORD s      )
-virtual void        getMemory        (DWORD addr, BYTE *data, DWORD s      )
-virtual void        configSensor     (BYTE id,BYTE t,BYTE m,WORD o         )
-virtual ORB::Sensor getSensor        (BYTE id                              ) 
-virtual WORD        getSensorValueExt(BYTE id, BYTE ch                     ) 
-virtual BYTE        getSensorDigital (BYTE id                              )
-...
+<...>
+virtual void        configMotor      (BYTE id,WORD t,BYTE a,BYTE Kp,BYTE Ki);
+virtual void        setMotor         (BYTE id,BYTE m, short s, int p       );
+virtual ORB::Motor  getMotor         (BYTE id                              );
+virtual void        setModelServo    (BYTE id, BYTE s, BYTE w              );
+virtual DWORD       getTime          (                                     );
+virtual void        wait             (DWORD time                           );
+virtual void        setMonitorText   (BYTE line,const char *fmt, va_list va);
+virtual BYTE        getMonitorKey    (                                     );
+virtual void        clearMemory      (                                     );
+virtual void        setMemory        (DWORD addr, BYTE *data, DWORD s      );
+virtual void        getMemory        (DWORD addr, BYTE *data, DWORD s      );
+virtual void        configSensor     (BYTE id,BYTE t,BYTE m,WORD o         );
+virtual ORB::Sensor getSensor        (BYTE id                              );
+virtual WORD        getSensorValueExt(BYTE id, BYTE ch                     ); 
+virtual BYTE        getSensorDigital (BYTE id                              );
+<...>
 ```
 8. Die ORB-Funktionen müssen in ihrer vollständigen Funktionalität implementiert werden.  
 Die Verwendung von Micropython darf keinen Funktionalitätsverlust zur Folge haben.  
