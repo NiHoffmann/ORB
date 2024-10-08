@@ -10,7 +10,7 @@
 - [3. Erstellen der Sphinx-Dokumentation](#3-erstellen-der-sphinx-dokumentation)
     - [3.1. Aufsetzen der Sphinx-Dokumentation](#31-aufsetzen-der-sphinx-dokumentation)
     - [3.2. Umfang der Dokumentation](#32-umfang-der-dokumentation)
-- [4. Erster Entwurf der Micropython VM-Schnittstelle](#4-erster-entwurf-der-micropython-vm-schnittstelle)
+- [4. Entwurf der Micropython VM-Schnittstelle](#4-entwurf-der-micropython-vm-schnittstelle)
     - [4.1. Ausführung der VM in einem Thread](#41-ausführung-der-vm-in-einem-thread)
     - [4.2. Micropython-Ausführung unterbrechen](#42-micropython-ausführung-unterbrechen)
 - [5. User Program Compile-Script](#5-user-program-compile-script) 
@@ -207,23 +207,45 @@ Im Gegensatz dazu wird die ORB-Firmware anstelle der Mockup-Datei eine andere Mo
 //verwenden von python platzhalter dateien welche die Micropython-Module abbilden
 //problem mit der pip installation vllt auch & lösung
 
-## 4. Erster Entwurf der Micropython VM-Schnittstelle
-
->Hier kurz erklärten welche Funktionen umgesetzt werden sollen
-auslagern der loadProgram / getProgramLength Funktion
-entscheidung erkären, darauf verweisen das im zuge dieser entscheidung im anschluss das compule script entstanden ist
-
-erklären was wir brauchen Start/Stop/isRunning
+## 4. Entwurf der Micropython VM-Schnittstelle
+Die Öffentliche Schnittstelle der Python-VM sehen wie folge aus:
+```cpp
+void run(LoadLengthFunction loadLength, LoadProgramFunction loadProgram);
+bool isRunning();
+void stopProgram();
+int getExitStatus();
+const char* getExitType();
+```
+Wie zu erkennen ist werden die Start und Stop Funktionen umgesetzt. Zusätzlich haben wir den Status der ausführunge `isRunning()`. Diese Funktionen sind die Wichtigsten Funktionen der Schnittstelle und umfassen die Grundlegenden Aufgaben welche die ORB-Firmware an den Micropython-Interpreter abgeben sollte.  
+Hier zu erkennen ist, das es zusätzlich Funktionen für den Exit-Type bzw. Status gibt. Der Exit Status ist 
+der von der aktuelle Exit-Status-Code der VM. Also ein wert aus einem Enmum, welcher für einen bestimmten Status-Code steht. Die tatsächliche werte des Exit-Status werden im der Config-Port-Header-Datei deffiniert.
+```cpp
+//Rückgabe wert einer Normale ausführung, Programm ist zu ende.
+#define ORB_EXIT_NORMAL                         (0)
+//Es wurde eine Exception von dem Code geworfen und nicht gehandelt.
+#define ORB_EXIT_EXCEPTION                      (1)
+//Es wurder der User-Interrupt (Stop-Button) verwendet.
+#define ORB_EXIT_INTERRUPT                      (2)
+```
+Eine Weitere Besonderheit ist die Art und Weise wie die `run` Funktion aufgerufen wird. Da ich dieses Interface für sowohl die Code::Blocks-/Windows-Umgebung als auch Firmware-/Embitz-Umgebung anbieten möchte, habe ich diese Funktionalität aus der VM-Schnittstelle herausgezogen und durch das übergeben dieser Funktionen realisiert:
+```cpp
+typedef uint8_t* LoadProgramFunction(int length);
+typedef uint32_t LoadLengthFunction();
+```
+Im Falle der Code::Blocks umgebung sind diese Funktionen in der `main.c` deffiniert und lädt den Programm-Code aus einer durch ein Char-Array deffinierten Datei. Möchte man die Code::Blocks umgebung selber zum Testen verwendet muss dieser Pfad angepasst werden.
+```cpp
+char name[] = "C:\\Users\\nils9\\Desktop\\Bachelorarbeit\\ORB\\ORB-Python\\program\\program.bin";
+```
+Während die ORB-Firmware diese Funktionalitäten in der Python-Task umsetzen soll. Diese verwendet zugriffe auf den Flash-Speicher um das Programm dann korrekt zu laden. Hier zu beachten ist das die VM-Schnittstelle ein durch malloc erzäugtes Byte-Array als rückgabewert der Loadprogramm funktion erwartet und selber die `free` funktion aufruft.
 
 ### 4.1. Ausführung der VM in einem Thread
->Hier kurz erkären wofür des außführen in thead
-darauf verweisen, die vm soll später in einer task ausgeführt werden.
-Die oben gennanten Funktionen lassen sich nur so sinnvoll testen.
+
+Um die oben gennannten Funktionen anständig Testen zu können war es notwendig Micropython Parallel zu andere Programm logik ausführen zu können. Für diesen Zweck habe ich in meiner Code::Blocks umgebung das aus führen meiner Micropython-VM in einem Seperated Thread gestartet. Nun konnte ich diese Funktionen genauer Testen bzw. Ausprobieren. Grade für den Stoppen der Programm ausführung. Wie genau dies Realisiert ist wird in dem Folgenden Kapitl [4.2. Micropython-Ausführung unterbrechen](#42-micropython-ausführung-unterbrechen) beschrieben. 
 
 ### 4.2. Micropython-Ausführung unterbrechen
 
-Für das Anbinden des Python-VM muss es eine möglichkeit geben dies VM-Ausführung durch die ORB-Firmware zu unterbrechen.  
-Betrachtung der bereits bestehenden Systeme wie das Microbit haben folgende erkenntnis gebracht. Bereits bestehende Systeme setzen einfach den gesamten Mikrocontroller zurück. Dies ist für einen Microcontroller, der nur Microypthon ausführt eine gut lösung. Für unseren Anwedungsfalls jedoch eher eine unpassende Lösung.  
+Für das Anbinden des Python-VM muss es eine möglichkeit geben dies VM-Ausführung durch die ORB-Firmware zu unterbrechen. Grade für den Fall das das Nutzer-Programm in einer Endlos-Schleife hängen bleibt. 
+Betrachtung Systeme wie z.B. den Microbit-Micropython-Port können wir folgende erkenntnis ziehen. Die meisten bereits bestehende Systeme setzen einfach den gesamten Mikrocontroller zurück, um die Programm-Ausführung zu stoppen. Dies ist für einen Microcontroller, der nur Microypthon ausführt eine gut lösung. Für unseren Anwedungsfalls jedoch eher unpassend.  
 
 Microbit:
 ```cpp
@@ -246,39 +268,48 @@ Da der Embed-Port für diese Micropython-Implementierung eine separate Task sein
 
 Meine Beobachtung wurde bestätigt, als ich durch die Micropython-Community-Chats schaute: „You can reset the processor from within an ISR using pyd.hard_reset() or machine.reset(). Otherwise, you'd need to set a flag and have the main script exit when it detects that flag is set.“ (https://forum.micropython.org/viewtopic.php?t=2521)  
   
-Die Lösung hier besteht darin, ein neues Flag einzuführen. Ich habe die Überprüfung meines Flags in die Datei vm.c am Anfang der dispatch_loop aufgenommen. Diese Schleife ist die Logik, die bestimmt, wie eine Zeile Code verarbeitet werden soll.  
+Die Lösung hier besteht darin, ein neues Flag einzuführen. Dies ist mit den in  [Thread Safety](Konzepte.md#thread-safety) beschriebenen bedenken zu vereinbar. Ich habe die Überprüfung meines Flags in die Datei vm.c am Anfang der dispatch_loop aufgenommen. Diese Schleife ist die Logik, die bestimmt, wie eine Zeile Code verarbeitet werden soll.  
 
-Da Micropython nicht threadsicher ist, sind einige wichtige Überlegungen zu beachten: Ich sollte nur innerhalb der VM, in den von der VM verwendeten Speicher schreiben. Daher habe ich die gesamte Logik zur Erstellung und Injection meiner Exceptuon an den Anfang der dispatch_loop verschoben , diese erkennt das eine Exception geplant ist und handelt sie dann wie folgt:    
+Dabei sollte sich der Micropython-Interpreter genau so wie bei einer vom Programm-Code erzeugten Exception verhalten, welche nicht gehandelt wird.   
+Dies soll dazu führt das die Micropython-VM in einem Gültigen bzw. ihr gekannten zustand beendet wird. Und dadurch gewährtleisten das die Micropython-VM auch nach dem Stoppen problemlos neugestartet werden kann.  
+
+Die Implementierung dieses Prozesses sieht wie Folgt aus:
+Von außerhalb der VM muss im falle eines Interrupts also ein Flag, hier `orb_interrupt` genannt gesetzt werden: 
 (vm.c Zeile: 309).  
 ```cpp
 <...>
 dispatch_loop:
        //This is the Main Logic, orb_interrupt will only ever be written from outside mp
-       //so this flag is never a race condition
+       //so this flag is never a race condition, although we might finish one more "cycle" of micropython
+       //execution but that is fine.
        //inside here we create the exception so we never get mem error
        //we have to do this at the top to bypass controll flow
        #ifdef ORB_ENABLE_INTERRUPT
+       //Überprüfen ob wir einen Interrupt haben
        if(MP_STATE_VM(orb_interrupt)){
+           //custom exception Object anlegen
            static mp_obj_exception_t system_exit;
            system_exit.base.type = &mp_type_SystemExit;
-           //since this is a user interrupt the traceback will be empty
+           //da es sich um einen User-Interrupt handelt bleibt der Stack-Trace leer
            system_exit.traceback_alloc = 0;
            system_exit.traceback_data = NULL;
    
-           //we pass a single argument in our tuple, the error message
+           //Wir übergeben nur eine Argument zusammen mit unserere Exception den Namen der Exception "User Interrupt"
            system_exit.args = (mp_obj_tuple_t*) mp_obj_new_tuple(1, NULL);
            mp_obj_t mp_str = mp_obj_new_str("User Interrupt", 14);
            system_exit.args->items[0] = mp_str;
+           //wir setzen die Micropython State auf unsere erstellte Exception
            MP_STATE_THREAD(mp_pending_exception) = &system_exit;
+           //diese zweite flag soll race-condiditons vermeiden, da es einen zweiten teil der user-interrupt logic gibt.
            MP_STATE_VM(orb_interrupt_injected) = true;
        }
        #endif
 
 <...>
 ```
-Von außerhalb der VM muss nun im falle eines Interrupts nur das Flag `orb_interrupt` gesetzt werden. Es ist wichtig zu beachten, dass dieses Flag nicht von innerhalb des Micropython-Projekts beschrieben wird, auch nicht zum Zurücksetzen des Flags.   
+Es ist wichtig zu beachten, dass dieses Flag nicht von innerhalb des Micropython-Projekts beschrieben wird, auch nicht zum Zurücksetzen des Flags.   
 
-Dieser Code plant eine einfache Exception. Der hier Nachteile ist, dass dies (mit einem unveränderten Micropython) von einem Try/Catch-Block erfasst wird.   
+Dieser Code plant eine einfache Exception. Der Nachteile hier ist, dass dies (mit einem unveränderten Micropython) von einem Try/Catch-Block erfasst wird.   
   
 Somit musste ich noch eine weitere Änderung vornehmen. Und den folgenden Teil der VM ändern. Dies ignoriert Try-Catch-Logik, falls das Interrupt-Flag gesetzt ist:   
 (vm.c Zeile: 1473).  
@@ -296,12 +327,11 @@ if (exc_sp >= exc_stack
 <...>
 ```
 Nun kann der VM-Interrupt geplant werden. Da die Dispatch-Schleife jedes Mal besucht wird, wenn etwas verarbeitet werden muss, wird dies immer dazu führen, dass die Ausführung nach Abschluss der aktuellen Befehlsverarbeitung unterbrochen wird.  
-  
+
 ## 5. User Program Compile-Script
 //das hier habe ich eigentlich schon fürher   
 //ich denke das schiebe ich alles nach hinten da ich hier zum ende hin noch änderungen hatte
 
-   
 erstellt wusste nur noch nicht wo genau ich es am besten unterbringe, außedem ergenzung um information der error flag, falls compilierung hier fehlschlägt bricht der build prozess in code blocks ab.
 
 Um den Compile Prozess von Python nach MPY-Byte-Code zu vereinfachen und in Code::Blocks einzugiben, habe ich ein compile script erstellt. Dieses ist in Python geschrieben. 

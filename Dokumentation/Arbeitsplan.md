@@ -1,21 +1,19 @@
 # Arbeitsplan
 
-- [ ] **1. Micropython Embed Port unter Windows**
+- [x] **1. Micropython Embed Port unter Windows**
     - [x] 1.1. Code:Blocks Umgebung einrichten  
     - [x] 1.2. Compilieren und Laden einer MPY-Binär-Datei  
     - [x] 1.3. Erstes Modul Registrieren & Mockup-Erstellen  
     - [x] 1.4. Erster Entwurf der Micropython-VM Schnittstellen
     - [x] 1.5. User-Interrupt Integrieren & Thread-Safety Testen/Analysieren  
-    - [x] 1.6. Micropython- & Program-Compile-Prozess in Code;Blocks Build Prozess einbauen  
+    - [x] 1.6. Micropython- & Program-Compile-Prozess in den Code::Blocks Build Prozess einbauen  
     > Nach diesem Schritt ist das Windows Grundgerüst gebaut. 
     - [x] 1.7. Vollständiges Umestzen der ORB-Funktions-Module & Mockups 
     - [x] 1.8. Python-Api Dokumentation Schreiben
     - [x] 1.9. Program-Compile-Prozess in Code;Blocks Build Prozess einbauen 
-    > Jetzt sollten alle Funktionen unter Windows Testbar sein.
-    
+    > Ab diesen Punkt sollten alle Funktionen unter Windows Testbar sein.
     - [x] 1.10. Erstellen der Windows-Test-Spezifiakation
     - [x] 1.11. Testen der Micropython-Funktionalitäten nach Spezifiakation
-    > Hier Tests auch Anständig Dokumentieren, damit durch führung Reproduzierbar ist.
 
 - [ ] **2. Integration in EMBitz Projekt**
     - [x] 2.1. Ausführen der VM auf einem Microcontroller (Mit MPY-Binary in die Firmware eingebaut - d.h. als uint_8t array).
