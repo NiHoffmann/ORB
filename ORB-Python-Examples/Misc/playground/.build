@@ -1,0 +1,4 @@
+{
+    "import": ["middleware/dep.py", "middleware/dep2.py"],
+    "main": "test.py"
+}

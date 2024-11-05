@@ -1,0 +1,1 @@
+Diese Script Test überprüft ob Memory-Allocation-Errors d.h. ungenügender Speicher im Micropython-Heap. Die VM soll mit dem Exit-Code Exception(1) Beendet werde. Der Exit-Typ sollte einen memory-error anzeigen.

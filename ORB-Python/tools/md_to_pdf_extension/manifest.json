@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "name": "Markdown to Pdf Helper",
+    "version": "1.0",
+    "description": "A Thing i did.",
+    "permissions": [
+      "activeTab",
+      "scripting"
+    ],
+    "action": {
+      "default_popup": "popup.html"
+    },
+    "host_permissions": [
+        "<all_urls>"
+    ]
+  }

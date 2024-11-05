@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>monitor &#8212; ORB-Python Documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="VM API" href="ORB-Python.html" />
+    <link rel="prev" title="time" href="time.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="ORB-Python.html" title="VM API"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="time.html" title="time"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ORB-Python Documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="Python%20API.html" accesskey="U">Python API</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">monitor</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="monitor">
+<h1>monitor<a class="headerlink" href="#monitor" title="Link to this heading">¶</a></h1>
+<p>The <cite>monitor</cite> module provides functionality for ORB-Monitor communication.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="monitor.getKey">
+<span class="sig-prename descclassname"><span class="pre">monitor.</span></span><span class="sig-name descname"><span class="pre">getKey</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#monitor.getKey" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current key pressed on the monitor.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="monitor.setText">
+<span class="sig-prename descclassname"><span class="pre">monitor.</span></span><span class="sig-name descname"><span class="pre">setText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#monitor.setText" title="Link to this definition">¶</a></dt>
+<dd><p>Sets the text to be displayed on the monitor. At the Moment only 32 characters are supported for one Line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – The text to display.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="monitor.keys">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">monitor.</span></span><span class="sig-name descname"><span class="pre">keys</span></span><a class="headerlink" href="#monitor.keys" title="Link to this definition">¶</a></dt>
+<dd><p>A class representing key constants for the <cite>monitor</cite>.</p>
+<p>Each key constant has a unique integer value.</p>
+<p><strong>Available keys</strong>:</p>
+<ul class="simple">
+<li><p><strong>NO_KEY</strong> = 0</p></li>
+<li><p><strong>A1</strong> = 1</p></li>
+<li><p><strong>A2</strong> = 2</p></li>
+<li><p><strong>A3</strong> = 3</p></li>
+<li><p><strong>A4</strong> = 4</p></li>
+<li><p><strong>A5</strong> = 5</p></li>
+<li><p><strong>A6</strong> = 6</p></li>
+<li><p><strong>A7</strong> = 7</p></li>
+<li><p><strong>A8</strong> = 8</p></li>
+<li><p><strong>B1</strong> = 9</p></li>
+<li><p><strong>B2</strong> = 10</p></li>
+<li><p><strong>B3</strong> = 11</p></li>
+<li><p><strong>B4</strong> = 12</p></li>
+<li><p><strong>B5</strong> = 13</p></li>
+<li><p><strong>B6</strong> = 14</p></li>
+<li><p><strong>B7</strong> = 15</p></li>
+<li><p><strong>B8</strong> = 16</p></li>
+<li><p><strong>B9</strong> = 17</p></li>
+<li><p><strong>B10</strong> = 18</p></li>
+<li><p><strong>B11</strong> = 19</p></li>
+<li><p><strong>B12</strong> = 20</p></li>
+<li><p><strong>C1</strong> = 21</p></li>
+</ul>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">monitor</a><ul>
+<li><a class="reference internal" href="#monitor.getKey"><code class="docutils literal notranslate"><span class="pre">monitor.getKey()</span></code></a></li>
+<li><a class="reference internal" href="#monitor.setText"><code class="docutils literal notranslate"><span class="pre">monitor.setText()</span></code></a></li>
+<li><a class="reference internal" href="#monitor.keys"><code class="docutils literal notranslate"><span class="pre">monitor.keys</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="time.html"
+                          title="previous chapter">time</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="ORB-Python.html"
+                          title="next chapter">VM API</a></p>
+  </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="ORB-Python.html" title="VM API"
+             >next</a></li>
+        <li class="right" >
+          <a href="time.html" title="time"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ORB-Python Documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="Python%20API.html" >Python API</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">monitor</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2024, Nils Hoffmann.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+    </div>
+  </body>
+</html>

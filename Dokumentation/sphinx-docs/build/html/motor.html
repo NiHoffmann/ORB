@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>motor &#8212; ORB-Python Documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="servo" href="servo.html" />
+    <link rel="prev" title="sensor" href="sensor.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="servo.html" title="servo"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="sensor.html" title="sensor"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ORB-Python Documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="Python%20API.html" >Python API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="devices.html" accesskey="U">devices</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">motor</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="motor">
+<h1>motor<a class="headerlink" href="#motor" title="Link to this heading">¶</a></h1>
+<p>The <cite>Motor</cite> class represents a motor device with configurable parameters and various modes of operation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="devices.motor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">devices.</span></span><span class="sig-name descname"><span class="pre">motor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ticks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ki</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#devices.motor" title="Link to this definition">¶</a></dt>
+<dd><p>Initializes a motor instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>port</strong> (<em>int</em>) – The port that the motor is connected to.</p></li>
+<li><p><strong>direction</strong> (<em>int</em>) – Direction of the motor (<cite>FORWARD</cite> or <cite>REVERSE</cite>.)</p></li>
+<li><p><strong>ticks</strong> (<em>int</em>) – Number of encoder ticks for one revolution.</p></li>
+<li><p><strong>acc</strong> (<em>int</em>) – Acceleration rate of the motor.</p></li>
+<li><p><strong>kp</strong> (<em>int</em>) – Proportional gain for the motor control.</p></li>
+<li><p><strong>ki</strong> (<em>int</em>) – Integral gain for the motor control.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="devices.motor.config">
+<span class="sig-name descname"><span class="pre">config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ticks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ki</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#devices.motor.config" title="Link to this definition">¶</a></dt>
+<dd><p>Configures the motor parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>direction</strong> (<em>int</em>) – Direction of the motor, either <cite>FORWARD</cite> or <cite>REVERSE</cite>.</p></li>
+<li><p><strong>ticks</strong> (<em>int</em>) – Number of encoder ticks for one revolution.</p></li>
+<li><p><strong>acc</strong> (<em>int</em>) – Acceleration rate.</p></li>
+<li><p><strong>kp</strong> (<em>int</em>) – Proportional gain.</p></li>
+<li><p><strong>ki</strong> (<em>int</em>) – Integral gain.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="devices.motor.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#devices.motor.set" title="Link to this definition">¶</a></dt>
+<dd><p>Sets the motor’s operating mode, speed, and position.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<em>int</em>) – The mode in which to operate the motor (<cite>POWER_MODE</cite>, <cite>BRAKE_MODE</cite>, <cite>SPEED_MODE</cite>, or <cite>MOVETO_MODE</cite>).</p></li>
+<li><p><strong>speed</strong> (<em>int</em>) – The speed of the motor.</p></li>
+<li><p><strong>position</strong> (<em>int</em>) – The target position for the motor.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="devices.motor.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict[&quot;speed&quot;:</span> <span class="pre">int,</span> <span class="pre">&quot;power&quot;:</span> <span class="pre">int,</span> <span class="pre">&quot;position&quot;:</span> <span class="pre">int]</span></span></span><a class="headerlink" href="#devices.motor.get" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary containing:
+- <strong>speed</strong>: The current speed.
+- <strong>power</strong>: The current power.
+- <strong>position</strong>: The current position.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p><strong>Ports</strong></p>
+<blockquote>
+<div><dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">M1</span> <span class="pre">=</span> <span class="pre">0</span></span></dt>
+<dd><p>Motor port 1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">M2</span> <span class="pre">=</span> <span class="pre">1</span></span></dt>
+<dd><p>Motor port 2.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">M3</span> <span class="pre">=</span> <span class="pre">2</span></span></dt>
+<dd><p>Motor port 3.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">M4</span> <span class="pre">=</span> <span class="pre">3</span></span></dt>
+<dd><p>Motor port 4.</p>
+</dd></dl>
+
+</div></blockquote>
+<p><strong>Modes</strong></p>
+<blockquote>
+<div><dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">FORWARD</span> <span class="pre">=</span> <span class="pre">1</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">REVERSE</span> <span class="pre">=</span> <span class="pre">-1</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">POWER_MODE</span> <span class="pre">=</span> <span class="pre">0</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">BRAKE_MODE</span> <span class="pre">=</span> <span class="pre">1</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">SPEED_MODE</span> <span class="pre">=</span> <span class="pre">2</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">MOVETO_MODE</span> <span class="pre">=</span> <span class="pre">3</span></span></dt>
+<dd></dd></dl>
+
+</div></blockquote>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">motor</a><ul>
+<li><a class="reference internal" href="#devices.motor"><code class="docutils literal notranslate"><span class="pre">devices.motor</span></code></a><ul>
+<li><a class="reference internal" href="#devices.motor.config"><code class="docutils literal notranslate"><span class="pre">devices.motor.config()</span></code></a></li>
+<li><a class="reference internal" href="#devices.motor.set"><code class="docutils literal notranslate"><span class="pre">devices.motor.set()</span></code></a></li>
+<li><a class="reference internal" href="#devices.motor.get"><code class="docutils literal notranslate"><span class="pre">devices.motor.get()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="sensor.html"
+                          title="previous chapter">sensor</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="servo.html"
+                          title="next chapter">servo</a></p>
+  </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="servo.html" title="servo"
+             >next</a></li>
+        <li class="right" >
+          <a href="sensor.html" title="sensor"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ORB-Python Documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="Python%20API.html" >Python API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="devices.html" >devices</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">motor</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2024, Nils Hoffmann.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+    </div>
+  </body>
+</html>

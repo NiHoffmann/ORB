@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>servo &#8212; ORB-Python Documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="memory" href="memory.html" />
+    <link rel="prev" title="motor" href="motor.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="memory.html" title="memory"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="motor.html" title="motor"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ORB-Python Documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="Python%20API.html" >Python API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="devices.html" accesskey="U">devices</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">servo</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="servo">
+<h1>servo<a class="headerlink" href="#servo" title="Link to this heading">¶</a></h1>
+<p>The <cite>Servo</cite> class represents a servo device with specific parameters.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="devices.servo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">devices.</span></span><span class="sig-name descname"><span class="pre">servo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#devices.servo" title="Link to this definition">¶</a></dt>
+<dd><p>A servo object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>port</strong> (<em>int</em>) – The port number the servo is connected to.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="devices.servo.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#devices.servo.set" title="Link to this definition">¶</a></dt>
+<dd><p>Sets the speed and angle for the servo.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>speed</strong> (<em>int</em>) – Speed of the servo movement.</p></li>
+<li><p><strong>angle</strong> (<em>int</em>) – Target angle for the servo.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p><strong>Ports</strong></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="devices.servo.S1">
+<span class="sig-name descname"><span class="pre">S1</span></span><a class="headerlink" href="#devices.servo.S1" title="Link to this definition">¶</a></dt>
+<dd><p>Servo port 1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="devices.servo.S2">
+<span class="sig-name descname"><span class="pre">S2</span></span><a class="headerlink" href="#devices.servo.S2" title="Link to this definition">¶</a></dt>
+<dd><p>Servo port 2.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">servo</a><ul>
+<li><a class="reference internal" href="#devices.servo"><code class="docutils literal notranslate"><span class="pre">devices.servo</span></code></a><ul>
+<li><a class="reference internal" href="#devices.servo.set"><code class="docutils literal notranslate"><span class="pre">devices.servo.set()</span></code></a></li>
+<li><a class="reference internal" href="#devices.servo.S1"><code class="docutils literal notranslate"><span class="pre">devices.servo.S1</span></code></a></li>
+<li><a class="reference internal" href="#devices.servo.S2"><code class="docutils literal notranslate"><span class="pre">devices.servo.S2</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="motor.html"
+                          title="previous chapter">motor</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="memory.html"
+                          title="next chapter">memory</a></p>
+  </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="memory.html" title="memory"
+             >next</a></li>
+        <li class="right" >
+          <a href="motor.html" title="motor"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ORB-Python Documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="Python%20API.html" >Python API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="devices.html" >devices</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">servo</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2024, Nils Hoffmann.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+    </div>
+  </body>
+</html>

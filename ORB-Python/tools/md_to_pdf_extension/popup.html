@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>md to pdf</title>
+    <style>
+        body {
+            width: 200px;
+            height: 200px;
+            background-color: #f7f7f7;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin-top: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            width: 70%;
+        }
+
+        .checkbox-container input {
+            display: none;
+        }
+
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            background-color: #eee;
+            border-radius: 4px;
+            display: inline-block;
+            position: relative;
+            margin-right: 10px;
+        }
+
+        .custom-checkbox::after {
+            content: "";
+            position: absolute;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            top: 3px;
+            left: 6px;
+            opacity: 0;
+        }
+
+        input:checked + .custom-checkbox {
+            background-color: #4CAF50;
+        }
+
+        input:checked + .custom-checkbox::after {
+            opacity: 1;
+        }
+
+        .checkbox-label {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        input[type="checkbox"]:disabled + span {
+            cursor: not-allowed;
+        }
+
+    </style>
+</head>
+<body>
+    <h3>md to pdf</h3>
+
+
+    <label class="checkbox-container">
+        <input type="checkbox" id="hbrs" checked>
+        <span class="custom-checkbox"></span>
+        <span class="checkbox-label">HBRS-Format</span>
+    </label>
+
+    <label class="checkbox-container">
+        <input type="checkbox" id="toc" checked>
+        <span class="custom-checkbox"></span>
+        <span class="checkbox-label">Table of Content</span>
+    </label>
+
+    <button id="injectBtn">Do it :D</button>
+    <script src="popup.js"></script>
+</body>
+</html>

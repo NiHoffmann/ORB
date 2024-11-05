@@ -1,0 +1,12 @@
+ORB-Python/libs/mp_embed/build-embed/*
+ORB-Python/libs/mp_embed/micropython_embed/*
+ORB-Python/ORB-Python.depend
+ORB-Python/ORB-Python.layout
+ORB-Python/build/**/*
+Dokumentation/vorschriften/*
+!Dokumentation/sphinx-docs/build/html/*
+!Dokumentation/sphinx-docs/build/doctrees/*
+Dokumentation/sphinx-docs/build/latex/*
+Dokumentation/sphinx-docs/modules/__pycache__
+ORB-Python/program/*.bin
+.vscode/
