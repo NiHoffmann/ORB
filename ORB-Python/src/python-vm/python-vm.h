@@ -10,20 +10,14 @@
 #include <cstdint>
 #include "mpconfigport.h"
 
-// Function pointer types
 typedef uint8_t* LoadProgramFunction(int length);
 typedef uint32_t LoadLengthFunction();
 
-// PythonVM class declaration
 class PythonVM {
 public:
     PythonVM();
-    ~PythonVM();
-
-    void run(LoadLengthFunction loadLength, LoadProgramFunction loadProgram, uint8_t arg);
-    bool isRunning();
-    void stopProgram();
-
+    ~PythonVM();   
+    
     #ifdef ORB_ENABLE_EXIT_STATUS
     enum Status{
         NORMAL = ORB_EXIT_NORMAL,
@@ -35,6 +29,9 @@ public:
     };
     #endif
 
+    void run(LoadLengthFunction loadLength, LoadProgramFunction loadProgram, uint8_t arg);
+    bool isRunning();
+    void stopProgram();
     int getExitStatus();
     const char* getExitInfo();
 

@@ -1,2 +1,2 @@
 while True:
-    raise Exception()
+    raise Exception("Exception")

@@ -1,7 +1,7 @@
 # Arbeitsplan
 
 - [x] **1. Micropython Embed Port unter Windows**
-    - [x] 1.1. Code:Blocks Umgebung einrichten  
+    - [x] 1.1. Code::Blocks Umgebung einrichten  
     - [x] 1.2. Kompilieren und Laden einer MPY-Binär-Datei  
     - [x] 1.3. Erstes Modul registrieren & Mockup erstellen  
     - [x] 1.4. Erster Entwurf der Micropython-VM Schnittstellen

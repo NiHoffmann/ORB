@@ -1,4 +1,5 @@
 # Anforderungen 
+
 Das Ziel dieses Projektes ist die Integration eines MicroPython-Interpreters in die Firmware des Open Robotic Board (ORB).
 Das ORB ist eine Hardwareplattform, die den modularen Aufbau eines Roboters ermöglicht. Die ORB-Firmware stellt Funktionen, wie z.B. die Motorsteuerung, für die Roboterprogrammierung bereit.
 Ziel ist es, die Entwicklung von Python-Programmen für das ORB zu ermöglichen. Zusätzlich soll die Anbindung für die Python-Programmierung an den ORB-Monitor umgesetzt werden.
@@ -17,7 +18,6 @@ Es folgt eine genauere Liste und Beschreibung der daraus entstehenden Anforderun
 7. Es sollen Micropython-Module und -Funktionen bereitgestellt werden, die sich aus den in `orblocal.h` definierten Funktionen ableiten.  
 Diese Funktionen werden von der ORB-Firmware für die Programmierung in C++ zur Verfügung gestellt:
 ```cpp
-<...>
 virtual void        configMotor      (BYTE id,WORD t,BYTE a,BYTE Kp,BYTE Ki);
 virtual void        setMotor         (BYTE id,BYTE m, short s, int p       );
 virtual ORB::Motor  getMotor         (BYTE id                              );
@@ -33,8 +33,9 @@ virtual void        configSensor     (BYTE id,BYTE t,BYTE m,WORD o         );
 virtual ORB::Sensor getSensor        (BYTE id                              );
 virtual WORD        getSensorValueExt(BYTE id, BYTE ch                     ); 
 virtual BYTE        getSensorDigital (BYTE id                              );
-<...>
 ```
+[[vgl. ORB-FW, 'ORB-Firmware/Src/ORBlocal.h', ab Zeile 47]](./../../../../ORB-Firmware/tree/master/Src/ORBlocal.h#L47)
+
 8. Die ORB-Funktionen müssen in ihrer vollständigen Funktionalität, in die MP-VM, integriert werden.  
 Die Verwendung von Micropython darf keinen Funktionalitätsverlust zur Folge haben.  
 9. Diese Funktionen sollen nicht direkt übernommen, sondern in die Python-Welt übertragen werden. Falls angebracht werden Python-Objekte/Module bereitgestellt , welche die genannten Funktionen möglichst gut und mit geeigneten Name-Spaces abbilden.
