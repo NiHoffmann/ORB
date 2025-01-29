@@ -1,6 +1,11 @@
 import gc
-a = 0.5
-while a < 10000:
-    a = a + 0.5
-    gc.collect()
-    print(gc.mem_free())
+from devices import motor
+
+a = motor(0)
+report = a.get()
+print(report)
+print(report.speed)
+report.speed = 123.2 + 2 
+print(report.position)
+print(report.speed)
+report.power = "hallo"

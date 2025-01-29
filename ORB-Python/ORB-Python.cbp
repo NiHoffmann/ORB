@@ -578,6 +578,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/modules/Devices/Motor/MotorModule.h" />
+		<Unit filename="src/modules/Devices/Motor/MotorReport.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/modules/Devices/Motor/MotorReport.h" />
 		<Unit filename="src/modules/Devices/Sensor/SensorModule.c">
 			<Option compilerVar="CC" />
 		</Unit>

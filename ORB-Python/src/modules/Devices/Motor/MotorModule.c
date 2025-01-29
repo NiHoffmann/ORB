@@ -9,6 +9,7 @@
 #include "py/runtime.h"
 #include "MotorModule.h"
 #include "Motor_C_Interface.h"
+#include "MotorReport.h"
 #include "helper.h"
 #include <stdio.h>
 
@@ -125,13 +126,15 @@ static mp_obj_t get(mp_obj_t self_in){
     motor_obj_t *self = MP_OBJ_TO_PTR(self_in);
     motor_return_values *ret = getMotor(self->port);
 
+    /*
     mp_obj_t dict = mp_obj_new_dict(3);
 
     mp_obj_dict_store(dict, mp_obj_new_str("speed", 5), mp_obj_new_int(ret->speed));
     mp_obj_dict_store(dict, mp_obj_new_str("position", 8), mp_obj_new_int(ret->pos));
     mp_obj_dict_store(dict, mp_obj_new_str("power", 5), mp_obj_new_int(ret->pwr));
+    */
 
-    return dict;
+    return new_motor_report(ret->speed, ret->pos, ret->pwr);
 }
 static MP_DEFINE_CONST_FUN_OBJ_1(get_obj , get);
 
