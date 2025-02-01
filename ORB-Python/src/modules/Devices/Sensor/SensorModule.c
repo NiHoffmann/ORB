@@ -6,6 +6,7 @@
 
 #include "SensorModule.h"
 #include "Sensor_C_Interface.h"
+#include "SensorReport.h"
 #include "helper.h"
 
 const mp_obj_type_t sensor_type;
@@ -51,6 +52,7 @@ static mp_obj_t get(mp_obj_t self_in) {
     sensor_obj_t *self = MP_OBJ_TO_PTR(self_in);
     sensor_return_values *ret = getSensor(self->port);
 
+    /* 
     mp_obj_t dict = mp_obj_new_dict(4);
 
     mp_obj_t values = mp_obj_new_list(0, NULL);
@@ -63,6 +65,9 @@ static mp_obj_t get(mp_obj_t self_in) {
     mp_obj_dict_store(dict, mp_obj_new_str("lenExp", 6), mp_obj_new_int(ret->lenExp));
 
     return dict;
+    */
+
+    return new_sensor_report(ret->value, ret->type, ret->option, ret->lenExp);
 }
 static MP_DEFINE_CONST_FUN_OBJ_1(get_obj, get);
 
