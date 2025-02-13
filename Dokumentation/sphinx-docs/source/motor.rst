@@ -46,7 +46,7 @@ The `Motor` class represents a motor device with configurable parameters and var
       :param position: The target position for the motor.
       :type position: int
 
-   .. py:method:: get() -> Dict["speed": int, "power": int, "position": int]
+   .. py:method:: get() -> MotorReport
 
       :returns: A dictionary containing:
          - **speed**: The current speed.
@@ -84,3 +84,25 @@ The `Motor` class represents a motor device with configurable parameters and var
    .. py:attribute:: SPEED_MODE = 2
 
    .. py:attribute:: MOVETO_MODE = 3
+
+.. py:class:: devices.MotorReport
+
+   A `MotorReport` is a read-only representation of a single motor reading.  
+   It can't be instantiated manually and is only returned by the `get()` method.
+
+   **Attributes:**
+
+   .. py:attribute:: speed
+      :type: int
+
+      The current speed of the motor.
+
+   .. py:attribute:: power
+      :type: int
+
+      The power level applied to the motor.
+
+   .. py:attribute:: position
+      :type: int
+
+      The current position of the motor.

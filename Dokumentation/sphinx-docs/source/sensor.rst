@@ -27,7 +27,7 @@ The `Sensor` class represents a sensor device with configurable parameters and m
       :param option: Additional configuration option.
       :type option: int
 
-   .. py:method:: get() ->  Dict["values": [int ,int], "type": int, "option": int, "lenExp": int]
+   .. py:method:: get() ->  SensorReport
 
       Retrieves the sensor report as a dictionary representation.
 
@@ -83,3 +83,31 @@ The `Sensor` class represents a sensor device with configurable parameters and m
    .. py:attribute:: UART = 4
 
       UART sensor type.
+
+.. py:class:: devices.SensorReport
+
+   A `SensorReport` is a read-only representation of a single sensor reading.  
+   It can't be instantiated manually and is only returned by the `get()` method.
+
+   **Attributes:**
+
+   .. py:attribute:: values
+      :type: list[int]
+      
+      An array containing two elements representing sensor data.
+
+   .. py:attribute:: type
+      :type: int
+
+      The type of sensor.
+
+   .. py:attribute:: options
+      :type: int
+
+      Additional configuration options.
+
+   .. py:attribute:: lenExpt
+      :type: int
+
+   
+   
