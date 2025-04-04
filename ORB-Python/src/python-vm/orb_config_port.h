@@ -23,6 +23,8 @@ No C implementation is required to provide for objects greater than that size, w
 #define MICROPY_CONFIG_ROM_LEVEL                (MICROPY_CONFIG_ROM_LEVEL_MINIMUM)
 
 #define MICROPY_PERSISTENT_CODE_LOAD            (1)
+#define MICROPY_ENABLE_SOURCE_LINE              (1)
+#define MICROPY_ERROR_REPORTING                 (3)
 
 #define MICROPY_ENABLE_GC                       (1)
 #define MICROPY_PY_GC                           (1)

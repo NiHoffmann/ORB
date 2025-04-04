@@ -15,7 +15,7 @@ def mpy_cross_compile(file_name: str, file_contents: str ):
         with open(tmp_dir / "tmp.py", "w") as in_file:
             in_file.write(file_contents)
 
-        args = ["mpy-cross", in_file.name, "-s", file_name]
+        args = ["mpy-cross","-O2", in_file.name, "-s", file_name]
         process = subprocess.run(args, capture_output=True)
 
         try:
