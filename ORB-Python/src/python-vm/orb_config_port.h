@@ -47,11 +47,6 @@ No C implementation is required to provide for objects greater than that size, w
 
 #define OMIT_FRAME_POINTER_ON_WINDOWS           (1)
 
-//we only want to use Monitor as STD OUT when on the microcontroller
-#ifndef BUILD_FROM_CODE_BLOCKS
-    #define ORB_ENABLE_MONITOR_STD_OUT	        (1)
-#endif
-
 //Additional Functions
 #define MICROPY_PY_MATH                         (1)
 #define MICROPY_PY_BUILTINS_MIN_MAX             (1)
