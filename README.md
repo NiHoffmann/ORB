@@ -3,9 +3,22 @@
 
 This is a simple documentation to set up the project and provide a concise explanation of what this project is about. The in-depth documentation is only available in German and can be found [here](Dokumentation).
 
+# Project Overview
+- **Extend ORB Project** STM32-Based robot board project extended with new features (see details below).
+- **Full integration of MicroPython into the ORB firmware** wrote native C bindings via the MicroPython C API, exposing all ORB firmware features (motor and sensor control, etc.) to Python through wrapper classes.
+- **Windows debug environment for ORB-MicroPython** enabling development, testing, and debugging of ORB-MicroPython from Windows Environment.  
+- **Flashing and MicroPython upload tool** making it easy to deploy Python programs to the ORB from a PC.  
+- **ORB-Monitor allows MicroPython program uploads** extended ORB-Monitor to allowing users to upload, start, and stop MicroPython programs from GUI-Application.  
+- **Maintained full C++ support** ORB-Firmware still allows C++ program development and uploading, so both Python and C++ workflows are supported on the same firmware.  
+- **ORB-MicroPython API documentation** what's there to say about it.
+- **Miscellaneous tasks** benchmarked MicroPython vs. C++ code, created MicroPython example programs, documented requirements, implementation, ..., and some more smaller tasks.
+  
+# Project Goal
+
 The goal of this project is to integrate a MicroPython interpreter into the firmware of the Open Robotic Board (ORB).
-The ORB is a hardware platform that enables the modular construction of a robot. The ORB-Firmware provides functions, such as motor control, for robot programming.
-The aim is to make it possible to develop Python programs for the ORB, with a connection to the ORB-Monitor program.
+The ORB is a hardware platform that enables the modular construction of a robot. The ORB-Firmware provides functions, such as motor control, for robot programming. 
+These Low-level firmware functions are exposed to MicroPython through wrapper classes, allowing developers to interact with the hardware using a high-level interface.
+The aim is to make it possible to develop MicroPython programs for the ORB, with a connection to the ORB-Monitor program.
 The ORB-Monitor program is a development tool that allows text output, as well as the uploading, starting, and stopping of programs.
 The existing functionalities of the ORB, such as the development of C++ programs, should remain functionally the same.
 > [!NOTE]  
